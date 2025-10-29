@@ -37,6 +37,15 @@
     },
     "languageSettings": {
       "enableTranslationWorkbench": true
+    },
+    "omniChannelSettings": {
+      "enableOmniChannel": true
+    },
+    "platformCacheSettings": {
+      "enablePlatformCache": true
+    },
+    "userManagementSettings": {
+      "enableNewProfileUI": true
     }
   }
 }
