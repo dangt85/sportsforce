@@ -5,7 +5,11 @@
     "EnableSetPasswordInApi",
     "Communities",
     "ContactsToMultipleAccounts",
-    "MultiCurrency"
+    "StateAndCountryPicklist",
+    "DebugApex",
+    "EnableSetPasswordInApi",
+    "MultiCurrency",
+    "PlatformCache"
   ],
   "settings": {
     "lightningExperienceSettings": {
@@ -41,9 +45,6 @@
     },
     "omniChannelSettings": {
       "enableOmniChannel": true
-    },
-    "platformCacheSettings": {
-      "enablePlatformCache": true
     },
     "userManagementSettings": {
       "enableNewProfileUI": true
