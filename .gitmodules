@@ -1,0 +1,3 @@
+[submodule ".claude"]
+	path = .claude
+	url = git@bitbucket.org:neuraflash/claude-code-toolkit.git
