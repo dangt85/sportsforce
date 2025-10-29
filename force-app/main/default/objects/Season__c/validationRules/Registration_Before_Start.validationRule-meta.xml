@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Registration_Before_Start</fullName>
+    <active>true</active>
+    <description
+  >Ensures registration deadline is before or on the start date</description>
+    <errorConditionFormula>AND(
+    NOT(ISBLANK(Registration_Deadline__c)),
+    NOT(ISBLANK(Start_Date__c)),
+    Registration_Deadline__c &gt; Start_Date__c
+)</errorConditionFormula>
+    <errorDisplayField>Registration_Deadline__c</errorDisplayField>
+    <errorMessage
+  >Registration deadline must be on or before the season start date.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Different_Teams_Required</fullName>
+    <active>true</active>
+    <description>Ensures home team and away team are different</description>
+    <errorConditionFormula>AND(
+    NOT(ISBLANK(Home_Team__c)),
+    NOT(ISBLANK(Away_Team__c)),
+    Home_Team__c = Away_Team__c
+)</errorConditionFormula>
+    <errorDisplayField>Away_Team__c</errorDisplayField>
+    <errorMessage
+  >Home team and away team must be different teams.</errorMessage>
+</ValidationRule>
