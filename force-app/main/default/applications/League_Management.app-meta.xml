@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <brand>
+        <headerColor>#0070D2</headerColor>
+        <shouldOverrideOrgTheme>false</shouldOverrideOrgTheme>
+    </brand>
+    <description
+  >Backend admin application for managing hockey leagues, seasons, teams, and games</description>
+    <formFactors>Small</formFactors>
+    <formFactors>Large</formFactors>
+    <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
+    <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
+    <label>League Management</label>
+    <navType>Standard</navType>
+    <tabs>standard-Home</tabs>
+    <tabs>League__c</tabs>
+    <tabs>Season__c</tabs>
+    <tabs>Division__c</tabs>
+    <tabs>Team__c</tabs>
+    <tabs>Team_Member__c</tabs>
+    <tabs>standard-Contact</tabs>
+    <tabs>Arena__c</tabs>
+    <tabs>Game__c</tabs>
+    <tabs>standard-Dashboard</tabs>
+    <tabs>standard-report</tabs>
+    <uiType>Lightning</uiType>
+</CustomApplication>

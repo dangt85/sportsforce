@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Game_Type__c</fullName>
+    <description>Type of game</description>
+    <externalId>false</externalId>
+    <label>Game Type</label>
+    <required>true</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Regular Season</fullName>
+                <default>true</default>
+                <label>Regular Season</label>
+            </value>
+            <value>
+                <fullName>Playoff</fullName>
+                <default>false</default>
+                <label>Playoff</label>
+            </value>
+            <value>
+                <fullName>Exhibition</fullName>
+                <default>false</default>
+                <label>Exhibition</label>
+            </value>
+            <value>
+                <fullName>Tournament</fullName>
+                <default>false</default>
+                <label>Tournament</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

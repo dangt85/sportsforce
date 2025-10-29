@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Province_State__c</fullName>
+    <description
+  >Province (Canada) or State (USA) where the league operates</description>
+    <externalId>false</externalId>
+    <label>Province/State</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Ontario</fullName>
+                <default>false</default>
+                <label>Ontario</label>
+            </value>
+            <value>
+                <fullName>Quebec</fullName>
+                <default>false</default>
+                <label>Quebec</label>
+            </value>
+            <value>
+                <fullName>British Columbia</fullName>
+                <default>false</default>
+                <label>British Columbia</label>
+            </value>
+            <value>
+                <fullName>Alberta</fullName>
+                <default>false</default>
+                <label>Alberta</label>
+            </value>
+            <value>
+                <fullName>Manitoba</fullName>
+                <default>false</default>
+                <label>Manitoba</label>
+            </value>
+            <value>
+                <fullName>Saskatchewan</fullName>
+                <default>false</default>
+                <label>Saskatchewan</label>
+            </value>
+            <value>
+                <fullName>New York</fullName>
+                <default>false</default>
+                <label>New York</label>
+            </value>
+            <value>
+                <fullName>Michigan</fullName>
+                <default>false</default>
+                <label>Michigan</label>
+            </value>
+            <value>
+                <fullName>Minnesota</fullName>
+                <default>false</default>
+                <label>Minnesota</label>
+            </value>
+            <value>
+                <fullName>Massachusetts</fullName>
+                <default>false</default>
+                <label>Massachusetts</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Home_Team__c</fullName>
+    <deleteConstraint>Restrict</deleteConstraint>
+    <description>Home team for this game</description>
+    <externalId>false</externalId>
+    <label>Home Team</label>
+    <referenceTo>Team__c</referenceTo>
+    <relationshipLabel>Home Games</relationshipLabel>
+    <relationshipName>Home_Games</relationshipName>
+    <required>true</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>
