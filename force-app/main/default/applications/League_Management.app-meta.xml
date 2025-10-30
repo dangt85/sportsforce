@@ -21,7 +21,6 @@
     <tabs>standard-Contact</tabs>
     <tabs>Arena__c</tabs>
     <tabs>Game__c</tabs>
-    <tabs>Scheduling</tabs>
     <tabs>standard-Dashboard</tabs>
     <tabs>standard-report</tabs>
     <uiType>Lightning</uiType>
