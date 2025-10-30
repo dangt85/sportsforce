@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <FlexiPage xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>Scheduling_Page</fullName>
     <flexiPageRegions>
         <itemInstances>
             <componentInstance>
@@ -10,7 +9,6 @@
         <name>main</name>
         <type>Region</type>
     </flexiPageRegions>
-    <name>Scheduling_Page</name>
-    <template>flexipage_defaultapp_template</template>
     <type>AppPage</type>
+    <template>flexipage_defaultapp_template</template>
 </FlexiPage>
