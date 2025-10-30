@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Arena__c</fullName>
+    <label>Arena</label>
+    <type>Lookup</type>
+    <referenceTo>Arena__c</referenceTo>
+    <relationshipLabel>Tryouts</relationshipLabel>
+    <relationshipName>Tryouts</relationshipName>
+    <required>false</required>
+    <description>The arena where the tryout will be held</description>
+</CustomField>

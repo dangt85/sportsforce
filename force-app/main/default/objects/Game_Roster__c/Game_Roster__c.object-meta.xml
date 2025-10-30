@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Game Roster</label>
+    <pluralLabel>Game Rosters</pluralLabel>
+    <nameField>
+        <displayFormat>GR-{0000}</displayFormat>
+        <label>Game Roster Number</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <sharingModel>ReadWrite</sharingModel>
+    <description
+  >Track player attendance and in-game statistics for each game</description>
+    <enableReports>true</enableReports>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+</CustomObject>

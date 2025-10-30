@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Points__c</fullName>
+    <label>Points</label>
+    <type>Number</type>
+    <precision>5</precision>
+    <scale>0</scale>
+    <formula>Goals__c + Assists__c</formula>
+    <description>Total points (Goals + Assists)</description>
+</CustomField>

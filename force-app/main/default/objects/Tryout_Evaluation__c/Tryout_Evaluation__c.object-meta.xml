@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>Tryout Evaluation</label>
+    <pluralLabel>Tryout Evaluations</pluralLabel>
+    <nameField>
+        <displayFormat>TE-{0000}</displayFormat>
+        <label>Tryout Evaluation Number</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <sharingModel>Private</sharingModel>
+    <description>Player evaluations during tryout sessions</description>
+    <enableReports>true</enableReports>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+</CustomObject>

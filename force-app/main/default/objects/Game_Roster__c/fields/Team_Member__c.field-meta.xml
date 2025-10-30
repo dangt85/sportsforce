@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Team_Member__c</fullName>
+    <label>Team Member</label>
+    <type>Lookup</type>
+    <referenceTo>Team_Member__c</referenceTo>
+    <relationshipLabel>Game Rosters</relationshipLabel>
+    <relationshipName>Game_Rosters</relationshipName>
+    <required>true</required>
+    <description
+  >The team member (player or staff) participating in this game</description>
+</CustomField>

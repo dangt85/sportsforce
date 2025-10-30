@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Evaluator__c</fullName>
+    <label>Evaluator</label>
+    <type>Lookup</type>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Tryout Evaluations (Evaluator)</relationshipLabel>
+    <relationshipName>Tryout_Evaluations_Evaluator</relationshipName>
+    <required>false</required>
+    <description>The person conducting the evaluation</description>
+</CustomField>

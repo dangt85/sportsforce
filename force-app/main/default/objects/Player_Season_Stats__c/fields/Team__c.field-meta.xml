@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Team__c</fullName>
+    <label>Team</label>
+    <type>Lookup</type>
+    <referenceTo>Team__c</referenceTo>
+    <relationshipLabel>Player Season Stats</relationshipLabel>
+    <relationshipName>Player_Season_Stats</relationshipName>
+    <required>false</required>
+    <description>The team the player played for</description>
+</CustomField>

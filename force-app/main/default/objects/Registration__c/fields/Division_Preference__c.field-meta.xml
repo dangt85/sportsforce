@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Division_Preference__c</fullName>
+    <label>Division Preference</label>
+    <type>Lookup</type>
+    <referenceTo>Division__c</referenceTo>
+    <relationshipLabel>Registrations</relationshipLabel>
+    <relationshipName>Registrations</relationshipName>
+    <required>false</required>
+    <description>The preferred division for this registration</description>
+</CustomField>

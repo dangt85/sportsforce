@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Host_Arena__c</fullName>
+    <label>Host Arena</label>
+    <type>Lookup</type>
+    <referenceTo>Arena__c</referenceTo>
+    <relationshipLabel>Tournaments</relationshipLabel>
+    <relationshipName>Tournaments</relationshipName>
+    <required>false</required>
+    <description>Primary host arena for the tournament</description>
+</CustomField>
