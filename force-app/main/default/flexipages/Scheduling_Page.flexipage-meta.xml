@@ -9,6 +9,7 @@
         <name>main</name>
         <type>Region</type>
     </flexiPageRegions>
-    <type>AppPage</type>
+    <masterLabel>Scheduling Page</masterLabel>
     <template>flexipage_defaultapp_template</template>
+    <type>AppPage</type>
 </FlexiPage>
