@@ -6,6 +6,8 @@
     <referenceTo>Contact</referenceTo>
     <relationshipLabel>Tryout Evaluations (Player)</relationshipLabel>
     <relationshipName>Tryout_Evaluations_Player</relationshipName>
-    <required>true</required>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
     <description>The player being evaluated</description>
 </CustomField>

@@ -6,6 +6,8 @@
     <referenceTo>Team__c</referenceTo>
     <relationshipLabel>Tournament Teams</relationshipLabel>
     <relationshipName>Tournament_Teams</relationshipName>
-    <required>true</required>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
     <description>The team participating in the tournament</description>
 </CustomField>

@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Game__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>The game this roster entry is associated with</description>
     <label>Game</label>
-    <type>Lookup</type>
     <referenceTo>Game__c</referenceTo>
     <relationshipLabel>Game Rosters</relationshipLabel>
     <relationshipName>Game_Rosters</relationshipName>
-    <required>true</required>
-    <description>The game this roster entry is associated with</description>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
 </CustomField>

@@ -3,10 +3,12 @@
     <fullName>Team_Member__c</fullName>
     <label>Team Member</label>
     <type>Lookup</type>
+    <deleteConstraint>SetNull</deleteConstraint>
     <referenceTo>Team_Member__c</referenceTo>
     <relationshipLabel>Game Rosters</relationshipLabel>
     <relationshipName>Game_Rosters</relationshipName>
-    <required>true</required>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
     <description
   >The team member (player or staff) participating in this game</description>
 </CustomField>

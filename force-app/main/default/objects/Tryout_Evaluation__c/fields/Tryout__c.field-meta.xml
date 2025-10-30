@@ -6,6 +6,8 @@
     <referenceTo>Tryout__c</referenceTo>
     <relationshipLabel>Tryout Evaluations</relationshipLabel>
     <relationshipName>Tryout_Evaluations</relationshipName>
-    <required>true</required>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
     <description>The tryout session this evaluation is for</description>
 </CustomField>

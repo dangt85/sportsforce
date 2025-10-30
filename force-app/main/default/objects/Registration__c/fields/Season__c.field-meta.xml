@@ -6,6 +6,8 @@
     <referenceTo>Season__c</referenceTo>
     <relationshipLabel>Registrations</relationshipLabel>
     <relationshipName>Registrations</relationshipName>
-    <required>true</required>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
     <description>The season for this registration</description>
 </CustomField>

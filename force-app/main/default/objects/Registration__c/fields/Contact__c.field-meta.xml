@@ -6,6 +6,8 @@
     <referenceTo>Contact</referenceTo>
     <relationshipLabel>Registrations</relationshipLabel>
     <relationshipName>Registrations</relationshipName>
-    <required>true</required>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
     <description>The player being registered</description>
 </CustomField>
