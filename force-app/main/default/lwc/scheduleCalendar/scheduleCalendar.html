@@ -1,0 +1,140 @@
+<template>
+  <div class="schedule-calendar-container">
+    <div class="calendar-toolbar">
+      <div class="toolbar-left">
+        <lightning-button
+          label="Today"
+          icon-name="utility:event"
+          onclick={handleTodayClick}
+          class="slds-m-right_small"
+        >
+        </lightning-button>
+        <lightning-button
+          label="Previous"
+          icon-name="utility:chevronleft"
+          onclick={handlePreviousClick}
+          class="slds-m-right_small"
+        >
+        </lightning-button>
+        <lightning-button
+          label="Next"
+          icon-name="utility:chevronright"
+          onclick={handleNextClick}
+          class="slds-m-right_small"
+        >
+        </lightning-button>
+      </div>
+      <div class="toolbar-center">
+        <h2 class="calendar-title">{calendarTitle}</h2>
+      </div>
+      <div class="toolbar-right">
+        <lightning-button
+          label="New Event"
+          variant="brand"
+          icon-name="utility:add"
+          onclick={handleNewEventClick}
+        >
+        </lightning-button>
+      </div>
+    </div>
+
+    <div class="calendar-legend">
+      <div class="legend-item">
+        <span class="legend-color" style="background-color: #0070d2"></span>
+        <span>Games (Scheduled/In Progress)</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-color" style="background-color: #28a745"></span>
+        <span>Completed</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-color" style="background-color: #dc3545"></span>
+        <span>Cancelled</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-color" style="background-color: #ffc107"></span>
+        <span>Postponed</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-color" style="background-color: #17a2b8"></span>
+        <span>Tryouts</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-color" style="background-color: #fd7e14"></span>
+        <span>Practices</span>
+      </div>
+    </div>
+
+    <div class="calendar-wrapper">
+      <div id="calendar" class="calendar"></div>
+    </div>
+
+    <template if:true={showEventModal}>
+      <lightning-modal-header label="Event Details"></lightning-modal-header>
+      <lightning-modal-body>
+        <div class="event-details">
+          <template if:true={selectedEvent}>
+            <div class="detail-row">
+              <strong>Event Type:</strong>
+              <span>{selectedEvent.eventType}</span>
+            </div>
+            <div class="detail-row">
+              <strong>Title:</strong>
+              <span>{selectedEvent.title}</span>
+            </div>
+            <div class="detail-row">
+              <strong>Start:</strong>
+              <span>{formattedStartTime}</span>
+            </div>
+            <div class="detail-row">
+              <strong>Location:</strong>
+              <span>{selectedEvent.location}</span>
+            </div>
+            <div class="detail-row">
+              <strong>Status:</strong>
+              <span>{selectedEvent.status}</span>
+            </div>
+          </template>
+        </div>
+      </lightning-modal-body>
+      <lightning-modal-footer>
+        <lightning-button
+          label="Cancel"
+          onclick={handleCloseModal}
+        ></lightning-button>
+        <lightning-button
+          label="Edit"
+          variant="brand"
+          onclick={handleEditEvent}
+        >
+        </lightning-button>
+        <lightning-button
+          label="Delete"
+          variant="destructive"
+          onclick={handleDeleteEvent}
+        >
+        </lightning-button>
+      </lightning-modal-footer>
+    </template>
+
+    <template if:true={showErrorModal}>
+      <lightning-modal-header label="Error"></lightning-modal-header>
+      <lightning-modal-body>
+        <p>{errorMessage}</p>
+      </lightning-modal-body>
+      <lightning-modal-footer>
+        <lightning-button
+          label="Close"
+          onclick={handleCloseErrorModal}
+        ></lightning-button>
+      </lightning-modal-footer>
+    </template>
+
+    <template if:true={isLoading}>
+      <lightning-spinner
+        alternative-text="Loading"
+        size="large"
+      ></lightning-spinner>
+    </template>
+  </div>
+</template>

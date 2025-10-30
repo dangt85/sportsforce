@@ -1,0 +1,98 @@
+<template>
+  <div class="tryout-manager-container">
+    <div class="manager-toolbar">
+      <lightning-button
+        label="New Tryout"
+        variant="brand"
+        icon-name="utility:add"
+        onclick={handleNewTryoutClick}
+      >
+      </lightning-button>
+      <lightning-input
+        type="search"
+        placeholder="Search tryouts..."
+        value={searchTerm}
+        onchange={handleSearchChange}
+        class="search-input"
+      >
+      </lightning-input>
+    </div>
+
+    <template if:true={isLoading}>
+      <lightning-spinner
+        alternative-text="Loading"
+        size="large"
+      ></lightning-spinner>
+    </template>
+
+    <template if:false={isLoading}>
+      <template if:true={hasRecords}>
+        <lightning-datatable
+          key-field="id"
+          data={tryouts}
+          columns={columns}
+          hide-checkbox-column="true"
+          onrowaction={handleRowAction}
+          class="tryout-table"
+        >
+        </lightning-datatable>
+      </template>
+
+      <template if:false={hasRecords}>
+        <div class="no-records">
+          <p>No tryouts found. Create a new tryout to get started.</p>
+        </div>
+      </template>
+    </template>
+
+    <template if:true={showRecordModal}>
+      <lightning-modal-header label={modalTitle}></lightning-modal-header>
+      <lightning-modal-body>
+        <template if:true={selectedRecord}>
+          <div class="record-details">
+            <div class="detail-section">
+              <h3>Basic Information</h3>
+              <p>
+                <strong>Division:</strong> {selectedRecord.Division__r.Name}
+              </p>
+              <p><strong>Date/Time:</strong> {formattedDateTime}</p>
+              <p><strong>Arena:</strong> {selectedRecord.Arena__r.Name}</p>
+              <p>
+                <strong>Max Participants:</strong>
+                {selectedRecord.Max_Participants__c}
+              </p>
+              <p><strong>Status:</strong> {selectedRecord.Status__c}</p>
+            </div>
+          </div>
+        </template>
+      </lightning-modal-body>
+      <lightning-modal-footer>
+        <lightning-button
+          label="Close"
+          onclick={handleCloseModal}
+        ></lightning-button>
+        <lightning-button label="View Record" onclick={handleViewRecord}>
+        </lightning-button>
+        <lightning-button
+          label="Edit"
+          variant="brand"
+          onclick={handleEditRecord}
+        >
+        </lightning-button>
+      </lightning-modal-footer>
+    </template>
+
+    <template if:true={showErrorModal}>
+      <lightning-modal-header label="Error"></lightning-modal-header>
+      <lightning-modal-body>
+        <p>{errorMessage}</p>
+      </lightning-modal-body>
+      <lightning-modal-footer>
+        <lightning-button
+          label="Close"
+          onclick={handleCloseErrorModal}
+        ></lightning-button>
+      </lightning-modal-footer>
+    </template>
+  </div>
+</template>

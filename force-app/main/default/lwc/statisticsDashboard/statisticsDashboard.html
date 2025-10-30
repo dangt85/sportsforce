@@ -1,0 +1,108 @@
+<template>
+  <div class="statistics-dashboard-container">
+    <div class="dashboard-toolbar">
+      <lightning-combobox
+        name="season"
+        label="Season"
+        value={selectedSeason}
+        options={seasonOptions}
+        onchange={handleSeasonChange}
+        class="filter-control"
+      >
+      </lightning-combobox>
+
+      <lightning-combobox
+        name="division"
+        label="Division"
+        value={selectedDivision}
+        options={divisionOptions}
+        onchange={handleDivisionChange}
+        class="filter-control"
+      >
+      </lightning-combobox>
+
+      <lightning-combobox
+        name="team"
+        label="Team"
+        value={selectedTeam}
+        options={teamOptions}
+        onchange={handleTeamChange}
+        class="filter-control"
+      >
+      </lightning-combobox>
+    </div>
+
+    <div class="statistics-tabs">
+      <lightning-tabset>
+        <lightning-tab label="Skaters">
+          <template if:true={isLoading}>
+            <lightning-spinner
+              alternative-text="Loading"
+              size="large"
+            ></lightning-spinner>
+          </template>
+
+          <template if:false={isLoading}>
+            <template if:true={hasSkaterRecords}>
+              <lightning-datatable
+                key-field="id"
+                data={skaterStats}
+                columns={skaterColumns}
+                hide-checkbox-column="true"
+                class="stats-table"
+              >
+              </lightning-datatable>
+            </template>
+
+            <template if:false={hasSkaterRecords}>
+              <div class="no-records">
+                <p>No skater statistics found for the selected filters.</p>
+              </div>
+            </template>
+          </template>
+        </lightning-tab>
+
+        <lightning-tab label="Goalies">
+          <template if:true={isLoading}>
+            <lightning-spinner
+              alternative-text="Loading"
+              size="large"
+            ></lightning-spinner>
+          </template>
+
+          <template if:false={isLoading}>
+            <template if:true={hasGoalieRecords}>
+              <lightning-datatable
+                key-field="id"
+                data={goalieStats}
+                columns={goalieColumns}
+                hide-checkbox-column="true"
+                class="stats-table"
+              >
+              </lightning-datatable>
+            </template>
+
+            <template if:false={hasGoalieRecords}>
+              <div class="no-records">
+                <p>No goalie statistics found for the selected filters.</p>
+              </div>
+            </template>
+          </template>
+        </lightning-tab>
+      </lightning-tabset>
+    </div>
+
+    <template if:true={showErrorModal}>
+      <lightning-modal-header label="Error"></lightning-modal-header>
+      <lightning-modal-body>
+        <p>{errorMessage}</p>
+      </lightning-modal-body>
+      <lightning-modal-footer>
+        <lightning-button
+          label="Close"
+          onclick={handleCloseErrorModal}
+        ></lightning-button>
+      </lightning-modal-footer>
+    </template>
+  </div>
+</template>
