@@ -113,19 +113,19 @@ League__c (Master)
 **Season\_\_c**
 
 - Purpose: Time-bound competition period
-- Key Fields: Start_Date**c, End_Date**c, Registration_Deadline**c, Status**c (Active/Completed/Upcoming)
+- Key Fields: Start_Date\_\_c, End_Date\_\_c, Registration_Deadline\_\_c, Status\_\_c (Active/Completed/Upcoming)
 - Master-Detail: League\_\_c
 
 **Division\_\_c**
 
 - Purpose: Age/skill groupings (e.g., "Atom AA", "Peewee A")
-- Key Fields: Name, Min_Age**c, Max_Age**c, Skill_Level\_\_c
+- Key Fields: Name, Min_Age\_\_c, Max_Age\_\_c, Skill_Level\_\_c
 - Master-Detail: Season\_\_c
 
 **Team\_\_c**
 
 - Purpose: Individual teams
-- Key Fields: Name, Team_Colors**c, Logo**c, Home_Arena**c (Lookup to Arena**c)
+- Key Fields: Name, Team_Colors\_\_c, Logo\_\_c, Home_Arena\_\_c (Lookup to Arena\_\_c)
 - Lookup: Division\_\_c
 
 #### People Management
@@ -164,14 +164,14 @@ League__c (Master)
 **Arena\_\_c**
 
 - Purpose: Rink/venue information
-- Key Fields: Name, Address**c, City**c, Province_State**c, Ice_Surface_Count**c, Capacity**c, Contact_Email**c
+- Key Fields: Name, Address\_\_c, City\_\_c, Province_State\_\_c, Ice_Surface_Count\_\_c, Capacity\_\_c, Contact_Email\_\_c
 
 **Game\_\_c**
 
 - Purpose: Individual game records
 - Key Fields:
-  - Home_Team**c (Lookup to Team**c)
-  - Away_Team**c (Lookup to Team**c)
+  - Home_Team\_\_c (Lookup to Team\_\_c)
+  - Away_Team\_\_c (Lookup to Team\_\_c)
   - Arena\_\_c (Lookup)
   - Game_DateTime\_\_c
   - Game_Type\_\_c (Regular Season/Playoff/Exhibition/Tournament)
@@ -217,7 +217,7 @@ League__c (Master)
   - Contact\_\_c (Lookup)
   - Season\_\_c (Lookup)
   - Games_Played\_\_c
-  - Wins**c, Losses**c, Ties\_\_c
+  - Wins\_\_c, Losses\_\_c, Ties\_\_c
   - Saves\_\_c
   - Goals_Against\_\_c
   - Save_Percentage\_\_c (formula)
@@ -293,8 +293,8 @@ League__c (Master)
 - Purpose: Special tournament events
 - Key Fields:
   - Name
-  - Start_Date**c, End_Date**c
-  - Host_Arena**c (Lookup to Arena**c)
+  - Start_Date\_\_c, End_Date\_\_c
+  - Host_Arena\_\_c (Lookup to Arena\_\_c)
   - Format\_\_c (Round Robin/Single Elimination/Double Elimination)
   - Entry_Fee\_\_c
   - Max_Teams\_\_c
@@ -308,8 +308,8 @@ League__c (Master)
   - Team\_\_c (Lookup)
   - Pool\_\_c (Pool A/B/C/etc.)
   - Seed\_\_c
-  - Wins**c, Losses**c, Ties\_\_c
-  - Goals_For**c, Goals_Against**c
+  - Wins\_\_c, Losses\_\_c, Ties\_\_c
+  - Goals_For\_\_c, Goals_Against\_\_c
   - Standing\_\_c (calculated ranking)
 
 ## Security & Sharing
@@ -333,7 +333,7 @@ League__c (Master)
 
 **Webmaster**
 
-- CRUD on News_Article**c, Page_Content**c
+- CRUD on News_Article\_\_c, Page_Content\_\_c
 - Read on League, Team, Game
 
 **Team Manager (External)**
@@ -357,7 +357,7 @@ League__c (Master)
 - **Contact**: Private (family data is sensitive)
 - **Team\_\_c**: Public Read Only
 - **Game\_\_c**: Public Read Only
-- **League**c, Season**c, Division\_\_c**: Public Read Only
+- **League\_\_c, Season\_\_c, Division\_\_c**: Public Read Only
 - **Registration\_\_c**: Private
 - **Tryout_Evaluation\_\_c**: Private
 - **Player_Season_Stats\_\_c**: Public Read Only
