@@ -6,7 +6,6 @@
     <description
   >Display player and goalie statistics with filtering capabilities</description>
     <targets>
-        <target>lightning__FlexiPage</target>
         <target>lightning__AppPage</target>
     </targets>
 </LightningComponentBundle>

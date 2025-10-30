@@ -5,7 +5,6 @@
     <masterLabel>Tryout Manager</masterLabel>
     <description>Manage tryout sessions with search and actions</description>
     <targets>
-        <target>lightning__FlexiPage</target>
         <target>lightning__AppPage</target>
     </targets>
 </LightningComponentBundle>

@@ -6,7 +6,6 @@
     <description
   >Container component for scheduling features with vertical tabs</description>
     <targets>
-        <target>lightning__FlexiPage</target>
         <target>lightning__AppPage</target>
     </targets>
 </LightningComponentBundle>

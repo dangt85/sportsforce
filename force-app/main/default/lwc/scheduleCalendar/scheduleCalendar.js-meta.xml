@@ -6,8 +6,6 @@
     <description
   >FullCalendar.js-based calendar for managing games, tryouts, and practices</description>
     <targets>
-        <target>lightning__FlexiPage</target>
         <target>lightning__AppPage</target>
-        <target>lightning__RecordPage</target>
     </targets>
 </LightningComponentBundle>
