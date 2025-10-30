@@ -7,19 +7,24 @@
         <picklistValues>
             <fullName>Full Practice</fullName>
             <default>true</default>
+            <label>Full Practice</label>
         </picklistValues>
         <picklistValues>
             <fullName>Skills</fullName>
             <default>false</default>
+            <label>Skills</label>
         </picklistValues>
         <picklistValues>
             <fullName>Conditioning</fullName>
             <default>false</default>
+            <label>Conditioning</label>
         </picklistValues>
         <picklistValues>
             <fullName>Scrimmage</fullName>
             <default>false</default>
+            <label>Scrimmage</label>
         </picklistValues>
+        <sorted>false</sorted>
     </picklist>
     <required>false</required>
     <trackHistory>true</trackHistory>

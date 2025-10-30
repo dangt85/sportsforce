@@ -7,15 +7,19 @@
         <picklistValues>
             <fullName>Scheduled</fullName>
             <default>true</default>
+            <label>Scheduled</label>
         </picklistValues>
         <picklistValues>
             <fullName>Completed</fullName>
             <default>false</default>
+            <label>Completed</label>
         </picklistValues>
         <picklistValues>
             <fullName>Cancelled</fullName>
             <default>false</default>
+            <label>Cancelled</label>
         </picklistValues>
+        <sorted>false</sorted>
     </picklist>
     <required>false</required>
     <trackHistory>true</trackHistory>
