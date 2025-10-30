@@ -1,0 +1,9 @@
+Home_Team__c,Away_Team__c,Arena__c,Game_DateTime__c,Status__c,Home_Score__c,Away_Score__c,Game_Type__c,Notes__c
+Toronto Tigers,North Shore Sharks,Maple Leaf Square Arena,2024-10-05 19:00:00,Completed,4,3,Regular Season,Great defensive effort from both teams
+Maple Ridge Moose,Downtown Dragons,Platinum Ice Arena,2024-10-05 18:00:00,Completed,2,1,Regular Season,Early morning game
+Westside Warriors,Vaughan Vipers,Westside Sports Complex,2024-10-06 15:00:00,Completed,3,2,Regular Season,Overtime winner
+Markham Mavericks,Toronto Tigers,Premier Ice Center,2024-10-12 17:00:00,Scheduled,,0,Regular Season,Friendly match
+North Shore Sharks,Maple Ridge Moose,Scotiabank Showdown,2024-10-12 19:00:00,Scheduled,,0,Regular Season,
+Downtown Dragons,Westside Warriors,Downtown Hockey Complex,2024-10-13 18:30:00,Scheduled,,0,Regular Season,
+Toronto Tigers,Downtown Dragons,Maple Leaf Square Arena,2024-10-19 19:00:00,Scheduled,,0,Regular Season,
+North Shore Sharks,Westside Warriors,Scotiabank Showdown,2024-10-19 18:00:00,Scheduled,,0,Regular Season,

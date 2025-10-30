@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "collections": [
+    {
+      "name": "League",
+      "sobjecttype": "League__c",
+      "files": ["League__c.csv"]
+    },
+    {
+      "name": "Contact",
+      "sobjecttype": "Contact",
+      "files": ["Contact.csv"]
+    },
+    {
+      "name": "Arena",
+      "sobjecttype": "Arena__c",
+      "files": ["Arena__c.csv"]
+    },
+    {
+      "name": "Season",
+      "sobjecttype": "Season__c",
+      "files": ["Season__c.csv"],
+      "externalIdField": "Name"
+    },
+    {
+      "name": "Division",
+      "sobjecttype": "Division__c",
+      "files": ["Division__c.csv"]
+    },
+    {
+      "name": "Team",
+      "sobjecttype": "Team__c",
+      "files": ["Team__c.csv"]
+    },
+    {
+      "name": "TeamMember",
+      "sobjecttype": "Team_Member__c",
+      "files": ["Team_Member__c.csv"]
+    },
+    {
+      "name": "Game",
+      "sobjecttype": "Game__c",
+      "files": ["Game__c.csv"]
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+Name,Season__c,Min_Age__c,Max_Age__c,Skill_Level__c
+U10 Minor,2024-2025 Season,8,10,Beginner
+U12 Minor,2024-2025 Season,10,12,Intermediate
+U14 Minor,2024-2025 Season,13,15,Advanced
+U16 Minor,2024-2025 Season,15,17,Elite
+U18 Minor,2024-2025 Season,17,20,Elite

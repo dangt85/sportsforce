@@ -1,0 +1,9 @@
+Name,City__c,Province_State__c,Address__c,Phone__c,Website__c,Ice_Sheets__c
+Maple Leaf Square Arena,Toronto,ON,123 Maple Leaf Way,416-555-5001,https://www.mlsarena.ca,2
+Scotiabank Showdown,Toronto,ON,456 Hockey Drive,416-555-5002,https://www.showdownarena.ca,3
+Platinum Ice Arena,North York,ON,789 Northview Rd,416-555-5003,https://www.platinumarena.ca,2
+Community Ice Palace,Mississauga,ON,321 Olympic Drive,905-555-5004,https://www.icepalace.ca,1
+Downtown Hockey Complex,Toronto,ON,654 Yonge Street,416-555-5005,https://www.downtownarena.ca,4
+Westside Sports Complex,Scarborough,ON,987 Highway 7,416-555-5006,https://www.westsidearena.ca,2
+Premier Ice Center,Markham,ON,147 Enterprise Blvd,905-555-5007,https://www.premierice.ca,3
+Victory Ice Hall,Vaughan,ON,258 Major Mackenzie,905-555-5008,https://www.victoryhall.ca,2

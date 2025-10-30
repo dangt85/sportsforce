@@ -1,0 +1,6 @@
+Name,Region__c,Province_State__c,Logo_URL__c,Contact_Email__c,Contact_Phone__c,Website__c
+Ontario Minor Hockey Association,Northern,ON,https://example.com/omha-logo.png,admin@omha.ca,416-975-3222,https://www.omha.net
+Greater Toronto Hockey League,Central,ON,https://example.com/gthl-logo.png,contact@gthl.ca,416-410-7400,https://www.gthl.ca
+Manitoba Hockey Association,Western,MB,https://example.com/mha-logo.png,info@mbhockey.ca,204-925-5660,https://www.mbhockey.mb.ca
+Minnesota Youth Hockey Association,Upper Midwest,MN,https://example.com/myha-logo.png,contact@myha.org,763-486-5700,https://www.myha.org
+New York Hockey Association,Eastern,NY,https://example.com/nyha-logo.png,info@nyhockey.org,518-237-7080,https://www.nyhockey.org

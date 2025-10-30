@@ -1,0 +1,13 @@
+FirstName,LastName,Email,Phone,Player_ID__c,Hockey_Registration_Number__c,Position__c,Jersey_Number__c,Date_of_Birth__c,Emergency_Contact_Name__c,Emergency_Contact_Phone__c,Medical_Notes__c,Guardian_Email__c
+John,Smith,john.smith@example.com,416-555-0101,PLY001,HC-001-2024,Center,17,2010-03-15,Sarah Smith,416-555-0102,None,parent@example.com
+Sarah,Johnson,sarah.johnson@example.com,416-555-0201,PLY002,HC-002-2024,Defense,4,2009-07-22,Michael Johnson,416-555-0202,None,guardian@example.com
+Mike,Williams,mike.williams@example.com,416-555-0301,PLY003,HC-003-2024,Left Wing,11,2010-11-08,Jennifer Williams,416-555-0302,Mild asthma - use inhaler before games,parent.williams@example.com
+Emily,Brown,emily.brown@example.com,416-555-0401,PLY004,HC-004-2024,Right Wing,19,2009-05-30,David Brown,416-555-0402,None,guardian.brown@example.com
+Alex,Davis,alex.davis@example.com,416-555-0501,PLY005,HC-005-2024,Goalie,1,2008-12-12,Patricia Davis,416-555-0502,Contacts available,parent.davis@example.com
+Robert,Miller,robert.miller@example.com,416-555-0601,PLY006,HC-006-2024,Defense,3,2010-02-28,Christine Miller,416-555-0602,None,guardian.miller@example.com
+Jessica,Wilson,jessica.wilson@example.com,416-555-0701,PLY007,HC-007-2024,Center,10,2009-09-14,Christopher Wilson,416-555-0702,None,parent.wilson@example.com
+James,Moore,james.moore@example.com,416-555-0801,PLY008,HC-008-2024,Forward,12,2010-06-20,Susan Moore,416-555-0802,Previous concussion - monitor closely,guardian.moore@example.com
+Lisa,Taylor,lisa.taylor@example.com,416-555-0901,PLY009,HC-009-2024,Left Wing,16,2009-04-11,Mark Taylor,416-555-0902,None,parent.taylor@example.com
+David,Anderson,david.anderson@example.com,416-555-1001,PLY010,HC-010-2024,Right Wing,18,2010-08-25,Linda Anderson,416-555-1002,None,guardian.anderson@example.com
+Kevin,Thompson,kevin.thompson@example.com,416-555-1101,COACH001,HC-COACH-001,Forward,22,1985-01-15,Mary Thompson,416-555-1102,None,none@example.com
+Patricia,Martinez,patricia.martinez@example.com,416-555-1201,COACH002,HC-COACH-002,Defense,5,1984-05-22,George Martinez,416-555-1202,None,none@example.com
