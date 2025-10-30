@@ -8,7 +8,7 @@
     <referenceTo>Team__c</referenceTo>
     <relationshipLabel>Home Games</relationshipLabel>
     <relationshipName>Home_Games</relationshipName>
-    <required>true</required>
+    <required>false</required>
     <trackHistory>false</trackHistory>
     <trackTrending>false</trackTrending>
     <type>Lookup</type>

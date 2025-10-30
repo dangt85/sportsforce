@@ -7,6 +7,6 @@
     <referenceTo>Division__c</referenceTo>
     <relationshipLabel>Tryouts</relationshipLabel>
     <relationshipName>Tryouts</relationshipName>
-    <required>true</required>
+    <required>false</required>
     <description>The division this tryout is for</description>
 </CustomField>

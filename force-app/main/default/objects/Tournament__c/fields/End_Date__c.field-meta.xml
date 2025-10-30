@@ -3,6 +3,6 @@
     <fullName>End_Date__c</fullName>
     <label>End Date</label>
     <type>Date</type>
-    <required>true</required>
+    <required>false</required>
     <description>Tournament end date</description>
 </CustomField>

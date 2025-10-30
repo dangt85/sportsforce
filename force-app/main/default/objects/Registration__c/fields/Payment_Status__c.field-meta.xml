@@ -3,7 +3,7 @@
     <fullName>Payment_Status__c</fullName>
     <label>Payment Status</label>
     <type>Picklist</type>
-    <required>true</required>
+    <required>false</required>
     <valueSet>
         <restricted>true</restricted>
         <valueSetDefinition>

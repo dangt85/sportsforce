@@ -7,6 +7,6 @@
     <referenceTo>Season__c</referenceTo>
     <relationshipLabel>Goalie Season Stats</relationshipLabel>
     <relationshipName>Goalie_Season_Stats</relationshipName>
-    <required>true</required>
+    <required>false</required>
     <description>The season these statistics are for</description>
 </CustomField>

@@ -3,6 +3,6 @@
     <fullName>DateTime__c</fullName>
     <label>Date/Time</label>
     <type>DateTime</type>
-    <required>true</required>
+    <required>false</required>
     <description>Date and time of the tryout session</description>
 </CustomField>

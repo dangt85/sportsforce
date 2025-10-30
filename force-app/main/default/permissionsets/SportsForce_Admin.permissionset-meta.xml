@@ -247,7 +247,22 @@
     <!-- Season Field Permissions -->
     <fieldPermissions>
         <editable>true</editable>
+        <field>Season__c.Start_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Season__c.End_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Season__c.Registration_Deadline__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Season__c.Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <!-- Division Field Permissions -->

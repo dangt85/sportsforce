@@ -7,6 +7,6 @@
     <referenceTo>Contact</referenceTo>
     <relationshipLabel>Player Season Stats</relationshipLabel>
     <relationshipName>Player_Season_Stats</relationshipName>
-    <required>true</required>
+    <required>false</required>
     <description>The player these statistics belong to</description>
 </CustomField>

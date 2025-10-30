@@ -4,7 +4,7 @@
     <description>Current status of the season</description>
     <externalId>false</externalId>
     <label>Status</label>
-    <required>true</required>
+    <required>false</required>
     <trackFeedHistory>false</trackFeedHistory>
     <trackHistory>true</trackHistory>
     <trackTrending>false</trackTrending>
