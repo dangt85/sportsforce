@@ -3,14 +3,16 @@
     <flexiPageRegions>
         <itemInstances>
             <componentInstance>
-                <componentName>c:schedulingContainer</componentName>
+                <componentName>schedulingContainer</componentName>
+                <identifier>c_schedulingContainer</identifier>
             </componentInstance>
         </itemInstances>
         <name>main</name>
         <type>Region</type>
     </flexiPageRegions>
-    <masterLabel>Scheduling Page</masterLabel>
-    <name>Scheduling_Page</name>
-    <template>flexipage_defaultapp_template</template>
+    <masterLabel>Scheduling</masterLabel>
+    <template>
+        <name>flexipage:defaultAppHomeTemplate</name>
+    </template>
     <type>AppPage</type>
 </FlexiPage>

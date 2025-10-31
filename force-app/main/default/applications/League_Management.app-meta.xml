@@ -10,9 +10,12 @@
     <formFactors>Large</formFactors>
     <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
     <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
+    <isNavTabPersistenceDisabled>false</isNavTabPersistenceDisabled>
+    <isOmniPinnedViewEnabled>false</isOmniPinnedViewEnabled>
     <label>League Management</label>
     <navType>Standard</navType>
-    <tabs>standard-Home</tabs>
+    <tabs>standard-home</tabs>
+    <tabs>Scheduling</tabs>
     <tabs>League__c</tabs>
     <tabs>Season__c</tabs>
     <tabs>Division__c</tabs>
