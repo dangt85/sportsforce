@@ -11,16 +11,7 @@
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
-        <object>League__c</object>
-        <viewAllRecords>true</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>true</allowCreate>
-        <allowDelete>true</allowDelete>
-        <allowEdit>true</allowEdit>
-        <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
-        <object>Season__c</object>
+        <object>Arena__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -38,7 +29,88 @@
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
-        <object>Arena__c</object>
+        <object>Game__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>Game_Roster__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Goalie_Season_Stats__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>League__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>News_Article__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>Page_Content__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Player_Season_Stats__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>Practice__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>Registration__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>Season__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -65,87 +137,6 @@
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
-        <object>Game__c</object>
-        <viewAllRecords>true</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>true</allowCreate>
-        <allowDelete>true</allowDelete>
-        <allowEdit>true</allowEdit>
-        <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
-        <object>Practice__c</object>
-        <viewAllRecords>true</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>true</allowCreate>
-        <allowDelete>true</allowDelete>
-        <allowEdit>true</allowEdit>
-        <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
-        <object>Tryout__c</object>
-        <viewAllRecords>true</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>false</allowCreate>
-        <allowDelete>false</allowDelete>
-        <allowEdit>false</allowEdit>
-        <allowRead>true</allowRead>
-        <modifyAllRecords>false</modifyAllRecords>
-        <object>Player_Season_Stats__c</object>
-        <viewAllRecords>true</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>false</allowCreate>
-        <allowDelete>false</allowDelete>
-        <allowEdit>false</allowEdit>
-        <allowRead>true</allowRead>
-        <modifyAllRecords>false</modifyAllRecords>
-        <object>Goalie_Season_Stats__c</object>
-        <viewAllRecords>true</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>true</allowCreate>
-        <allowDelete>true</allowDelete>
-        <allowEdit>true</allowEdit>
-        <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
-        <object>Game_Roster__c</object>
-        <viewAllRecords>true</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>true</allowCreate>
-        <allowDelete>true</allowDelete>
-        <allowEdit>true</allowEdit>
-        <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
-        <object>News_Article__c</object>
-        <viewAllRecords>true</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>true</allowCreate>
-        <allowDelete>true</allowDelete>
-        <allowEdit>true</allowEdit>
-        <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
-        <object>Page_Content__c</object>
-        <viewAllRecords>true</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>true</allowCreate>
-        <allowDelete>true</allowDelete>
-        <allowEdit>true</allowEdit>
-        <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
-        <object>Registration__c</object>
-        <viewAllRecords>true</viewAllRecords>
-    </objectPermissions>
-    <objectPermissions>
-        <allowCreate>true</allowCreate>
-        <allowDelete>true</allowDelete>
-        <allowEdit>true</allowEdit>
-        <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
         <object>Tournament__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
@@ -164,30 +155,50 @@
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
+        <object>Tryout__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
         <object>Tryout_Evaluation__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
+    <!-- Arena Field Permissions -->
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Arena__c.Address__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Arena__c.Capacity__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Arena__c.City__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Arena__c.Contact_Email__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Arena__c.Ice_Surface_Count__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Arena__c.Province_State__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <!-- Contact Field Permissions -->
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Contact.Player_ID__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Contact.Hockey_Registration_Number__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Contact.Position__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Contact.Jersey_Number__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Contact.Date_of_Birth__c</field>
@@ -205,72 +216,35 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Contact.Guardian_Email__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contact.Hockey_Registration_Number__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contact.Jersey_Number__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Contact.Medical_Notes__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Contact.Guardian_Email__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <!-- League Field Permissions -->
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>League__c.Region__c</field>
+        <field>Contact.Player_ID__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>League__c.Province_State__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>League__c.Logo_URL__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>League__c.Contact_Email__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>League__c.Contact_Phone__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>League__c.Website__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <!-- Season Field Permissions -->
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Season__c.Start_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Season__c.End_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Season__c.Registration_Deadline__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Season__c.Status__c</field>
+        <field>Contact.Position__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <!-- Division Field Permissions -->
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Division__c.Min_Age__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Division__c.Max_Age__c</field>
@@ -278,88 +252,15 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Division__c.Min_Age__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Division__c.Skill_Level__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <!-- Team Field Permissions -->
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Team__c.Team_Colors__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Team__c.Logo_URL__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Team__c.Head_Coach__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <!-- Team Member Field Permissions -->
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Team_Member__c.Role__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Team_Member__c.Jersey_Number__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Team_Member__c.Position__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Team_Member__c.Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <!-- Arena Field Permissions -->
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Arena__c.Address__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Arena__c.City__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Arena__c.Province_State__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Arena__c.Ice_Surface_Count__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Arena__c.Capacity__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Arena__c.Contact_Email__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
     <!-- Game Field Permissions -->
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Game__c.Game_DateTime__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Game__c.Home_Score__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Game__c.Away_Score__c</field>
@@ -372,57 +273,25 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Game__c.Game_DateTime__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Game__c.Home_Score__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Game__c.Notes__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <!-- Practice Field Permissions -->
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Practice__c.DateTime__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Practice__c.Duration_Minutes__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Practice__c.Practice_Type__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Practice__c.Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Practice__c.Notes__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <!-- Tryout Field Permissions -->
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Tryout__c.DateTime__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Tryout__c.Duration_Minutes__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Tryout__c.Max_Participants__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Tryout__c.Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
     <!-- Game Roster Field Permissions -->
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Game_Roster__c.Assists__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Game_Roster__c.Attended__c</field>
@@ -431,11 +300,6 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Game_Roster__c.Goals__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Game_Roster__c.Assists__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -453,61 +317,10 @@
         <field>Game_Roster__c.Plus_Minus__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <!-- Player Season Stats Field Permissions -->
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Player_Season_Stats__c.Games_Played__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Player_Season_Stats__c.Goals__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Player_Season_Stats__c.Assists__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Player_Season_Stats__c.Points__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Player_Season_Stats__c.Penalties__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Player_Season_Stats__c.Penalty_Minutes__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
     <!-- Goalie Season Stats Field Permissions -->
     <fieldPermissions>
         <editable>false</editable>
         <field>Goalie_Season_Stats__c.Games_Played__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Goalie_Season_Stats__c.Wins__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Goalie_Season_Stats__c.Losses__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Goalie_Season_Stats__c.Ties__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Goalie_Season_Stats__c.Saves__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -517,17 +330,58 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Goalie_Season_Stats__c.Save_Percentage__c</field>
+        <field>Goalie_Season_Stats__c.Losses__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>Goalie_Season_Stats__c.Goals_Against_Average__c</field>
+        <field>Goalie_Season_Stats__c.Saves__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Goalie_Season_Stats__c.Shutouts__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Goalie_Season_Stats__c.Ties__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Goalie_Season_Stats__c.Wins__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <!-- League Field Permissions -->
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>League__c.Contact_Email__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>League__c.Contact_Phone__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>League__c.Logo_URL__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>League__c.Province_State__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>League__c.Region__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>League__c.Website__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <!-- News Article Field Permissions -->
@@ -559,12 +413,7 @@
     <!-- Page Content Field Permissions -->
     <fieldPermissions>
         <editable>true</editable>
-        <field>Page_Content__c.Page_Name__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Page_Content__c.Section__c</field>
+        <field>Page_Content__c.Active__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -579,7 +428,64 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Page_Content__c.Active__c</field>
+        <field>Page_Content__c.Page_Name__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Page_Content__c.Section__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <!-- Player Season Stats Field Permissions -->
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Player_Season_Stats__c.Assists__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Player_Season_Stats__c.Games_Played__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Player_Season_Stats__c.Goals__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Player_Season_Stats__c.Penalties__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Player_Season_Stats__c.Penalty_Minutes__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <!-- Practice Field Permissions -->
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Practice__c.DateTime__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Practice__c.Duration_Minutes__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Practice__c.Notes__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Practice__c.Practice_Type__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Practice__c.Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <!-- Registration Field Permissions -->
@@ -590,12 +496,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Registration__c.Status__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Registration__c.Payment_Status__c</field>
+        <field>Registration__c.Medical_Form_Submitted__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -605,7 +506,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Registration__c.Medical_Form_Submitted__c</field>
+        <field>Registration__c.Payment_Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -613,20 +514,68 @@
         <field>Registration__c.Registration_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Registration__c.Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <!-- Season Field Permissions -->
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Season__c.End_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Season__c.Registration_Deadline__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Season__c.Start_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Season__c.Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <!-- Team Field Permissions -->
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Team__c.Logo_URL__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Team__c.Team_Colors__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <!-- Team Member Field Permissions -->
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Team_Member__c.Jersey_Number__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Team_Member__c.Position__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Team_Member__c.Role__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Team_Member__c.Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <!-- Tournament Field Permissions -->
     <fieldPermissions>
         <editable>true</editable>
-        <field>Tournament__c.Start_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Tournament__c.End_Date__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Tournament__c.Format__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -636,7 +585,17 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Tournament__c.Format__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Tournament__c.Max_Teams__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Tournament__c.Start_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -645,6 +604,21 @@
         <readable>true</readable>
     </fieldPermissions>
     <!-- Tournament Team Field Permissions -->
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Tournament_Team__c.Goals_Against__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Tournament_Team__c.Goals_For__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Tournament_Team__c.Losses__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
         <field>Tournament_Team__c.Pool__c</field>
@@ -657,12 +631,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Tournament_Team__c.Wins__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Tournament_Team__c.Losses__c</field>
+        <field>Tournament_Team__c.Standing__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -672,28 +641,34 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Tournament_Team__c.Goals_For__c</field>
+        <field>Tournament_Team__c.Wins__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <!-- Tryout Field Permissions -->
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Tryout__c.DateTime__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Tournament_Team__c.Goals_Against__c</field>
+        <field>Tryout__c.Duration_Minutes__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Tournament_Team__c.Standing__c</field>
+        <field>Tryout__c.Max_Participants__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Tryout__c.Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <!-- Tryout Evaluation Field Permissions -->
     <fieldPermissions>
         <editable>true</editable>
-        <field>Tryout_Evaluation__c.Skating_Score__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>Tryout_Evaluation__c.Shooting_Score__c</field>
+        <field>Tryout_Evaluation__c.Comments__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -703,15 +678,27 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Tryout_Evaluation__c.Overall_Score__c</field>
+        <field>Tryout_Evaluation__c.Shooting_Score__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Tryout_Evaluation__c.Comments__c</field>
+        <field>Tryout_Evaluation__c.Skating_Score__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <!-- Tab Visibility -->
+    <tabSettings>
+        <tab>Arena__c</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+    <tabSettings>
+        <tab>Division__c</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+    <tabSettings>
+        <tab>Game__c</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
     <tabSettings>
         <tab>League__c</tab>
         <visibility>Visible</visibility>
@@ -721,23 +708,11 @@
         <visibility>Visible</visibility>
     </tabSettings>
     <tabSettings>
-        <tab>Division__c</tab>
-        <visibility>Visible</visibility>
-    </tabSettings>
-    <tabSettings>
-        <tab>Arena__c</tab>
-        <visibility>Visible</visibility>
-    </tabSettings>
-    <tabSettings>
         <tab>Team__c</tab>
         <visibility>Visible</visibility>
     </tabSettings>
     <tabSettings>
         <tab>Team_Member__c</tab>
-        <visibility>Visible</visibility>
-    </tabSettings>
-    <tabSettings>
-        <tab>Game__c</tab>
         <visibility>Visible</visibility>
     </tabSettings>
     <!-- Apex Class Permissions -->
