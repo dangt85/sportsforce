@@ -1,12 +1,11 @@
 import { LightningElement, track } from "lwc";
-import { loadScript, loadStyle } from "lightning/platformResourceLoader";
+import { loadScript } from "lightning/platformResourceLoader";
 import FULLCALENDAR from "@salesforce/resourceUrl/fullcalendar";
 import getEvents from "@salesforce/apex/ScheduleCalendarController.getEvents";
 import updateEvent from "@salesforce/apex/ScheduleCalendarController.updateEvent";
 import deleteEvent from "@salesforce/apex/ScheduleCalendarController.deleteEvent";
 
 export default class ScheduleCalendar extends LightningElement {
-  @track calendarInitialized = false;
   @track showEventModal = false;
   @track showErrorModal = false;
   @track selectedEvent = null;
@@ -14,50 +13,43 @@ export default class ScheduleCalendar extends LightningElement {
   @track isLoading = false;
   @track calendarTitle = "";
 
+  fullCalendarLoaded = false;
+  renderedOnce = false;
+  calendarInitialized = false;
   calendar = null;
 
-  renderedCallback() {
-    if (this.calendarInitialized) {
-      return;
-    }
-
-    this.calendarInitialized = true;
-
-    Promise.all([
-      loadScript(this, FULLCALENDAR + "/fullcalendar.min.js"),
-      loadStyle(this, FULLCALENDAR + "/fullcalendar.min.css")
-    ])
+  connectedCallback() {
+    loadScript(this, FULLCALENDAR + "/index.global.js")
       .then(() => {
-        this.initializeCalendar();
+        this.fullCalendarLoaded = true;
+        this.initializeFullCalendar();
       })
       .catch((error) => {
-        console.error("Error loading FullCalendar", error);
-        this.showError("Failed to load calendar. Please refresh the page.");
+        console.error("Failed to load Calendar:", error);
       });
   }
 
-  initializeCalendar() {
-    const calendarEl = this.template.querySelector("#calendar");
+  initializeFullCalendar() {
+    if (!this.renderedOnce && this.fullCalendarLoaded) {
+      this.renderedOnce = true;
+      console.log("Start: Build Calendar");
+      const calendarEl = this.refs.calendar;
+      // eslint-disable-next-line no-undef
+      this.calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: "dayGridMonth",
+        headerToolbar: false, // We have custom toolbar
+        editable: true,
+        eventDrop: this.handleEventDrop.bind(this),
+        eventClick: this.handleEventClick.bind(this),
+        events: this.fetchEvents.bind(this),
+        eventDidMount: this.handleEventDidMount.bind(this),
+        height: "auto",
+        contentHeight: "auto"
+      });
 
-    if (!window.FullCalendar) {
-      this.showError("FullCalendar library failed to load");
-      return;
+      this.calendar.render();
+      this.updateCalendarTitle();
     }
-
-    this.calendar = new window.FullCalendar.Calendar(calendarEl, {
-      initialView: "dayGridMonth",
-      headerToolbar: false, // We have custom toolbar
-      editable: true,
-      eventDrop: this.handleEventDrop.bind(this),
-      eventClick: this.handleEventClick.bind(this),
-      events: this.fetchEvents.bind(this),
-      eventDidMount: this.handleEventDidMount.bind(this),
-      height: "auto",
-      contentHeight: "auto"
-    });
-
-    this.calendar.render();
-    this.updateCalendarTitle();
   }
 
   fetchEvents(info, successCallback, failureCallback) {
