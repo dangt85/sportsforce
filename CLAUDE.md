@@ -92,6 +92,69 @@ This document provides comprehensive context for AI assistants (like Claude Code
 - Custom profiles per user type
 - Field-level security for sensitive data
 
+## Calendar Refactor Initiative
+
+**Status**: Design Complete | Implementation Starting
+
+This project is undergoing a significant refactoring of the calendar/scheduling functionality. The existing FullCalendar library is being replaced with custom Lightning Web Components using Lightning Design System (SLDS) styling and custom HTML.
+
+### What's New
+
+- **Removed**: FullCalendar external dependency
+- **Added**: Custom LWC components with 4 views (Month, Week, Day, Gantt)
+- **Added**: Headless CalendarService (business logic layer)
+- **Added**: Drag-drop event rescheduling with conflict detection
+- **Architecture**: Event-driven with service-layer filtering
+
+### Key Design Decisions
+
+| Decision             | Approach                                  | Rationale                               |
+| -------------------- | ----------------------------------------- | --------------------------------------- |
+| **Views**            | Month, Week (primary), Day, Gantt         | All 4 views specified and designed      |
+| **Time Granularity** | 15-min default, configurable to 30/60 min | Precision + flexibility                 |
+| **Conflicts**        | Server-side validation with UI warnings   | Prevent data corruption, allow override |
+| **Caching**          | 3 weeks in memory + 5min TTL              | Balance UX speed with data freshness    |
+| **Responsive**       | Desktop-focused (1024px+), mobile hidden  | Simplifies implementation               |
+| **Interactions**     | Drag-drop + Click-to-create               | Familiar calendar UX patterns           |
+
+### Design Documentation
+
+**150+ pages of comprehensive specifications**:
+
+1. [docs/CALENDAR_REFACTOR_DESIGN_PLAN.md](./docs/CALENDAR_REFACTOR_DESIGN_PLAN.md)
+   - Project vision, requirements, design system, data flow
+   - View specifications (Month, Week, Day, Gantt)
+   - Integration architecture, settings, success criteria
+
+2. [docs/CALENDAR_VISUAL_MOCKUPS.md](./docs/CALENDAR_VISUAL_MOCKUPS.md)
+   - ASCII mockups for all 4 views
+   - Component state variations (normal, hover, dragging, conflict)
+   - Color palette and responsive behavior
+
+3. [docs/COMPONENT_ARCHITECTURE.md](./docs/COMPONENT_ARCHITECTURE.md)
+   - Component tree and specifications
+   - CalendarService (headless logic) detailed design
+   - Apex controller specifications with method signatures
+   - Data models & interfaces (TypeScript)
+   - Performance optimizations
+
+4. [docs/DESIGN_SUMMARY.md](./docs/DESIGN_SUMMARY.md)
+   - Executive overview and key design decisions
+   - Performance targets and accessibility approach
+   - Rollout plan and implementation roadmap
+
+### Implementation Roadmap
+
+| Week | Focus               | Components                                             |
+| ---- | ------------------- | ------------------------------------------------------ |
+| 1    | Foundation          | CalendarService, Apex controllers, basic structure     |
+| 2    | Week View (Primary) | Time grid, drag-drop, quick-create, event detail panel |
+| 3    | Other Views         | Month, Day, Gantt views                                |
+| 4    | Optimization        | Virtual scrolling, caching, accessibility              |
+| 5    | Testing & Deploy    | Tests, UAT, production deployment                      |
+
+---
+
 ## Data Model
 
 ### Core Custom Objects
@@ -716,10 +779,12 @@ export default class TeamRoster extends LightningElement {
 
 **Tasks**:
 
-1. **Schedule Builder**:
-   - Custom LWC drag-and-drop calendar
-   - Conflict detection logic
-   - Bulk game creation
+1. **Schedule Builder (CALENDAR REFACTOR IN PROGRESS)**:
+   - ✅ Fully designed: Custom LWC drag-and-drop calendar with SLDS styling
+   - ✅ 4 views designed: Month, Week (primary), Day, Gantt
+   - ✅ Conflict detection logic specified
+   - ✅ See [docs/CALENDAR_REFACTOR_DESIGN_PLAN.md](./docs/CALENDAR_REFACTOR_DESIGN_PLAN.md) for details
+   - TODO: Implement components (Week 1-5)
 2. **Tryout Management**:
    - Tryout evaluation mobile UI
    - Scoring and ranking system
@@ -736,7 +801,7 @@ export default class TeamRoster extends LightningElement {
 
 **Deliverables**:
 
-- Complete scheduling system
+- ✅ Complete scheduling system (design)
 - Tryout evaluation workflow
 - Tournament management
 - External integrations
@@ -766,37 +831,60 @@ export default class TeamRoster extends LightningElement {
 
 ## Current Status
 
-**Phase**: Foundation Setup
-**Sprint**: Initial project configuration
+**Current Initiative**: Calendar Refactor (FullCalendar → Custom LWC + SLDS)
+
+**Phase**: Design Complete ✅ | Implementation Starting 🚀
+
 **Completed**:
 
 - Salesforce DX project initialized
 - Git repository configured
 - Code quality tools set up (ESLint, Prettier, Husky)
 - Project documentation (README.md, CLAUDE.md)
+- **Calendar Refactor Design Phase** (150+ pages of specifications):
+  - Comprehensive design plan with requirements & architecture
+  - Visual mockups for all 4 calendar views (Month, Week, Day, Gantt)
+  - Detailed component architecture with code examples
+  - Headless CalendarService design (business logic layer)
+  - Apex controller specifications
+  - Data models & interfaces
+  - Performance optimization strategy
+  - Accessibility requirements (WCAG 2.1 AA)
+  - Implementation roadmap
 
-**Next Steps**:
+**Next Steps** (Implementation Phase - Week 1-5):
 
-1. Create scratch org definition with required features
-2. Build core custom objects (League, Season, Division, Team)
-3. Extend Contact object with hockey-specific fields
-4. Create Team_Member\_\_c junction object
-5. Set up initial validation rules
+1. **Week 1**: Foundation (CalendarService, Apex controllers, basic UI structure)
+2. **Week 2**: Week View (primary interface - time grid, drag-drop, quick create)
+3. **Week 3**: Other Views (Month refinements, Day view, Gantt view)
+4. **Week 4**: Optimization (virtual scrolling, caching, accessibility polish)
+5. **Week 5**: Testing & deployment (unit/integration tests, UAT, production deployment)
+
+**Design Documentation** (Reference these files):
+
+- [docs/CALENDAR_REFACTOR_DESIGN_PLAN.md](./docs/CALENDAR_REFACTOR_DESIGN_PLAN.md)
+- [docs/CALENDAR_VISUAL_MOCKUPS.md](./docs/CALENDAR_VISUAL_MOCKUPS.md)
+- [docs/COMPONENT_ARCHITECTURE.md](./docs/COMPONENT_ARCHITECTURE.md)
+- [docs/DESIGN_SUMMARY.md](./docs/DESIGN_SUMMARY.md)
 
 ## AI Assistant Guidelines
 
 When working on this project:
 
-1. **Always check existing patterns** before creating new code
-2. **Follow the naming conventions** strictly
-3. **Write tests first** for critical business logic (TDD approach)
-4. **Use the established architecture** (handlers, services, selectors)
-5. **Consider governor limits** - bulkify all operations
-6. **Document complex logic** with ApexDoc comments
-7. **Ask clarifying questions** if requirements are ambiguous
-8. **Reference this document** for architectural decisions
-9. **Update this document** when making significant architectural changes
-10. **Use Salesforce CLI** commands (sf) instead of legacy (sfdx)
+1. **Check the Calendar Refactor Design** first (if working on calendar/scheduling)
+   - Reference [docs/CALENDAR_REFACTOR_DESIGN_PLAN.md](./docs/CALENDAR_REFACTOR_DESIGN_PLAN.md) for vision & architecture
+   - Reference [docs/COMPONENT_ARCHITECTURE.md](./docs/COMPONENT_ARCHITECTURE.md) for component specs
+   - Reference [docs/CALENDAR_VISUAL_MOCKUPS.md](./docs/CALENDAR_VISUAL_MOCKUPS.md) for UI layouts
+2. **Always check existing patterns** before creating new code
+3. **Follow the naming conventions** strictly
+4. **Write tests first** for critical business logic (TDD approach)
+5. **Use the established architecture** (handlers, services, selectors)
+6. **Consider governor limits** - bulkify all operations
+7. **Document complex logic** with ApexDoc comments
+8. **Ask clarifying questions** if requirements are ambiguous
+9. **Reference this document** for architectural decisions
+10. **Update this document** when making significant architectural changes
+11. **Use Salesforce CLI** commands (sf) instead of legacy (sfdx)
 
 ## Useful Commands
 
@@ -839,6 +927,11 @@ sf data import tree --plan data/import-plan.json
 
 ---
 
-**Last Updated**: 2025-10-29
-**Version**: 1.0
+**Last Updated**: 2025-11-05
+**Version**: 1.1 (Calendar Refactor Design Phase Added)
 **Maintained By**: Development Team
+
+**Version History**:
+
+- v1.1 (2025-11-05): Added Calendar Refactor Initiative section with comprehensive design documentation
+- v1.0 (2025-10-29): Initial project context and architecture documentation
