@@ -1,17 +1,15 @@
 <template>
-  <lightning-card title="Scheduling">
-    <lightning-tabset variant="vertical">
-      <lightning-tab label="Builder" icon-name="utility:event">
-        <c-schedule-calendar></c-schedule-calendar>
-      </lightning-tab>
+  <lightning-tabset variant="vertical">
+    <lightning-tab label="Builder" icon-name="utility:event">
+      <c-schedule-calendar></c-schedule-calendar>
+    </lightning-tab>
 
-      <lightning-tab label="Tryouts" icon-name="utility:people">
-        <c-tryout-manager></c-tryout-manager>
-      </lightning-tab>
+    <lightning-tab label="Tryouts" icon-name="utility:people">
+      <c-tryout-manager></c-tryout-manager>
+    </lightning-tab>
 
-      <lightning-tab label="Statistics" icon-name="utility:chart">
-        <c-statistics-dashboard></c-statistics-dashboard>
-      </lightning-tab>
-    </lightning-tabset>
-  </lightning-card>
+    <lightning-tab label="Statistics" icon-name="utility:chart">
+      <c-statistics-dashboard></c-statistics-dashboard>
+    </lightning-tab>
+  </lightning-tabset>
 </template>

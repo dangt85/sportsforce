@@ -1,8 +1,5 @@
 import { LightningElement, track } from "lwc";
-import { loadScript } from "lightning/platformResourceLoader";
-import FULLCALENDAR from "@salesforce/resourceUrl/fullcalendar";
-import getEvents from "@salesforce/apex/ScheduleCalendarController.getEvents";
-import updateEvent from "@salesforce/apex/ScheduleCalendarController.updateEvent";
+import getEvents from "@salesforce/apex/ScheduleCalendarController.getEventsByDateRange";
 import deleteEvent from "@salesforce/apex/ScheduleCalendarController.deleteEvent";
 
 export default class ScheduleCalendar extends LightningElement {
@@ -12,143 +9,177 @@ export default class ScheduleCalendar extends LightningElement {
   @track errorMessage = "";
   @track isLoading = false;
   @track calendarTitle = "";
+  @track currentDate = new Date();
+  @track events = [];
+  @track currentView = "month"; // 'month' or 'week'
+  @track selectedDate = null;
 
-  fullCalendarLoaded = false;
-  renderedOnce = false;
-  calendarInitialized = false;
-  calendar = null;
+  _selectedFilters = {
+    teams: [],
+    eventTypes: [],
+    arenas: [],
+    divisions: []
+  };
+
+  get selectedFilters() {
+    return this._selectedFilters;
+  }
+
+  set selectedFilters(value) {
+    if (value) {
+      this._selectedFilters = {
+        teams: value.teams || [],
+        eventTypes: value.eventTypes || [],
+        arenas: value.arenas || [],
+        divisions: value.divisions || []
+      };
+    }
+  }
 
   connectedCallback() {
-    loadScript(this, FULLCALENDAR + "/index.global.js")
-      .then(() => {
-        this.fullCalendarLoaded = true;
-        this.initializeFullCalendar();
-      })
-      .catch((error) => {
-        console.error("Failed to load Calendar:", error);
-      });
+    this.currentDate = new Date();
+    this.updateCalendarTitle();
+    this.loadEvents();
   }
 
-  initializeFullCalendar() {
-    if (!this.renderedOnce && this.fullCalendarLoaded) {
-      this.renderedOnce = true;
-      console.log("Start: Build Calendar");
-      const calendarEl = this.refs.calendar;
-      // eslint-disable-next-line no-undef
-      this.calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: "dayGridMonth",
-        headerToolbar: false, // We have custom toolbar
-        editable: true,
-        eventDrop: this.handleEventDrop.bind(this),
-        eventClick: this.handleEventClick.bind(this),
-        events: this.fetchEvents.bind(this),
-        eventDidMount: this.handleEventDidMount.bind(this),
-        height: "auto",
-        contentHeight: "auto"
-      });
+  // ===== VIEW SWITCHING =====
 
-      this.calendar.render();
-      this.updateCalendarTitle();
-    }
+  get isMonthView() {
+    return this.currentView === "month";
   }
 
-  fetchEvents(info, successCallback, failureCallback) {
-    this.isLoading = true;
-
-    getEvents({
-      startDate: info.start,
-      endDate: info.end
-    })
-      .then((result) => {
-        const events = result.map((event) => ({
-          id: event.id,
-          title: event.title,
-          start: event.startTime,
-          end: event.endTime,
-          backgroundColor: event.backgroundColor,
-          borderColor: event.backgroundColor,
-          extendedProps: {
-            eventType: event.eventType,
-            status: event.status,
-            location: event.location
-          }
-        }));
-
-        successCallback(events);
-        this.isLoading = false;
-      })
-      .catch((error) => {
-        console.error("Error fetching events", error);
-        failureCallback(error);
-        this.isLoading = false;
-        this.showError("Failed to load events");
-      });
+  get isWeekView() {
+    return this.currentView === "week";
   }
 
-  handleEventDidMount(info) {
-    // Add custom styling or tooltips here if needed
-    info.el.title = info.event.title;
+  get monthButtonVariant() {
+    return this.isMonthView ? "brand" : "neutral";
   }
 
-  handleEventClick(info) {
-    this.selectedEvent = {
-      id: info.event.id,
-      title: info.event.title,
-      startTime: info.event.start,
-      endTime: info.event.end,
-      eventType: info.event.extendedProps.eventType,
-      status: info.event.extendedProps.status,
-      location: info.event.extendedProps.location
-    };
-    this.showEventModal = true;
+  get weekButtonVariant() {
+    return this.isWeekView ? "brand" : "neutral";
   }
 
-  handleEventDrop(info) {
-    const eventType = info.event.extendedProps.eventType;
-    const recordId = info.event.id;
-    const newDateTime = info.event.start;
-    const duration = this.calculateDurationMinutes(
-      info.event.start,
-      info.event.end
-    );
-
-    updateEvent({
-      objectType: eventType,
-      recordId: recordId,
-      newDateTime: newDateTime,
-      newDuration: duration
-    })
-      .then(() => {
-        // Event updated successfully
-        this.calendar.refetchEvents();
-      })
-      .catch((error) => {
-        console.error("Error updating event", error);
-        this.showError(error.body?.message || "Failed to update event");
-        // Revert the event to original position
-        info.revert();
-      });
+  handleMonthViewClick() {
+    this.currentView = "month";
+    this.updateCalendarTitle();
   }
+
+  handleWeekViewClick() {
+    this.currentView = "week";
+    this.updateCalendarTitle();
+  }
+
+  // ===== TOOLBAR HANDLERS =====
 
   handleTodayClick() {
-    if (this.calendar) {
-      this.calendar.today();
-      this.updateCalendarTitle();
-    }
+    this.currentDate = new Date();
+    this.updateCalendarTitle();
+    this.loadEvents();
   }
 
   handlePreviousClick() {
-    if (this.calendar) {
-      this.calendar.prev();
-      this.updateCalendarTitle();
+    const newDate = new Date(this.currentDate);
+    if (this.currentView === "month") {
+      newDate.setMonth(newDate.getMonth() - 1);
+    } else {
+      newDate.setDate(newDate.getDate() - 7);
     }
+    this.currentDate = newDate;
+    this.updateCalendarTitle();
+    this.loadEvents();
   }
 
   handleNextClick() {
-    if (this.calendar) {
-      this.calendar.next();
-      this.updateCalendarTitle();
+    const newDate = new Date(this.currentDate);
+    if (this.currentView === "month") {
+      newDate.setMonth(newDate.getMonth() + 1);
+    } else {
+      newDate.setDate(newDate.getDate() + 7);
     }
+    this.currentDate = newDate;
+    this.updateCalendarTitle();
+    this.loadEvents();
+  }
+
+  // ===== EVENT LOADING =====
+
+  async loadEvents() {
+    this.isLoading = true;
+    this.errorMessage = "";
+
+    try {
+      // Calculate date range based on view
+      let startDate, endDate;
+
+      if (this.currentView === "month") {
+        // Get first day of month
+        startDate = new Date(
+          this.currentDate.getFullYear(),
+          this.currentDate.getMonth(),
+          1
+        );
+        // Get last day of month
+        endDate = new Date(
+          this.currentDate.getFullYear(),
+          this.currentDate.getMonth() + 1,
+          0
+        );
+      } else {
+        // Week view: Sunday to Saturday
+        const day = this.currentDate.getDay();
+        const diff = this.currentDate.getDate() - day;
+        startDate = new Date(this.currentDate.setDate(diff));
+        endDate = new Date(startDate);
+        endDate.setDate(endDate.getDate() + 6);
+      }
+
+      // Format dates
+      const startDateStr = this._formatDateForApex(startDate);
+      const endDateStr = this._formatDateForApex(endDate);
+
+      // Call Apex controller
+      const response = await getEvents({
+        startDate: startDateStr,
+        endDate: endDateStr,
+        teamIds: this.selectedFilters.teams,
+        eventTypes: this.selectedFilters.eventTypes,
+        arenaIds: this.selectedFilters.arenas,
+        divisionIds: this.selectedFilters.divisions
+      });
+
+      if (response.success) {
+        this.events = (response.allEvents || []).map((event) => ({
+          id: event.id,
+          title: event.title,
+          startTime: new Date(event.startTime),
+          endTime: new Date(event.endTime),
+          type: event.eventType,
+          status: event.status,
+          location: event.location
+        }));
+      } else {
+        this.showError(response.errorMessage || "Failed to load events");
+      }
+    } catch (error) {
+      console.error("Error loading events:", error);
+      this.showError("Unable to load calendar events. Please try again.");
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  // ===== EVENT HANDLERS =====
+
+  handleDaySelected(event) {
+    this.selectedDate = event.detail;
+    console.log("Day selected:", this.selectedDate);
+  }
+
+  handleEventSelected(event) {
+    const eventData = event.detail;
+    this.selectedEvent = eventData;
+    this.showEventModal = true;
   }
 
   handleNewEventClick() {
@@ -169,7 +200,7 @@ export default class ScheduleCalendar extends LightningElement {
 
   handleDeleteEvent() {
     if (this.selectedEvent) {
-      const eventType = this.selectedEvent.eventType;
+      const eventType = this.selectedEvent.type;
       const recordId = this.selectedEvent.id;
 
       deleteEvent({
@@ -178,9 +209,7 @@ export default class ScheduleCalendar extends LightningElement {
       })
         .then(() => {
           this.showEventModal = false;
-          if (this.calendar) {
-            this.calendar.refetchEvents();
-          }
+          this.loadEvents();
         })
         .catch((error) => {
           console.error("Error deleting event", error);
@@ -204,24 +233,45 @@ export default class ScheduleCalendar extends LightningElement {
   }
 
   updateCalendarTitle() {
-    if (this.calendar) {
-      const view = this.calendar.view;
-      // Format title based on view type (e.g., "October 2025" for month view)
-      const start = view.currentStart;
+    const formatter = new Intl.DateTimeFormat("en-US", {
+      month: "long",
+      year: "numeric"
+    });
 
-      const formatter = new Intl.DateTimeFormat("en-US", {
-        month: "long",
+    if (this.currentView === "month") {
+      this.calendarTitle = formatter.format(this.currentDate);
+    } else {
+      // For week view, show start and end dates
+      const weekStart = this._getWeekStartDate(this.currentDate);
+      const weekEnd = new Date(weekStart);
+      weekEnd.setDate(weekEnd.getDate() + 6);
+
+      const startStr = weekStart.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric"
+      });
+      const endStr = weekEnd.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
         year: "numeric"
       });
 
-      this.calendarTitle = formatter.format(start);
+      this.calendarTitle = `${startStr} – ${endStr}`;
     }
   }
 
-  calculateDurationMinutes(start, end) {
-    if (!start || !end) return 60;
-    const diffMs = end - start;
-    return Math.round(diffMs / (1000 * 60));
+  _formatDateForApex(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+
+  _getWeekStartDate(date) {
+    const d = new Date(date);
+    const day = d.getDay();
+    const diff = d.getDate() - day;
+    return new Date(d.setDate(diff));
   }
 
   get formattedStartTime() {

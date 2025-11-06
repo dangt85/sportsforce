@@ -28,11 +28,26 @@
         <h2 class="calendar-title">{calendarTitle}</h2>
       </div>
       <div class="toolbar-right">
+        <lightning-button-group>
+          <lightning-button
+            label="Month"
+            variant={monthButtonVariant}
+            onclick={handleMonthViewClick}
+            class="view-button"
+          ></lightning-button>
+          <lightning-button
+            label="Week"
+            variant={weekButtonVariant}
+            onclick={handleWeekViewClick}
+            class="view-button"
+          ></lightning-button>
+        </lightning-button-group>
         <lightning-button
           label="New Event"
           variant="brand"
           icon-name="utility:add"
           onclick={handleNewEventClick}
+          class="slds-var-m-left_small"
         >
         </lightning-button>
       </div>
@@ -66,7 +81,27 @@
     </div>
 
     <div class="calendar-wrapper">
-      <div lwc:dom="manual" lwc:ref="calendar" class="calendar"></div>
+      <!-- Month View -->
+      <template if:true={isMonthView}>
+        <c-month-calendar-view
+          current-date={currentDate}
+          events={events}
+          selected-filters={selectedFilters}
+          selected-date={selectedDate}
+          ondayselected={handleDaySelected}
+          oneventselected={handleEventSelected}
+        ></c-month-calendar-view>
+      </template>
+
+      <!-- Week View -->
+      <template if:true={isWeekView}>
+        <c-week-calendar-view
+          current-date={currentDate}
+          events={events}
+          selected-filters={selectedFilters}
+          oneventclick={handleEventSelected}
+        ></c-week-calendar-view>
+      </template>
     </div>
 
     <template if:true={showEventModal}>
