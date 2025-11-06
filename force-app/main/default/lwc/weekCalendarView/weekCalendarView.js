@@ -228,18 +228,80 @@ export default class WeekCalendarView extends LightningElement {
   }
 
   /**
-   * Get all events positioned for rendering
+   * Get all events positioned for rendering with conflict detection
    */
   get positionedEvents() {
-    return this.events.map((event) => {
+    const positioned = this.events.map((event) => {
       const { dayIndex, position } = this.getEventPosition(event);
       return {
         ...event,
         dayIndex,
         ...position,
-        cssClass: this.getEventCssClass(event)
+        hasConflict: false, // Will be updated by conflict detection
+        cssClass: "" // Will be set after conflict detection
       };
     });
+
+    // Detect conflicts
+    this.detectConflicts(positioned);
+
+    // Set CSS classes after conflict detection
+    positioned.forEach((event) => {
+      event.cssClass = this.getEventCssClass(event);
+    });
+
+    return positioned;
+  }
+
+  /**
+   * Detect overlapping events and mark them as conflicting
+   * Conflicts occur when events overlap in time on the same day
+   *
+   * @param {Array} positionedEvents - Array of positioned event objects
+   */
+  detectConflicts(positionedEvents) {
+    // Reset conflict flags
+    positionedEvents.forEach((event) => {
+      event.hasConflict = false;
+    });
+
+    // Check each event against all other events
+    for (let i = 0; i < positionedEvents.length; i++) {
+      const event1 = positionedEvents[i];
+      const start1 = new Date(event1.startTime);
+      const end1 = new Date(event1.endTime);
+
+      for (let j = i + 1; j < positionedEvents.length; j++) {
+        const event2 = positionedEvents[j];
+        const start2 = new Date(event2.startTime);
+        const end2 = new Date(event2.endTime);
+
+        // Check if events overlap in time
+        // They conflict if: start1 < end2 AND start2 < end1
+        if (start1 < end2 && start2 < end1) {
+          // Also check if they're on the same day
+          if (this.isSameDay(start1, start2)) {
+            event1.hasConflict = true;
+            event2.hasConflict = true;
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Check if two dates are on the same day (ignoring time)
+   *
+   * @param {Date} date1 - First date
+   * @param {Date} date2 - Second date
+   * @returns {boolean} True if both dates are on the same calendar day
+   */
+  isSameDay(date1, date2) {
+    return (
+      date1.getFullYear() === date2.getFullYear() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getDate() === date2.getDate()
+    );
   }
 
   /**
@@ -258,7 +320,11 @@ export default class WeekCalendarView extends LightningElement {
     // Add events to their respective days
     this.positionedEvents.forEach((event) => {
       const dayIndex = event.dayIndex;
-      if (dayIndex !== undefined && dayIndex >= 0 && dayIndex < this.weekDays.length) {
+      if (
+        dayIndex !== undefined &&
+        dayIndex >= 0 &&
+        dayIndex < this.weekDays.length
+      ) {
         const day = this.weekDays[dayIndex];
         const dateKey = this.getDateKey(day);
         eventsByDay[dateKey].push(event);
@@ -277,7 +343,6 @@ export default class WeekCalendarView extends LightningElement {
     const day = String(date.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   }
-
 
   // ===== EVENT HANDLERS =====
 
@@ -416,7 +481,9 @@ export default class WeekCalendarView extends LightningElement {
     event.preventDefault();
 
     // Get form inputs from shadow DOM
-    const inputs = this.shadowRoot.querySelectorAll("lightning-input, lightning-combobox");
+    const inputs = this.shadowRoot.querySelectorAll(
+      "lightning-input, lightning-combobox"
+    );
     let title = "";
     let eventType = "";
     let startTime = "";
@@ -679,7 +746,6 @@ export default class WeekCalendarView extends LightningElement {
   isToday(date) {
     return this.getDateOnly(date) === this.getDateOnly(new Date());
   }
-
 
   /**
    * Get inline style for event block positioning

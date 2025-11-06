@@ -564,4 +564,135 @@ describe("weekCalendarView", () => {
       expect(dayColumns.length).toBe(5); // Only Mon-Fri
     });
   });
+
+  describe("Conflict Detection", () => {
+    test("should detect overlapping events on same day", async () => {
+      const startDate = new Date(2025, 10, 10, 10, 0); // Nov 10, 10:00 AM
+      const events = [
+        {
+          id: "evt-1",
+          title: "Event 1",
+          startTime: startDate.toISOString(),
+          endTime: new Date(startDate.getTime() + 60 * 60000).toISOString(),
+          type: "Game"
+        },
+        {
+          id: "evt-2",
+          title: "Event 2 (Overlaps)",
+          startTime: new Date(startDate.getTime() + 30 * 60000).toISOString(), // 30 min into Event 1
+          endTime: new Date(startDate.getTime() + 90 * 60000).toISOString(),
+          type: "Practice"
+        }
+      ];
+
+      element.currentDate = startDate;
+      element.events = events;
+      await flushPromises();
+
+      // Both events should be marked as conflicts
+      const eventBlocks = element.shadowRoot.querySelectorAll(".event-block");
+      expect(eventBlocks.length).toBeGreaterThanOrEqual(2);
+
+      // Check that at least one block has conflict styling
+      let hasConflictClass = false;
+      eventBlocks.forEach((block) => {
+        if (block.classList.contains("conflict")) {
+          hasConflictClass = true;
+        }
+      });
+      expect(hasConflictClass).toBe(true);
+    });
+
+    test("should show conflict indicator on overlapping events", async () => {
+      const startDate = new Date(2025, 10, 10, 10, 0);
+      const events = [
+        {
+          id: "evt-1",
+          title: "Event 1",
+          startTime: startDate.toISOString(),
+          endTime: new Date(startDate.getTime() + 60 * 60000).toISOString(),
+          type: "Game"
+        },
+        {
+          id: "evt-2",
+          title: "Event 2",
+          startTime: new Date(startDate.getTime() + 30 * 60000).toISOString(),
+          endTime: new Date(startDate.getTime() + 90 * 60000).toISOString(),
+          type: "Practice"
+        }
+      ];
+
+      element.currentDate = startDate;
+      element.events = events;
+      await flushPromises();
+
+      // Check for conflict warning icon
+      const conflictIndicators = element.shadowRoot.querySelectorAll(
+        ".event-conflict-indicator"
+      );
+      expect(conflictIndicators.length).toBeGreaterThan(0);
+    });
+
+    test("should not mark non-overlapping events as conflicts", async () => {
+      const startDate = new Date(2025, 10, 10, 10, 0);
+      const events = [
+        {
+          id: "evt-1",
+          title: "Event 1",
+          startTime: startDate.toISOString(),
+          endTime: new Date(startDate.getTime() + 60 * 60000).toISOString(),
+          type: "Game"
+        },
+        {
+          id: "evt-2",
+          title: "Event 2 (No overlap)",
+          startTime: new Date(startDate.getTime() + 120 * 60000).toISOString(), // 2 hours later
+          endTime: new Date(startDate.getTime() + 180 * 60000).toISOString(),
+          type: "Practice"
+        }
+      ];
+
+      element.currentDate = startDate;
+      element.events = events;
+      await flushPromises();
+
+      // Should not have conflict indicators
+      const conflictIndicators = element.shadowRoot.querySelectorAll(
+        ".event-conflict-indicator"
+      );
+      expect(conflictIndicators.length).toBe(0);
+    });
+
+    test("should not mark events on different days as conflicts", async () => {
+      const date1 = new Date(2025, 10, 10, 10, 0); // Monday
+      const date2 = new Date(2025, 10, 11, 10, 0); // Tuesday, same time
+
+      const events = [
+        {
+          id: "evt-1",
+          title: "Event 1",
+          startTime: date1.toISOString(),
+          endTime: new Date(date1.getTime() + 60 * 60000).toISOString(),
+          type: "Game"
+        },
+        {
+          id: "evt-2",
+          title: "Event 2 (Different day)",
+          startTime: date2.toISOString(),
+          endTime: new Date(date2.getTime() + 60 * 60000).toISOString(),
+          type: "Practice"
+        }
+      ];
+
+      element.currentDate = date1;
+      element.events = events;
+      await flushPromises();
+
+      // Should not have conflict indicators since events are on different days
+      const conflictIndicators = element.shadowRoot.querySelectorAll(
+        ".event-conflict-indicator"
+      );
+      expect(conflictIndicators.length).toBe(0);
+    });
+  });
 });
