@@ -1,0 +1,219 @@
+:host {
+  display: block;
+}
+
+.filter-panel {
+  background-color: var(--lwc-colorBackgroundBase, #ffffff);
+  border: 1px solid var(--lwc-colorBorderWeak, #d8dce6);
+  border-radius: var(--lwc-borderRadiusSmall, 4px);
+  padding: var(--lwc-spacingLarge, 1rem);
+}
+
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--lwc-spacingSmall, 0.5rem);
+}
+
+/* SLDS Grid Layout */
+.slds-grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.slds-grid--align-spread {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.slds-col {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Responsive Column Sizes */
+.slds-size--1-of-1 {
+  width: 100%;
+}
+
+@media (min-width: 48rem) {
+  .slds-medium-size--1-of-2 {
+    width: 50%;
+  }
+}
+
+@media (min-width: 64rem) {
+  .slds-large-size--1-of-4 {
+    width: 25%;
+  }
+}
+
+/* Form Elements */
+.slds-form-element {
+  margin-bottom: var(--lwc-spacingMedium, 1rem);
+}
+
+.slds-form-element__label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: var(--lwc-spacingSmall, 0.5rem);
+  font-size: var(--lwc-fontSize, 0.875rem);
+  color: var(--lwc-colorTextDefault, #000000);
+}
+
+.slds-required-mark {
+  color: var(--lwc-colorTextError, #c23030);
+  margin-right: var(--lwc-spacingX-small, 0.25rem);
+}
+
+.slds-form-element__control {
+  position: relative;
+}
+
+/* Button Styles */
+.slds-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--lwc-spacingSmall, 0.5rem) var(--lwc-spacingMedium, 1rem);
+  border: 1px solid var(--lwc-colorBorderWeak, #d8dce6);
+  border-radius: var(--lwc-borderRadiusSmall, 4px);
+  background-color: var(--lwc-colorBackgroundButtonDefault, #ffffff);
+  color: var(--lwc-colorTextDefault, #000000);
+  font-weight: 700;
+  font-size: var(--lwc-fontSize, 0.875rem);
+  cursor: pointer;
+  transition: all 0.15s linear;
+}
+
+.slds-button:hover:not(:disabled) {
+  background-color: var(--lwc-colorBackgroundButtonDefaultHover, #f3f3f3);
+  border-color: var(--lwc-colorBorderDefault, #c9c7c5);
+}
+
+.slds-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.slds-button--neutral {
+  background-color: var(--lwc-colorBackgroundButtonDefault, #ffffff);
+  border-color: var(--lwc-colorBorderWeak, #d8dce6);
+  color: var(--lwc-colorTextDefault, #000000);
+}
+
+/* Utility Classes from SLDS */
+.slds-m-bottom--medium {
+  margin-bottom: var(--lwc-spacingMedium, 1rem);
+}
+
+.slds-m-top--medium {
+  margin-top: var(--lwc-spacingMedium, 1rem);
+}
+
+.slds-m-left--x-small {
+  margin-left: var(--lwc-spacingX-small, 0.25rem);
+}
+
+.slds-m-right--x-small {
+  margin-right: var(--lwc-spacingX-small, 0.25rem);
+}
+
+.slds-p-horizontal--small {
+  padding-left: var(--lwc-spacingSmall, 0.5rem);
+  padding-right: var(--lwc-spacingSmall, 0.5rem);
+}
+
+.slds-p-top--medium {
+  padding-top: var(--lwc-spacingMedium, 1rem);
+}
+
+.slds-border-top--thin {
+  border-top: 1px solid var(--lwc-colorBorderWeak, #d8dce6);
+}
+
+.slds-text-heading--small {
+  font-size: var(--lwc-fontSizeLarge, 1rem);
+  font-weight: 700;
+  line-height: var(--lwc-lineHeight, 1.5);
+  margin: 0;
+  color: var(--lwc-colorTextDefault, #000000);
+}
+
+.slds-text-body--small {
+  font-size: var(--lwc-fontSizeSmall, 0.75rem);
+  line-height: var(--lwc-lineHeight, 1.5);
+  color: var(--lwc-colorTextDefault, #000000);
+  display: flex;
+  align-items: center;
+  gap: var(--lwc-spacingX-small, 0.25rem);
+}
+
+.slds-text-color--success {
+  color: var(--lwc-colorTextSuccess, #04844b);
+}
+
+.slds-grid--pull-padded {
+  margin-left: calc(-1 * var(--lwc-spacingSmall, 0.5rem));
+  margin-right: calc(-1 * var(--lwc-spacingSmall, 0.5rem));
+}
+
+/* Lightning Component Overrides */
+::part(dropdown-trigger),
+::part(listbox) {
+  width: 100%;
+}
+
+/* Responsive Design */
+@media (max-width: 47rem) {
+  .filter-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .slds-col {
+    width: 100%;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .filter-panel {
+    background-color: var(--lwc-colorBackgroundBaseDark, #1b1919);
+    border-color: var(--lwc-colorBorderWeakDark, #4d4d4d);
+  }
+
+  .slds-button {
+    background-color: var(--lwc-colorBackgroundButtonDefaultDark, #2b2b2b);
+    border-color: var(--lwc-colorBorderWeakDark, #4d4d4d);
+    color: var(--lwc-colorTextDefaultDark, #ffffff);
+  }
+
+  .slds-button:hover:not(:disabled) {
+    background-color: var(--lwc-colorBackgroundButtonDefaultHoverDark, #3a3a3a);
+    border-color: var(--lwc-colorBorderDefaultDark, #666666);
+  }
+
+  .slds-form-element__label {
+    color: var(--lwc-colorTextDefaultDark, #ffffff);
+  }
+
+  .slds-text-heading--small,
+  .slds-text-body--small {
+    color: var(--lwc-colorTextDefaultDark, #ffffff);
+  }
+
+  .slds-border-top--thin {
+    border-top-color: var(--lwc-colorBorderWeakDark, #4d4d4d);
+  }
+}
+
+/* Print Styles */
+@media print {
+  .filter-panel {
+    border: 1px solid #000000;
+  }
+
+  .slds-button {
+    display: none;
+  }
+}
