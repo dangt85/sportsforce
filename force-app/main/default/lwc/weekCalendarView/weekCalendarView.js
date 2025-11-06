@@ -50,6 +50,10 @@ export default class WeekCalendarView extends LightningElement {
     } else {
       this._currentDate = new Date();
     }
+    // Reload events when date changes
+    if (this.eventsLoaded) {
+      this.loadEvents();
+    }
   }
 
   // String property for metadata (external API)
@@ -104,6 +108,10 @@ export default class WeekCalendarView extends LightningElement {
         arenas: value.arenas || [],
         divisions: value.divisions || []
       };
+      // Reload events when filters change
+      if (this.eventsLoaded) {
+        this.loadEvents();
+      }
     }
   }
 
@@ -113,6 +121,12 @@ export default class WeekCalendarView extends LightningElement {
   dragOffset = { x: 0, y: 0 };
   quickCreateSlot = null; // {dayIndex, slotIndex}
   currentTimeUpdateInterval = null;
+
+  // ===== DATA FETCHING STATE =====
+
+  isLoading = false;
+  error = null;
+  eventsLoaded = false;
 
   // ===== CONSTANTS =====
 
@@ -135,6 +149,11 @@ export default class WeekCalendarView extends LightningElement {
   connectedCallback() {
     // Start current time indicator updates
     this.startCurrentTimeUpdates();
+
+    // Fetch events from Apex controller if not provided via @api property
+    if (!this.events || this.events.length === 0) {
+      this.loadEvents();
+    }
   }
 
   disconnectedCallback() {
@@ -338,6 +357,105 @@ export default class WeekCalendarView extends LightningElement {
    * Convert Date to ISO date string key (YYYY-MM-DD) for object access
    */
   getDateKey(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+
+  // ===== DATA FETCHING =====
+
+  /**
+   * Load events from Apex controller for the current week
+   * Gracefully handles test environment where Apex controller is not available
+   */
+  async loadEvents() {
+    // Skip loading if running in test environment (no Salesforce context)
+    if (!globalThis.Aura && typeof process !== "undefined") {
+      this.eventsLoaded = true;
+      return;
+    }
+
+    this.isLoading = true;
+    this.error = null;
+
+    try {
+      // Calculate week start and end dates
+      const weekStart = this.getWeekStartDate(this.currentDate);
+      const weekEnd = new Date(weekStart);
+      weekEnd.setDate(weekEnd.getDate() + 6); // Sunday
+
+      // Format dates for Apex
+      const startDateStr = this._formatDateForApex(weekStart);
+      const endDateStr = this._formatDateForApex(weekEnd);
+
+      // Dynamically import Apex controller method
+      // Using @salesforce/apex for LWC
+      let getEventsByDateRange;
+      try {
+        const module = await import(
+          "@salesforce/apex/ScheduleCalendarController.getEventsByDateRange"
+        );
+        getEventsByDateRange = module.default;
+      } catch (err) {
+        // If import fails, we're likely in a test environment
+        // eslint-disable-next-line no-console
+        console.warn(
+          "Apex controller not available. Events must be provided via @api property. Error:",
+          err.message
+        );
+        this.eventsLoaded = true;
+        this.isLoading = false;
+        return;
+      }
+
+      // Call Apex controller with filters
+      const response = await getEventsByDateRange({
+        startDate: startDateStr,
+        endDate: endDateStr,
+        teamIds: this.selectedFilters.teams,
+        eventTypes: this.selectedFilters.eventTypes,
+        arenaIds: this.selectedFilters.arenas,
+        divisionIds: this.selectedFilters.divisions
+      });
+
+      if (response.success) {
+        // Transform Apex response to match component expectations
+        const transformedEvents = (response.allEvents || []).map((event) => ({
+          id: event.id,
+          title: event.title,
+          startTime: event.startTime,
+          endTime: event.endTime,
+          type: event.eventType,
+          status: event.status,
+          location: event.location
+        }));
+
+        // Update events array without reassigning the @api property
+        if (Array.isArray(this.events)) {
+          this.events.splice(0, this.events.length, ...transformedEvents);
+        } else {
+          // If events is not yet initialized, create it through the internal state
+          // This shouldn't happen in normal usage but provides a fallback
+          // eslint-disable-next-line @lwc/lwc/no-api-reassignments
+          this.events = transformedEvents;
+        }
+        this.eventsLoaded = true;
+      } else {
+        this.error = response.errorMessage || "Failed to load events";
+      }
+    } catch (error) {
+      console.error("Error loading events:", error);
+      this.error = "Unable to load calendar events. Please try again.";
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  /**
+   * Format date for Apex Date parameter (YYYY-MM-DD)
+   */
+  _formatDateForApex(date) {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");

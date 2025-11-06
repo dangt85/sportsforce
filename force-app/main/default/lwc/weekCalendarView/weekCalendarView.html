@@ -1,162 +1,202 @@
 <template>
-  <div class="week-calendar-view">
-    <!-- Header with day labels -->
-    <div class="calendar-header">
-      <div class="time-column-header">
-        <span class="header-label">Time</span>
+  <!-- Loading spinner -->
+  <template if:true={isLoading}>
+    <div class="loading-spinner">
+      <lightning-spinner
+        alternative-text="Loading events"
+        size="medium"
+      ></lightning-spinner>
+      <p>Loading calendar events...</p>
+    </div>
+  </template>
+
+  <!-- Error message -->
+  <template if:true={error}>
+    <div class="error-banner">
+      <lightning-icon
+        icon-name="utility:error"
+        size="small"
+        class="error-icon"
+      ></lightning-icon>
+      <div class="error-message">
+        <p>{error}</p>
+        <lightning-button
+          label="Retry"
+          variant="brand"
+          size="small"
+          onclick={loadEvents}
+        ></lightning-button>
       </div>
-      <div class="day-columns-header">
-        <template for:each={dayLabels} for:item="label">
-          <div key={label} class="day-column-header">
-            <span class="day-name">{label}</span>
+    </div>
+  </template>
+
+  <!-- Main calendar (only show when not loading and no error) -->
+  <template if:false={isLoading}>
+    <template if:false={error}>
+      <div class="week-calendar-view">
+        <!-- Header with day labels -->
+        <div class="calendar-header">
+          <div class="time-column-header">
+            <span class="header-label">Time</span>
+          </div>
+          <div class="day-columns-header">
+            <template for:each={dayLabels} for:item="label">
+              <div key={label} class="day-column-header">
+                <span class="day-name">{label}</span>
+              </div>
+            </template>
+          </div>
+        </div>
+
+        <!-- Main calendar grid -->
+        <div class="week-scroll-container">
+          <div class="calendar-grid">
+            <!-- Time column -->
+            <div class="time-column">
+              <template for:each={timeSlots} for:item="slot">
+                <div key={slot} class="time-slot-label">
+                  <span class="time-text">{slot}</span>
+                </div>
+              </template>
+            </div>
+
+            <!-- Day columns -->
+            <div class="day-columns">
+              <template for:each={weekDaysWithKeys} for:item="dayObj">
+                <div key={dayObj.key} class="day-column" data-day={dayObj.date}>
+                  <!-- Time slot cells (clickable) -->
+                  <template
+                    for:each={timeSlots}
+                    for:item="slot"
+                    for:index="slotIndex"
+                  >
+                    <div
+                      key={slot}
+                      class="time-slot-cell"
+                      data-day-index={dayObj.index}
+                      data-slot-index={slotIndex}
+                      data-slot={slot}
+                      onclick={handleTimeSlotClick}
+                      ondragover={handleDragOver}
+                      ondragleave={handleDragLeave}
+                      ondrop={handleEventDrop}
+                      role="button"
+                      tabindex="0"
+                      aria-label="Time slot {slot}"
+                    ></div>
+                  </template>
+
+                  <!-- Event blocks (positioned absolutely) -->
+                  <template for:each={dayObj.events} for:item="event">
+                    <div
+                      key={event.id}
+                      class={event.cssClass}
+                      data-event-id={event.id}
+                      data-day={dayObj.date}
+                      data-top={event.top}
+                      data-height={event.height}
+                      draggable="true"
+                      onclick={handleEventClick}
+                      ondragstart={handleEventDragStart}
+                      role="button"
+                      tabindex="0"
+                      aria-label={event.title}
+                    >
+                      <div class="event-content">
+                        <div class="event-title">{event.title}</div>
+                        <template if:true={event.home}>
+                          <div class="event-subtitle">
+                            {event.home}
+                            <template if:true={event.away}>
+                              vs {event.away}
+                            </template>
+                          </div>
+                        </template>
+                        <template if:true={event.hasConflict}>
+                          <div class="event-conflict-indicator">
+                            <lightning-icon
+                              icon-name="utility:warning"
+                              size="x-small"
+                            ></lightning-icon>
+                            Conflict
+                          </div>
+                        </template>
+                      </div>
+                    </div>
+                  </template>
+
+                  <!-- Current time indicator (visible only on today's column) -->
+                  <template if:true={dayObj.isToday}>
+                    <div class="current-time-indicator">
+                      <span class="current-time-label"></span>
+                    </div>
+                  </template>
+                </div>
+              </template>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick-create form overlay -->
+        <template if:true={quickCreateSlot}>
+          <div class="quick-create-overlay">
+            <div class="quick-create-form">
+              <div class="form-header">
+                <h3>Create Event</h3>
+                <lightning-button-icon
+                  icon-name="utility:close"
+                  variant="bare"
+                  alternative-text="Close"
+                  title="Close"
+                  aria-label="Close quick create form"
+                  onclick={handleQuickCreateCancel}
+                ></lightning-button-icon>
+              </div>
+
+              <div class="form-content">
+                <lightning-input
+                  type="text"
+                  label="Event Title"
+                  placeholder="Enter event title"
+                  class="form-field"
+                ></lightning-input>
+
+                <lightning-combobox
+                  label="Event Type"
+                  options={eventTypeOptions}
+                  class="form-field"
+                ></lightning-combobox>
+
+                <lightning-input
+                  type="time"
+                  label="Start Time"
+                  class="form-field"
+                ></lightning-input>
+
+                <lightning-input
+                  type="time"
+                  label="End Time"
+                  class="form-field"
+                ></lightning-input>
+
+                <div class="form-actions">
+                  <lightning-button
+                    label="Create"
+                    variant="brand"
+                    onclick={handleQuickCreateSubmit}
+                  ></lightning-button>
+                  <lightning-button
+                    label="Cancel"
+                    variant="neutral"
+                    onclick={handleQuickCreateCancel}
+                    class="quick-create-cancel"
+                  ></lightning-button>
+                </div>
+              </div>
+            </div>
           </div>
         </template>
       </div>
-    </div>
-
-    <!-- Main calendar grid -->
-    <div class="week-scroll-container">
-      <div class="calendar-grid">
-        <!-- Time column -->
-        <div class="time-column">
-          <template for:each={timeSlots} for:item="slot">
-            <div key={slot} class="time-slot-label">
-              <span class="time-text">{slot}</span>
-            </div>
-          </template>
-        </div>
-
-        <!-- Day columns -->
-        <div class="day-columns">
-          <template for:each={weekDaysWithKeys} for:item="dayObj">
-            <div key={dayObj.key} class="day-column" data-day={dayObj.date}>
-              <!-- Time slot cells (clickable) -->
-              <template for:each={timeSlots} for:item="slot" for:index="slotIndex">
-                <div
-                  key={slot}
-                  class="time-slot-cell"
-                  data-day-index={dayObj.index}
-                  data-slot-index={slotIndex}
-                  data-slot={slot}
-                  onclick={handleTimeSlotClick}
-                  ondragover={handleDragOver}
-                  ondragleave={handleDragLeave}
-                  ondrop={handleEventDrop}
-                  role="button"
-                  tabindex="0"
-                  aria-label="Time slot {slot}"
-                ></div>
-              </template>
-
-              <!-- Event blocks (positioned absolutely) -->
-              <template for:each={dayObj.events} for:item="event">
-                <div
-                  key={event.id}
-                  class={event.cssClass}
-                  data-event-id={event.id}
-                  data-day={dayObj.date}
-                  data-top={event.top}
-                  data-height={event.height}
-                  draggable="true"
-                  onclick={handleEventClick}
-                  ondragstart={handleEventDragStart}
-                  role="button"
-                  tabindex="0"
-                  aria-label={event.title}
-                >
-                  <div class="event-content">
-                    <div class="event-title">{event.title}</div>
-                    <template if:true={event.home}>
-                      <div class="event-subtitle">
-                        {event.home}
-                        <template if:true={event.away}>
-                          vs {event.away}
-                        </template>
-                      </div>
-                    </template>
-                    <template if:true={event.hasConflict}>
-                      <div class="event-conflict-indicator">
-                        <lightning-icon
-                          icon-name="utility:warning"
-                          size="x-small"
-                        ></lightning-icon>
-                        Conflict
-                      </div>
-                    </template>
-                  </div>
-                </div>
-              </template>
-
-              <!-- Current time indicator (visible only on today's column) -->
-              <template if:true={dayObj.isToday}>
-                <div class="current-time-indicator">
-                  <span class="current-time-label"></span>
-                </div>
-              </template>
-            </div>
-          </template>
-        </div>
-      </div>
-    </div>
-
-    <!-- Quick-create form overlay -->
-    <template if:true={quickCreateSlot}>
-      <div class="quick-create-overlay">
-        <div class="quick-create-form">
-          <div class="form-header">
-            <h3>Create Event</h3>
-            <lightning-button-icon
-              icon-name="utility:close"
-              variant="bare"
-              alternative-text="Close"
-              title="Close"
-              aria-label="Close quick create form"
-              onclick={handleQuickCreateCancel}
-            ></lightning-button-icon>
-          </div>
-
-          <div class="form-content">
-            <lightning-input
-              type="text"
-              label="Event Title"
-              placeholder="Enter event title"
-              class="form-field"
-            ></lightning-input>
-
-            <lightning-combobox
-              label="Event Type"
-              options={eventTypeOptions}
-              class="form-field"
-            ></lightning-combobox>
-
-            <lightning-input
-              type="time"
-              label="Start Time"
-              class="form-field"
-            ></lightning-input>
-
-            <lightning-input
-              type="time"
-              label="End Time"
-              class="form-field"
-            ></lightning-input>
-
-            <div class="form-actions">
-              <lightning-button
-                label="Create"
-                variant="brand"
-                onclick={handleQuickCreateSubmit}
-              ></lightning-button>
-              <lightning-button
-                label="Cancel"
-                variant="neutral"
-                onclick={handleQuickCreateCancel}
-                class="quick-create-cancel"
-              ></lightning-button>
-            </div>
-          </div>
-        </div>
-      </div>
     </template>
-  </div>
+  </template>
 </template>

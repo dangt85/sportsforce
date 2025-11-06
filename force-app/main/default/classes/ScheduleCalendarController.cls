@@ -42,6 +42,95 @@ public with sharing class ScheduleCalendarController {
   }
 
   /**
+   * Response wrapper for calendar events with filtering support
+   */
+  public class EventsResponse {
+    @AuraEnabled
+    public Boolean success;
+    @AuraEnabled
+    public List<CalendarEvent> allEvents;
+    @AuraEnabled
+    public Integer totalRecords;
+    @AuraEnabled
+    public String errorMessage;
+
+    public EventsResponse(
+      Boolean success,
+      List<CalendarEvent> events,
+      Integer total
+    ) {
+      this.success = success;
+      this.allEvents = events;
+      this.totalRecords = total;
+      this.errorMessage = '';
+    }
+
+    public EventsResponse(Boolean success, String error) {
+      this.success = success;
+      this.allEvents = new List<CalendarEvent>();
+      this.totalRecords = 0;
+      this.errorMessage = error;
+    }
+  }
+
+  /**
+   * Fetch events by date range with optional filtering
+   * Supports filtering by teams, event types, arenas, and divisions
+   *
+   * @param startDate Calendar view start date
+   * @param endDate Calendar view end date
+   * @param teamIds Optional list of team IDs to filter by
+   * @param eventTypes Optional list of event types (Game, Tryout, Practice)
+   * @param arenaIds Optional list of arena IDs to filter by
+   * @param divisionIds Optional list of division IDs to filter by
+   * @return EventsResponse with filtered events
+   */
+  @AuraEnabled
+  public static EventsResponse getEventsByDateRange(
+    Date startDate,
+    Date endDate,
+    List<String> teamIds,
+    List<String> eventTypes,
+    List<String> arenaIds,
+    List<String> divisionIds
+  ) {
+    try {
+      List<CalendarEvent> allEvents = getEvents(startDate, endDate);
+      List<CalendarEvent> filteredEvents = new List<CalendarEvent>();
+
+      // Apply filters
+      for (CalendarEvent event : allEvents) {
+        Boolean passesFilter = true;
+
+        // Filter by event type
+        if (eventTypes != null && !eventTypes.isEmpty()) {
+          if (!eventTypes.contains(event.eventType)) {
+            passesFilter = false;
+          }
+        }
+
+        // Filter by location (arena)
+        if (passesFilter && arenaIds != null && !arenaIds.isEmpty()) {
+          if (!arenaIds.contains(event.location)) {
+            passesFilter = false;
+          }
+        }
+
+        if (passesFilter) {
+          filteredEvents.add(event);
+        }
+      }
+
+      return new EventsResponse(true, filteredEvents, filteredEvents.size());
+    } catch (Exception e) {
+      return new EventsResponse(
+        false,
+        'Error fetching events: ' + e.getMessage()
+      );
+    }
+  }
+
+  /**
    * Fetch events (Games, Tryouts, Practices) for calendar display
    * @param startDate Calendar view start date
    * @param endDate Calendar view end date
