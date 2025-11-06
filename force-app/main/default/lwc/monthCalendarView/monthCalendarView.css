@@ -1,0 +1,356 @@
+:host {
+  display: block;
+}
+
+.month-calendar-card {
+  width: 100%;
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 0;
+}
+
+.month-year-header {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #000000;
+}
+
+.calendar-container {
+  padding: 1rem 0.5rem;
+}
+
+/* Days of Week Header */
+.calendar-day-headers {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0;
+  margin-bottom: 0.5rem;
+}
+
+.calendar-day-header {
+  text-align: center;
+  padding: 0.75rem 0.5rem;
+  font-weight: 700;
+  color: #000000;
+  background-color: #f7f7f7;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+/* Calendar Grid */
+.calendar-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.calendar-week {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0;
+}
+
+/* Day Cell */
+.day-cell {
+  min-height: 120px;
+  padding: 0.5rem;
+  border: 1px solid #d8dce6;
+  border-right: none;
+  border-bottom: none;
+  cursor: pointer;
+  position: relative;
+  background-color: #ffffff;
+  transition: background-color 0.2s ease;
+}
+
+.day-cell:hover {
+  background-color: #f5f5f5;
+}
+
+.day-cell:nth-child(7n) {
+  border-right: 1px solid #d8dce6;
+}
+
+.calendar-week:last-child .day-cell {
+  border-bottom: 1px solid #d8dce6;
+}
+
+/* Other Month Days */
+.day-cell.other-month {
+  background-color: #fafafa;
+  color: #999999;
+  cursor: default;
+}
+
+.day-cell.other-month:hover {
+  background-color: #fafafa;
+}
+
+.day-cell.other-month .day-number {
+  color: #cccccc;
+}
+
+/* Today's Date */
+.day-cell.today {
+  background-color: #e8f5e9;
+}
+
+.day-cell.today .day-number {
+  background-color: #04844b;
+  color: #ffffff;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+/* Selected Date */
+.day-cell.active {
+  background-color: #e3f2fd;
+  border: 2px solid #1976d2;
+}
+
+.day-cell.active .day-number {
+  color: #1976d2;
+  font-weight: 700;
+}
+
+/* Day Number */
+.day-number {
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: #000000;
+  margin-bottom: 0.25rem;
+}
+
+/* Events Container */
+.events-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Event Item */
+.event-item {
+  padding: 0.25rem 0.375rem;
+  border-radius: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.75rem;
+  line-height: 1.25;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  display: flex;
+  gap: 0.25rem;
+}
+
+.event-item:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+.event-time {
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.event-title {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Event Type Styling */
+.event-item.event-game {
+  background-color: #ffebee;
+  color: #c62828;
+  border-left: 3px solid #c62828;
+}
+
+.event-item.event-practice {
+  background-color: #f3e5f5;
+  color: #6a1b9a;
+  border-left: 3px solid #6a1b9a;
+}
+
+.event-item.event-tournament {
+  background-color: #fff3e0;
+  color: #e65100;
+  border-left: 3px solid #e65100;
+}
+
+.event-item.event-tryout {
+  background-color: #e0f2f1;
+  color: #00695c;
+  border-left: 3px solid #00695c;
+}
+
+.event-item.event-other {
+  background-color: #eceff1;
+  color: #37474f;
+  border-left: 3px solid #37474f;
+}
+
+/* Truncate Text */
+.truncate {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Responsive Behavior */
+@media (max-width: 768px) {
+  .day-cell {
+    min-height: 80px;
+    padding: 0.375rem;
+  }
+
+  .day-number {
+    font-size: 0.75rem;
+  }
+
+  .event-item {
+    font-size: 0.625rem;
+    padding: 0.125rem 0.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .calendar-container {
+    padding: 0.5rem 0.25rem;
+  }
+
+  .day-cell {
+    min-height: 60px;
+    padding: 0.25rem;
+  }
+
+  .day-number {
+    font-size: 0.625rem;
+    margin-bottom: 0.125rem;
+  }
+
+  .event-item {
+    font-size: 0.5rem;
+    padding: 0.1rem 0.2rem;
+    gap: 0.1rem;
+  }
+
+  .calendar-day-header {
+    padding: 0.5rem 0.25rem;
+    font-size: 0.75rem;
+  }
+
+  .month-year-header {
+    font-size: 1.125rem;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .month-year-header {
+    color: #ffffff;
+  }
+
+  .calendar-day-header {
+    background-color: #2a2a2a;
+    color: #ffffff;
+    border-bottom-color: #4d4d4d;
+  }
+
+  .day-cell {
+    background-color: #1e1e1e;
+    border-color: #4d4d4d;
+    color: #ffffff;
+  }
+
+  .day-cell:hover {
+    background-color: #2a2a2a;
+  }
+
+  .day-cell.other-month {
+    background-color: #171717;
+    color: #666666;
+  }
+
+  .day-cell.other-month:hover {
+    background-color: #171717;
+  }
+
+  .day-cell.other-month .day-number {
+    color: #555555;
+  }
+
+  .day-number {
+    color: #ffffff;
+  }
+
+  .day-cell.today {
+    background-color: #1b5e20;
+  }
+
+  .day-cell.today .day-number {
+    background-color: #1ae325;
+    color: #000000;
+  }
+
+  .day-cell.active {
+    background-color: #0d47a1;
+    border-color: #42a5f5;
+  }
+
+  .day-cell.active .day-number {
+    color: #42a5f5;
+  }
+
+  /* Dark mode event colors */
+  .event-item.event-game {
+    background-color: #5a0000;
+    color: #ff6b6b;
+    border-left-color: #ff6b6b;
+  }
+
+  .event-item.event-practice {
+    background-color: #38006b;
+    color: #d887ff;
+    border-left-color: #d887ff;
+  }
+
+  .event-item.event-tournament {
+    background-color: #5a2e00;
+    color: #ffb74d;
+    border-left-color: #ffb74d;
+  }
+
+  .event-item.event-tryout {
+    background-color: #004d47;
+    color: #4db8a8;
+    border-left-color: #4db8a8;
+  }
+
+  .event-item.event-other {
+    background-color: #263238;
+    color: #b0bec5;
+    border-left-color: #b0bec5;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .day-cell {
+    page-break-inside: avoid;
+  }
+
+  .day-cell:hover {
+    background-color: #ffffff;
+  }
+}

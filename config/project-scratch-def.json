@@ -8,7 +8,6 @@
     "StateAndCountryPicklist",
     "DebugApex",
     "EnableSetPasswordInApi",
-    "MultiCurrency",
     "PlatformCache"
   ],
   "settings": {

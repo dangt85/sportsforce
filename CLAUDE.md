@@ -938,6 +938,7 @@ sf data import tree --plan data/import-plan.json
 
 **Generic coding guidelines**
 
+- when implementing LWCs, always use the sfdx MCP server tools like guide_lwc_development, orchestrate_lwc_component_creation, create_lwc_component_from_prd, guide_lwc_accessibility
 - when implementing LWCs, always try to use lightning base components for things like buttons, cards, layouts, inputs, etc. instead of custom HTML
 - when starting a new LWC, always start with the jest tests. Try to do TDD as much as possible and use sf lightning dev (local development)
 - when wiring LWC to data, always prefer using GraphQL wires if possible. If not possible, then default to Apex

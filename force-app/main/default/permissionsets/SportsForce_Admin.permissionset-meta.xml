@@ -715,6 +715,10 @@
         <tab>Team_Member__c</tab>
         <visibility>Visible</visibility>
     </tabSettings>
+    <tabSettings>
+        <tab>Scheduling</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
     <!-- Apex Class Permissions -->
     <classAccesses>
         <apexClass>ScheduleCalendarController</apexClass>
