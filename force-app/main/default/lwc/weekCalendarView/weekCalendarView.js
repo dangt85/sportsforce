@@ -151,10 +151,8 @@ export default class WeekCalendarView extends LightningElement {
     // Start current time indicator updates
     this.startCurrentTimeUpdates();
 
-    // Fetch events from Apex controller if not provided via @api property
-    if (!this.events || this.events.length === 0) {
-      this.loadEvents();
-    }
+    // Note: Events are typically provided by parent component (scheduleCalendar)
+    // Do not auto-load events here to avoid conflicts with parent's event management
   }
 
   disconnectedCallback() {
