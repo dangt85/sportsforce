@@ -1,4 +1,5 @@
 import { LightningElement, api } from "lwc";
+import getEventsByDateRange from "@salesforce/apex/ScheduleCalendarController.getEventsByDateRange";
 
 /**
  * weekCalendarView
@@ -388,26 +389,6 @@ export default class WeekCalendarView extends LightningElement {
       // Format dates for Apex
       const startDateStr = this._formatDateForApex(weekStart);
       const endDateStr = this._formatDateForApex(weekEnd);
-
-      // Dynamically import Apex controller method
-      // Using @salesforce/apex for LWC
-      let getEventsByDateRange;
-      try {
-        const module = await import(
-          "@salesforce/apex/ScheduleCalendarController.getEventsByDateRange"
-        );
-        getEventsByDateRange = module.default;
-      } catch (err) {
-        // If import fails, we're likely in a test environment
-        // eslint-disable-next-line no-console
-        console.warn(
-          "Apex controller not available. Events must be provided via @api property. Error:",
-          err.message
-        );
-        this.eventsLoaded = true;
-        this.isLoading = false;
-        return;
-      }
 
       // Call Apex controller with filters
       const response = await getEventsByDateRange({
