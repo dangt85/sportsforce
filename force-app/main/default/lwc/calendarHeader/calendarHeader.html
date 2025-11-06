@@ -1,0 +1,123 @@
+<template>
+  <div class="slds-page-header slds-page-header--record-home">
+    <div class="slds-page-header__row">
+      <div class="slds-page-header__col-title">
+        <h1 class="slds-page-header__title calendar-header-title">
+          {displayMonthYear}
+        </h1>
+      </div>
+      <div class="slds-page-header__col-actions">
+        <!-- Navigation Controls -->
+        <div class="slds-button-group" role="group">
+          <button
+            class="slds-button slds-button--neutral"
+            title="Previous"
+            data-action="prev"
+            onclick={handlePreviousPeriod}
+          >
+            <lightning-icon
+              icon-name="utility:chevronleft"
+              size="small"
+            ></lightning-icon>
+            <span class="slds-is-assistive-text">Previous</span>
+          </button>
+
+          <button
+            class="slds-button slds-button--neutral"
+            title="Today"
+            data-action="today"
+            onclick={handleTodayClick}
+          >
+            Today
+          </button>
+
+          <button
+            class="slds-button slds-button--neutral"
+            title="Next"
+            data-action="next"
+            onclick={handleNextPeriod}
+          >
+            <lightning-icon
+              icon-name="utility:chevronright"
+              size="small"
+            ></lightning-icon>
+            <span class="slds-is-assistive-text">Next</span>
+          </button>
+        </div>
+
+        <!-- Date Picker -->
+        <div
+          class="slds-form-element slds-form-element--inline date-picker-wrapper"
+        >
+          <input
+            type="date"
+            class="slds-input"
+            value={dateInputValue}
+            onchange={handleDatePickerChange}
+            title="Jump to date"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- View Selector -->
+    <div class="slds-page-header__row view-selector-row">
+      <div class="slds-page-header__col-title">
+        <div
+          class="slds-button-group"
+          role="group"
+          aria-label="Calendar view selection"
+        >
+          <button
+            class={monthButtonClass}
+            data-view="month"
+            title="Month view"
+            onclick={handleViewChange}
+          >
+            Month
+          </button>
+          <button
+            class={weekButtonClass}
+            data-view="week"
+            title="Week view"
+            onclick={handleViewChange}
+          >
+            Week
+          </button>
+          <button
+            class={dayButtonClass}
+            data-view="day"
+            title="Day view"
+            onclick={handleViewChange}
+          >
+            Day
+          </button>
+          <button
+            class={ganttButtonClass}
+            data-view="gantt"
+            title="Arena utilization view"
+            onclick={handleViewChange}
+          >
+            Gantt
+          </button>
+        </div>
+      </div>
+
+      <div class="slds-page-header__col-actions">
+        <!-- Settings Button -->
+        <button
+          class="slds-button slds-button--icon-border-small"
+          title="Settings"
+          data-action="settings"
+          onclick={handleSettingsClick}
+        >
+          <lightning-icon
+            icon-name="utility:settings"
+            size="small"
+          ></lightning-icon>
+          <span class="slds-is-assistive-text">Settings</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</template>

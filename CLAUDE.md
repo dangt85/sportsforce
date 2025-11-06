@@ -940,3 +940,4 @@ sf data import tree --plan data/import-plan.json
 
 - when starting a new LWC, always start with the jest tests. Try to do TDD as much as possible and use sf lightning dev (local development)
 - when wiring LWC to data, always prefer using GraphQL wires if possible. If not possible, then default to Apex
+- use the latest API version available in the org (curently 65.0) when creating new metadata

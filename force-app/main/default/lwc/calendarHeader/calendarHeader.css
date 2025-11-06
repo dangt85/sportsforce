@@ -1,0 +1,77 @@
+.slds-page-header {
+  border-bottom: 1px solid #d8dce6;
+  margin-bottom: 1rem;
+}
+
+.calendar-header-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #0b5394;
+}
+
+.date-picker-wrapper {
+  margin-left: 1rem;
+}
+
+.date-picker-wrapper .slds-input {
+  width: 150px;
+  font-size: 0.875rem;
+}
+
+.view-selector-row {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #f4f6f9;
+}
+
+.view-selector-row .slds-button {
+  margin-right: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.slds-button-group {
+  display: inline-flex;
+  gap: 0;
+}
+
+.slds-button-group .slds-button {
+  border-radius: 0;
+  border-right: 1px solid #d8dce6;
+}
+
+.slds-button-group .slds-button:first-child {
+  border-radius: 0.25rem 0 0 0.25rem;
+}
+
+.slds-button-group .slds-button:last-child {
+  border-radius: 0 0.25rem 0.25rem 0;
+  border-right: none;
+}
+
+.slds-button-group .slds-button--brand {
+  background-color: #0076d6;
+  border-color: #0076d6;
+  color: white;
+}
+
+.slds-button-group .slds-button--brand:hover {
+  background-color: #0062a3;
+  border-color: #0062a3;
+}
+
+.slds-button-group .slds-button--neutral {
+  background-color: #f3f3f3;
+  border-color: #d8dce6;
+  color: #3e3e3c;
+}
+
+.slds-button-group .slds-button--neutral:hover {
+  background-color: #e3e5e7;
+}
+
+.slds-button--icon-border-small {
+  height: 2rem;
+  width: 2rem;
+  padding: 0.25rem;
+  margin-left: 0.5rem;
+}

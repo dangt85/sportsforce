@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+  <apiVersion>65.0</apiVersion>
+  <description
+  >Headless CalendarService - Business logic for calendar functionality with no UI dependencies. Provides event fetching, caching, filtering, conflict detection, and event bus.</description>
+  <isExposed>false</isExposed>
+</LightningComponentBundle>
