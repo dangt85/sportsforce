@@ -938,6 +938,7 @@ sf data import tree --plan data/import-plan.json
 
 **Generic coding guidelines**
 
+- when implementing LWCs, always try to use lightning base components for things like buttons, cards, layouts, inputs, etc. instead of custom HTML
 - when starting a new LWC, always start with the jest tests. Try to do TDD as much as possible and use sf lightning dev (local development)
 - when wiring LWC to data, always prefer using GraphQL wires if possible. If not possible, then default to Apex
 - use the latest API version available in the org (curently 65.0) when creating new metadata

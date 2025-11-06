@@ -10,22 +10,22 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: var(--lwc-spacingMedium, 1rem);
+  gap: 1rem;
 }
 
 .filter-header h3 {
   margin: 0;
-  font-size: var(--lwc-fontSizeLarge, 1rem);
+  font-size: 1rem;
   font-weight: 700;
-  line-height: var(--lwc-lineHeight, 1.5);
-  color: var(--lwc-colorTextDefault, #000000);
+  line-height: 1.5;
+  color: #000000;
   flex: 1;
 }
 
 .filter-count {
-  font-size: var(--lwc-fontSizeSmall, 0.75rem);
-  line-height: var(--lwc-lineHeight, 1.5);
-  color: var(--lwc-colorTextSuccess, #04844b);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: #04844b;
   white-space: nowrap;
 }
 
@@ -34,27 +34,27 @@
 }
 
 .filter-item {
-  padding: var(--lwc-spacingSmall, 0.5rem);
+  padding: 0.5rem;
 }
 
 .filter-footer {
-  padding: var(--lwc-spacingMedium, 1rem) 0;
-  border-top: 1px solid var(--lwc-colorBorderWeak, #d8dce6);
+  padding: 1rem 0;
+  border-top: 1px solid #d8dce6;
   text-align: left;
 }
 
 /* Dark Mode Support */
 @media (prefers-color-scheme: dark) {
   .filter-header h3 {
-    color: var(--lwc-colorTextDefaultDark, #ffffff);
+    color: #ffffff;
   }
 
   .filter-count {
-    color: var(--lwc-colorTextSuccessDark, #1ae325);
+    color: #1ae325;
   }
 
   .filter-footer {
-    border-top-color: var(--lwc-colorBorderWeakDark, #4d4d4d);
+    border-top-color: #4d4d4d;
   }
 }
 
