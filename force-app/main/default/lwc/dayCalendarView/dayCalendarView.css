@@ -1,0 +1,488 @@
+:host {
+  --calendar-border-color: #e5e7eb;
+  --calendar-text-color: #374151;
+  --calendar-bg-color: #ffffff;
+  --event-bg-color: #e3f2fd;
+  --event-border-color: #1976d2;
+  --event-game-bg: #c8e6c9;
+  --event-game-border: #388e3c;
+  --event-practice-bg: #fff9c4;
+  --event-practice-border: #f57f17;
+  --event-tryout-bg: #ffccbc;
+  --event-tryout-border: #d84315;
+  --event-tournament-bg: #f8bbd0;
+  --event-tournament-border: #c2185b;
+  --time-slot-hover-bg: #f3f4f6;
+  --conflict-color: #ef4444;
+  --current-time-color: #ef4444;
+  --drag-opacity: 0.6;
+}
+
+/* ===== MAIN LAYOUT ===== */
+
+.day-calendar-view {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--calendar-bg-color);
+  color: var(--calendar-text-color);
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
+  overflow: hidden;
+}
+
+/* ===== HEADER SECTION ===== */
+
+.calendar-header {
+  padding: 16px;
+  border-bottom: 1px solid var(--calendar-border-color);
+  background-color: #f9fafb;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.day-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--calendar-text-color);
+}
+
+/* ===== SCROLL CONTAINER ===== */
+
+.day-scroll-container {
+  flex: 1;
+  overflow-x: auto;
+  overflow-y: auto;
+  position: relative;
+}
+
+.calendar-grid {
+  display: flex;
+  min-height: 100%;
+  background-color: var(--calendar-bg-color);
+}
+
+/* ===== TIME COLUMN ===== */
+
+.time-column {
+  width: 80px;
+  border-right: 1px solid var(--calendar-border-color);
+  background-color: #f9fafb;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  left: 0;
+  z-index: 5;
+}
+
+.time-slot-label {
+  flex: 1;
+  min-height: 60px;
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--calendar-border-color);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  font-size: 11px;
+  color: #6b7280;
+  text-align: center;
+  line-height: 1;
+}
+
+.time-slot-label:last-child {
+  border-bottom: none;
+}
+
+.time-text {
+  display: block;
+  white-space: nowrap;
+  padding-top: 2px;
+}
+
+/* ===== ARENA COLUMNS ===== */
+
+.arena-columns {
+  display: flex;
+  flex: 1;
+  gap: 0;
+}
+
+.arena-column {
+  flex: 1;
+  min-width: 300px;
+  position: relative;
+  border-right: 1px solid var(--calendar-border-color);
+  background-color: var(--calendar-bg-color);
+  display: flex;
+  flex-direction: column;
+}
+
+.arena-column:last-child {
+  border-right: none;
+}
+
+.arena-header {
+  padding: 12px 8px;
+  background-color: #f9fafb;
+  border-bottom: 1px solid var(--calendar-border-color);
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--calendar-text-color);
+  text-align: center;
+  sticky: top 0;
+  z-index: 4;
+}
+
+.arena-name {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ===== TIME SLOT CELLS ===== */
+
+.time-slot-cell {
+  flex: 1;
+  min-height: 60px;
+  border-bottom: 1px solid var(--calendar-border-color);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  position: relative;
+  overflow: visible;
+}
+
+.time-slot-cell:hover {
+  background-color: var(--time-slot-hover-bg);
+}
+
+.time-slot-cell:focus {
+  outline: 2px solid #1976d2;
+  outline-offset: -2px;
+}
+
+.time-slot-cell:last-child {
+  border-bottom: none;
+}
+
+.time-slot-cell.drag-over {
+  background-color: #dbeafe;
+  border-bottom-color: #1976d2;
+}
+
+/* ===== EVENT BLOCKS ===== */
+
+.event-block {
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  padding: 4px;
+  border-radius: 4px;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease;
+  border-left: 4px solid var(--event-border-color);
+  background-color: var(--event-bg-color);
+  overflow: hidden;
+  min-height: 28px;
+  z-index: 3;
+}
+
+.event-block:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: scale(1.01);
+  z-index: 4;
+}
+
+.event-block:focus {
+  outline: 2px solid #1976d2;
+  outline-offset: -1px;
+}
+
+.event-block.dragging {
+  opacity: var(--drag-opacity);
+  z-index: 100;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Event type specific colors */
+
+.event-block.event-game {
+  background-color: var(--event-game-bg);
+  border-left-color: var(--event-game-border);
+}
+
+.event-block.event-practice {
+  background-color: var(--event-practice-bg);
+  border-left-color: var(--event-practice-border);
+}
+
+.event-block.event-tryout {
+  background-color: var(--event-tryout-bg);
+  border-left-color: var(--event-tryout-border);
+}
+
+.event-block.event-tournament {
+  background-color: var(--event-tournament-bg);
+  border-left-color: var(--event-tournament-border);
+}
+
+.event-block.event-cancelled {
+  border-left-color: var(--conflict-color);
+  background-color: #fee2e2;
+  opacity: 0.7;
+}
+
+.event-content {
+  padding: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.event-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #111827;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.3;
+}
+
+.event-time {
+  font-size: 10px;
+  color: #6b7280;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.event-conflict-indicator {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 9px;
+  color: var(--conflict-color);
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+/* ===== CURRENT TIME INDICATOR ===== */
+
+.current-time-indicator {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--current-time-color);
+  z-index: 6;
+  pointer-events: none;
+  box-shadow: 0 0 4px rgba(239, 68, 68, 0.5);
+}
+
+.current-time-indicator::before {
+  content: "";
+  position: absolute;
+  left: -6px;
+  top: -4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--current-time-color);
+}
+
+.current-time-label {
+  position: absolute;
+  left: -75px;
+  top: -8px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--current-time-color);
+  white-space: nowrap;
+  background-color: var(--calendar-bg-color);
+  padding: 1px 3px;
+  border-radius: 2px;
+}
+
+/* ===== QUICK CREATE FORM ===== */
+
+.quick-create-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.quick-create-form {
+  background-color: var(--calendar-bg-color);
+  border-radius: 8px;
+  box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15);
+  width: 90%;
+  max-width: 400px;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.form-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border-bottom: 1px solid var(--calendar-border-color);
+}
+
+.form-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.form-content {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  justify-content: flex-end;
+}
+
+.form-actions ::slotted(lightning-button) {
+  flex: 1;
+}
+
+/* ===== SCROLLBAR STYLING ===== */
+
+.day-scroll-container::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.day-scroll-container::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.day-scroll-container::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.day-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* ===== RESPONSIVE BEHAVIOR ===== */
+
+@media (min-width: 1024px) {
+  .time-slot-label {
+    min-height: 60px;
+  }
+
+  .arena-column {
+    min-width: 300px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .arena-column {
+    min-width: 250px;
+  }
+
+  .time-slot-label {
+    min-height: 50px;
+  }
+}
+
+@media (max-width: 767px) {
+  .day-calendar-view {
+    display: none;
+  }
+}
+
+/* ===== ACCESSIBILITY ===== */
+
+@media (prefers-reduced-motion: reduce) {
+  .event-block,
+  .time-slot-cell,
+  .quick-create-overlay,
+  .quick-create-form {
+    animation: none;
+    transition: none;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :host {
+    --calendar-border-color: #374151;
+    --calendar-text-color: #e5e7eb;
+    --calendar-bg-color: #1f2937;
+    --event-bg-color: #1e3a8a;
+    --event-border-color: #3b82f6;
+    --event-game-bg: #065f46;
+    --event-game-border: #10b981;
+    --event-practice-bg: #78350f;
+    --event-practice-border: #f59e0b;
+    --event-tryout-bg: #5b3b1c;
+    --event-tryout-border: #f97316;
+    --event-tournament-bg: #6b1d51;
+    --event-tournament-border: #ec4899;
+    --time-slot-hover-bg: #374151;
+  }
+
+  .calendar-header {
+    background-color: #374151;
+  }
+
+  .time-column {
+    background-color: #1f2937;
+    color: #9ca3af;
+  }
+
+  .arena-header {
+    background-color: #374151;
+    color: #e5e7eb;
+  }
+
+  .event-title {
+    color: #f3f4f6;
+  }
+}
