@@ -16,7 +16,8 @@ import { LightningElement, api } from "lwc";
  * - Event filtering and selection
  *
  * Input Props:
- * @api currentDate - Date to display (defaults to today, used to calculate week start)
+ * @api currentDateStr - ISO date string (YYYY-MM-DD) to display in calendar (defaults to today)
+ * @api currentDate - Date object property for internal/programmatic use (alternative to currentDateStr)
  * @api events - Array of calendar event objects (pre-filtered from parent)
  * @api selectedDate - Currently selected date (for highlighting)
  * @api timeGranularity - Time slot interval in minutes (15, 30, or 60)
@@ -33,7 +34,41 @@ import { LightningElement, api } from "lwc";
 export default class WeekCalendarView extends LightningElement {
   // ===== API PROPERTIES =====
 
-  @api currentDate = new Date();
+  // Internal date property
+  _currentDate = new Date();
+
+  @api
+  get currentDate() {
+    return this._currentDate;
+  }
+
+  set currentDate(value) {
+    if (value instanceof Date) {
+      this._currentDate = new Date(value);
+    } else if (typeof value === "string" && value) {
+      this._currentDate = new Date(value);
+    } else {
+      this._currentDate = new Date();
+    }
+  }
+
+  // String property for metadata (external API)
+  @api
+  get currentDateStr() {
+    const year = this._currentDate.getFullYear();
+    const month = String(this._currentDate.getMonth() + 1).padStart(2, "0");
+    const day = String(this._currentDate.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+
+  set currentDateStr(value) {
+    if (value && typeof value === "string") {
+      this._currentDate = new Date(value);
+    } else {
+      this._currentDate = new Date();
+    }
+  }
+
   @api events = [];
   @api selectedDate = null;
   @api timeGranularity = 15; // 15, 30, or 60 minutes

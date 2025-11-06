@@ -10,7 +10,7 @@
   </targets>
   <targetConfigs>
     <targetConfig targets="lightning__AppPage,lightning__RecordPage">
-      <property name="currentDate" type="Date" label="Current Date (Start of Week)" description="Date to display in calendar (defaults to today)"/>
+      <property name="currentDateStr" type="String" label="Current Date (Start of Week)" description="ISO date string (YYYY-MM-DD) to display in calendar (defaults to today)"/>
       <property name="timeGranularity" type="Integer" default="15" label="Time Granularity (Minutes)" description="Time slot interval: 15, 30, or 60 minutes"/>
       <property name="showWeekends" type="Boolean" default="true" label="Show Weekends" description="Display Saturday and Sunday in the calendar view"/>
     </targetConfig>
