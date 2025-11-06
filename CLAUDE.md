@@ -935,3 +935,8 @@ sf data import tree --plan data/import-plan.json
 
 - v1.1 (2025-11-05): Added Calendar Refactor Initiative section with comprehensive design documentation
 - v1.0 (2025-10-29): Initial project context and architecture documentation
+
+**Generic coding guidelines**
+
+- when starting a new LWC, always start with the jest tests. Try to do TDD as much as possible and use sf lightning dev (local development)
+- when wiring LWC to data, always prefer using GraphQL wires if possible. If not possible, then default to Apex
