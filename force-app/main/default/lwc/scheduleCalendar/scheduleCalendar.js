@@ -127,9 +127,11 @@ export default class ScheduleCalendar extends LightningElement {
         );
       } else {
         // Week view: Sunday to Saturday
-        const day = this.currentDate.getDay();
-        const diff = this.currentDate.getDate() - day;
-        startDate = new Date(this.currentDate.setDate(diff));
+        const date = new Date(this.currentDate);
+        const day = date.getDay();
+        const diff = date.getDate() - day;
+        startDate = new Date(date);
+        startDate.setDate(diff);
         endDate = new Date(startDate);
         endDate.setDate(endDate.getDate() + 6);
       }
@@ -148,7 +150,7 @@ export default class ScheduleCalendar extends LightningElement {
         divisionIds: this.selectedFilters.divisions
       });
 
-      if (response.success) {
+      if (response && response.success) {
         this.events = (response.allEvents || []).map((event) => ({
           id: event.id,
           title: event.title,
@@ -158,12 +160,19 @@ export default class ScheduleCalendar extends LightningElement {
           status: event.status,
           location: event.location
         }));
+      } else if (response && response.errorMessage) {
+        console.error("Apex error:", response.errorMessage);
+        this.showError(response.errorMessage);
       } else {
-        this.showError(response.errorMessage || "Failed to load events");
+        console.error("Unexpected response:", response);
+        this.showError("Failed to load events");
       }
     } catch (error) {
       console.error("Error loading events:", error);
-      this.showError("Unable to load calendar events. Please try again.");
+      this.showError(
+        error?.body?.message ||
+          "Unable to load calendar events. Please try again."
+      );
     } finally {
       this.isLoading = false;
     }
