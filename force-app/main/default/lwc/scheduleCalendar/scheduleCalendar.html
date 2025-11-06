@@ -41,6 +41,12 @@
             onclick={handleWeekViewClick}
             class="view-button"
           ></lightning-button>
+          <lightning-button
+            label="Day"
+            variant={dayButtonVariant}
+            onclick={handleDayViewClick}
+            class="view-button"
+          ></lightning-button>
         </lightning-button-group>
         <lightning-button
           label="New Event"
@@ -101,6 +107,17 @@
           selected-filters={selectedFilters}
           oneventclick={handleEventSelected}
         ></c-week-calendar-view>
+      </template>
+
+      <!-- Day View -->
+      <template if:true={isDayView}>
+        <c-day-calendar-view
+          selected-date={currentDate}
+          events={events}
+          selected-filters={selectedFilters}
+          oneventclick={handleEventSelected}
+          oneventdrop={handleEventDrop}
+        ></c-day-calendar-view>
       </template>
     </div>
 

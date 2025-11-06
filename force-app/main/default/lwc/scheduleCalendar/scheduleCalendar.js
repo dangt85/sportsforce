@@ -11,7 +11,7 @@ export default class ScheduleCalendar extends LightningElement {
   @track calendarTitle = "";
   @track currentDate = new Date();
   @track events = [];
-  @track currentView = "month"; // 'month' or 'week'
+  @track currentView = "month"; // 'month', 'week', or 'day'
   @track selectedDate = null;
 
   _selectedFilters = {
@@ -52,12 +52,20 @@ export default class ScheduleCalendar extends LightningElement {
     return this.currentView === "week";
   }
 
+  get isDayView() {
+    return this.currentView === "day";
+  }
+
   get monthButtonVariant() {
     return this.isMonthView ? "brand" : "neutral";
   }
 
   get weekButtonVariant() {
     return this.isWeekView ? "brand" : "neutral";
+  }
+
+  get dayButtonVariant() {
+    return this.isDayView ? "brand" : "neutral";
   }
 
   handleMonthViewClick() {
@@ -67,6 +75,11 @@ export default class ScheduleCalendar extends LightningElement {
 
   handleWeekViewClick() {
     this.currentView = "week";
+    this.updateCalendarTitle();
+  }
+
+  handleDayViewClick() {
+    this.currentView = "day";
     this.updateCalendarTitle();
   }
 
@@ -82,8 +95,10 @@ export default class ScheduleCalendar extends LightningElement {
     const newDate = new Date(this.currentDate);
     if (this.currentView === "month") {
       newDate.setMonth(newDate.getMonth() - 1);
-    } else {
+    } else if (this.currentView === "week") {
       newDate.setDate(newDate.getDate() - 7);
+    } else if (this.currentView === "day") {
+      newDate.setDate(newDate.getDate() - 1);
     }
     this.currentDate = newDate;
     this.updateCalendarTitle();
@@ -94,8 +109,10 @@ export default class ScheduleCalendar extends LightningElement {
     const newDate = new Date(this.currentDate);
     if (this.currentView === "month") {
       newDate.setMonth(newDate.getMonth() + 1);
-    } else {
+    } else if (this.currentView === "week") {
       newDate.setDate(newDate.getDate() + 7);
+    } else if (this.currentView === "day") {
+      newDate.setDate(newDate.getDate() + 1);
     }
     this.currentDate = newDate;
     this.updateCalendarTitle();
@@ -125,7 +142,7 @@ export default class ScheduleCalendar extends LightningElement {
           this.currentDate.getMonth() + 1,
           0
         );
-      } else {
+      } else if (this.currentView === "week") {
         // Week view: Sunday to Saturday
         const date = new Date(this.currentDate);
         const day = date.getDay();
@@ -134,6 +151,10 @@ export default class ScheduleCalendar extends LightningElement {
         startDate.setDate(diff);
         endDate = new Date(startDate);
         endDate.setDate(endDate.getDate() + 6);
+      } else {
+        // Day view: just the current date
+        startDate = new Date(this.currentDate);
+        endDate = new Date(this.currentDate);
       }
 
       // Format dates
@@ -189,6 +210,16 @@ export default class ScheduleCalendar extends LightningElement {
     const eventData = event.detail;
     this.selectedEvent = eventData;
     this.showEventModal = true;
+  }
+
+  handleEventDrop(event) {
+    const dropDetail = event.detail;
+    console.log("Event dropped:", dropDetail);
+    // TODO: Update event time in Salesforce
+    // For now, just show confirmation
+    this.showError(
+      `Event rescheduled to ${dropDetail.time} on ${dropDetail.date.toDateString()}`
+    );
   }
 
   handleNewEventClick() {
@@ -249,7 +280,7 @@ export default class ScheduleCalendar extends LightningElement {
 
     if (this.currentView === "month") {
       this.calendarTitle = formatter.format(this.currentDate);
-    } else {
+    } else if (this.currentView === "week") {
       // For week view, show start and end dates
       const weekStart = this._getWeekStartDate(this.currentDate);
       const weekEnd = new Date(weekStart);
@@ -266,6 +297,14 @@ export default class ScheduleCalendar extends LightningElement {
       });
 
       this.calendarTitle = `${startStr} – ${endStr}`;
+    } else {
+      // For day view, show the day and date
+      this.calendarTitle = this.currentDate.toLocaleDateString("en-US", {
+        weekday: "long",
+        month: "long",
+        day: "numeric",
+        year: "numeric"
+      });
     }
   }
 
