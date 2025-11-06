@@ -9,54 +9,45 @@
       <div class="slds-page-header__col-actions">
         <!-- Navigation Controls -->
         <div class="slds-button-group" role="group">
-          <button
-            class="slds-button slds-button--neutral"
-            title="Previous"
+          <lightning-button
+            variant="neutral"
+            icon-name="utility:chevronleft"
+            icon-position="left"
+            aria-label="Previous"
             data-action="prev"
             onclick={handlePreviousPeriod}
-          >
-            <lightning-icon
-              icon-name="utility:chevronleft"
-              size="small"
-            ></lightning-icon>
-            <span class="slds-is-assistive-text">Previous</span>
-          </button>
+            title="Previous period"
+          ></lightning-button>
 
-          <button
-            class="slds-button slds-button--neutral"
-            title="Today"
+          <lightning-button
+            variant="neutral"
+            label="Today"
             data-action="today"
             onclick={handleTodayClick}
-          >
-            Today
-          </button>
+            title="Jump to today"
+          ></lightning-button>
 
-          <button
-            class="slds-button slds-button--neutral"
-            title="Next"
+          <lightning-button
+            variant="neutral"
+            icon-name="utility:chevronright"
+            icon-position="right"
+            aria-label="Next"
             data-action="next"
             onclick={handleNextPeriod}
-          >
-            <lightning-icon
-              icon-name="utility:chevronright"
-              size="small"
-            ></lightning-icon>
-            <span class="slds-is-assistive-text">Next</span>
-          </button>
+            title="Next period"
+          ></lightning-button>
         </div>
 
         <!-- Date Picker -->
-        <div
-          class="slds-form-element slds-form-element--inline date-picker-wrapper"
-        >
-          <input
-            type="date"
-            class="slds-input"
-            value={dateInputValue}
-            onchange={handleDatePickerChange}
-            title="Jump to date"
-          />
-        </div>
+        <lightning-input
+          type="date"
+          variant="label-hidden"
+          class="date-picker-input"
+          value={dateInputValue}
+          onchange={handleDatePickerChange}
+          label="Jump to date"
+          title="Jump to date"
+        ></lightning-input>
       </div>
     </div>
 
@@ -68,55 +59,47 @@
           role="group"
           aria-label="Calendar view selection"
         >
-          <button
-            class={monthButtonClass}
+          <lightning-button
+            variant={monthButtonVariant}
+            label="Month"
             data-view="month"
             title="Month view"
             onclick={handleViewChange}
-          >
-            Month
-          </button>
-          <button
-            class={weekButtonClass}
+          ></lightning-button>
+          <lightning-button
+            variant={weekButtonVariant}
+            label="Week"
             data-view="week"
             title="Week view"
             onclick={handleViewChange}
-          >
-            Week
-          </button>
-          <button
-            class={dayButtonClass}
+          ></lightning-button>
+          <lightning-button
+            variant={dayButtonVariant}
+            label="Day"
             data-view="day"
             title="Day view"
             onclick={handleViewChange}
-          >
-            Day
-          </button>
-          <button
-            class={ganttButtonClass}
+          ></lightning-button>
+          <lightning-button
+            variant={ganttButtonVariant}
+            label="Gantt"
             data-view="gantt"
             title="Arena utilization view"
             onclick={handleViewChange}
-          >
-            Gantt
-          </button>
+          ></lightning-button>
         </div>
       </div>
 
       <div class="slds-page-header__col-actions">
         <!-- Settings Button -->
-        <button
-          class="slds-button slds-button--icon-border-small"
-          title="Settings"
+        <lightning-button-icon
+          icon-name="utility:settings"
+          variant="border-small"
+          aria-label="Settings"
           data-action="settings"
           onclick={handleSettingsClick}
-        >
-          <lightning-icon
-            icon-name="utility:settings"
-            size="small"
-          ></lightning-icon>
-          <span class="slds-is-assistive-text">Settings</span>
-        </button>
+          title="Open settings"
+        ></lightning-button-icon>
       </div>
     </div>
   </div>

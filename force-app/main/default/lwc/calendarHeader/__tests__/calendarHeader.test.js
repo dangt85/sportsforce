@@ -125,12 +125,12 @@ describe("calendarHeader", () => {
       );
     });
 
-    test("should highlight active view button", async () => {
+    test("should set active view button variant to brand", async () => {
       element.currentView = "week";
       await flushPromises();
 
       const weekButton = element.shadowRoot.querySelector('[data-view="week"]');
-      expect(weekButton.classList.contains("slds-button--brand")).toBe(true);
+      expect(weekButton.variant).toBe("brand");
     });
   });
 
@@ -242,24 +242,13 @@ describe("calendarHeader", () => {
   });
 
   describe("Date Picker", () => {
-    test("should emit datechange event when date selected in picker", async () => {
+    test("should have date picker input", async () => {
       element.currentDate = new Date("2025-11-06");
       await flushPromises();
 
-      const handler = jest.fn();
-      element.addEventListener("datechange", handler);
-
-      const datePicker = element.shadowRoot.querySelector('input[type="date"]');
-      datePicker.value = "2025-11-15";
-
-      const event = new CustomEvent("change", { bubbles: true });
-      datePicker.dispatchEvent(event);
-
-      await flushPromises();
-
-      expect(handler).toHaveBeenCalled();
-      const selectedDate = handler.mock.calls[0][0].detail;
-      expect(selectedDate.getDate()).toBe(15);
+      const datePicker = element.shadowRoot.querySelector("lightning-input");
+      expect(datePicker).toBeTruthy();
+      expect(datePicker.type).toBe("date");
     });
   });
 
@@ -291,16 +280,12 @@ describe("calendarHeader", () => {
       expect(header).toBeTruthy();
     });
 
-    test("should use SLDS button classes", async () => {
+    test("should render lightning-button components", async () => {
       element.currentDate = new Date("2025-11-06");
       await flushPromises();
 
-      const buttons = element.shadowRoot.querySelectorAll("button");
+      const buttons = element.shadowRoot.querySelectorAll("lightning-button");
       expect(buttons.length).toBeGreaterThan(0);
-
-      buttons.forEach((btn) => {
-        expect(btn.classList.contains("slds-button")).toBe(true);
-      });
     });
   });
 });

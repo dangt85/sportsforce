@@ -24,15 +24,17 @@ describe("filterPanel", () => {
       expect(element).toBeTruthy();
     });
 
-    test("should have filter panel container", async () => {
+    test("should have lightning card container", async () => {
       await flushPromises();
-      const container = element.shadowRoot.querySelector(".filter-panel");
-      expect(container).toBeTruthy();
+      const card = element.shadowRoot.querySelector("lightning-card");
+      expect(card).toBeTruthy();
     });
 
-    test("should have filter heading", async () => {
+    test("should have filter heading in card title", async () => {
       await flushPromises();
-      const heading = element.shadowRoot.querySelector("h3");
+      const cardTitle = element.shadowRoot.querySelector("[slot='title']");
+      expect(cardTitle).toBeTruthy();
+      const heading = cardTitle.querySelector("h3");
       expect(heading).toBeTruthy();
       expect(heading.textContent).toContain("Filters");
     });
@@ -119,36 +121,36 @@ describe("filterPanel", () => {
       await flushPromises();
 
       const clearButton = element.shadowRoot.querySelector(
-        "button[data-action='clear']"
+        "lightning-button[data-action='clear']"
       );
       expect(clearButton).toBeTruthy();
     });
 
-    test("should have aria-label on clear button", async () => {
+    test("should have title on clear button", async () => {
       await flushPromises();
 
       const clearButton = element.shadowRoot.querySelector(
-        "button[data-action='clear']"
+        "lightning-button[data-action='clear']"
       );
-      expect(clearButton.getAttribute("aria-label")).toBeTruthy();
+      expect(clearButton.getAttribute("title")).toBeTruthy();
     });
 
     test("should have clear button disabled initially", async () => {
       await flushPromises();
 
       const clearButton = element.shadowRoot.querySelector(
-        "button[data-action='clear']"
+        "lightning-button[data-action='clear']"
       );
       expect(clearButton.disabled).toBe(true);
     });
 
-    test("should have button with icon and text", async () => {
+    test("should have button with label text", async () => {
       await flushPromises();
 
       const clearButton = element.shadowRoot.querySelector(
-        "button[data-action='clear']"
+        "lightning-button[data-action='clear']"
       );
-      expect(clearButton.textContent).toContain("Clear All Filters");
+      expect(clearButton.label).toContain("Clear All Filters");
     });
   });
 
@@ -169,74 +171,76 @@ describe("filterPanel", () => {
     });
   });
 
-  describe("SLDS Structure", () => {
-    test("should use SLDS box for main container", async () => {
+  describe("Lightning Components Structure", () => {
+    test("should use lightning-card for main container", async () => {
       await flushPromises();
 
-      const box = element.shadowRoot.querySelector(".slds-box");
-      expect(box).toBeTruthy();
+      const card = element.shadowRoot.querySelector("lightning-card");
+      expect(card).toBeTruthy();
     });
 
-    test("should have SLDS grid layout", async () => {
+    test("should have lightning-layout for grid", async () => {
       element.teams = [{ id: "team1", name: "Team 1" }];
       await flushPromises();
 
-      const grid = element.shadowRoot.querySelector(".slds-grid");
-      expect(grid).toBeTruthy();
+      const layout = element.shadowRoot.querySelector("lightning-layout");
+      expect(layout).toBeTruthy();
     });
 
-    test("should have SLDS buttons", async () => {
+    test("should have lightning-button for clear action", async () => {
       await flushPromises();
 
-      const buttons = element.shadowRoot.querySelectorAll(".slds-button");
-      expect(buttons.length).toBeGreaterThan(0);
+      const button = element.shadowRoot.querySelector("lightning-button");
+      expect(button).toBeTruthy();
     });
 
-    test("should have form elements with labels", async () => {
+    test("should have lightning-combobox components for filters", async () => {
       element.teams = [{ id: "team1", name: "Team 1" }];
       await flushPromises();
 
-      const labels = element.shadowRoot.querySelectorAll("label");
-      expect(labels.length).toBeGreaterThan(0);
-
-      const firstLabel = labels[0];
-      expect(firstLabel.textContent.length).toBeGreaterThan(0);
+      const comboboxes =
+        element.shadowRoot.querySelectorAll("lightning-combobox");
+      expect(comboboxes.length).toBeGreaterThan(0);
     });
 
-    test("should have required marks on labels", async () => {
+    test("should have labels on combobox filters", async () => {
       element.teams = [{ id: "team1", name: "Team 1" }];
       await flushPromises();
 
-      const requiredMarks = element.shadowRoot.querySelectorAll(
-        ".slds-required-mark"
-      );
-      expect(requiredMarks.length).toBeGreaterThan(0);
+      const combobox = element.shadowRoot.querySelector("lightning-combobox");
+      expect(combobox.label).toBeTruthy();
     });
   });
 
   describe("Responsive Layout", () => {
-    test("should render filter columns with responsive classes", async () => {
+    test("should render filter layout items", async () => {
       element.teams = [{ id: "team1", name: "Team 1" }];
       element.eventTypes = [{ id: "game", label: "Game" }];
       await flushPromises();
 
-      const cols = element.shadowRoot.querySelectorAll(".slds-col");
-      expect(cols.length).toBeGreaterThan(0);
-
-      const col = cols[0];
-      expect(col.classList.contains("slds-size--1-of-1")).toBe(true);
+      const layoutItems = element.shadowRoot.querySelectorAll(
+        "lightning-layout-item"
+      );
+      expect(layoutItems.length).toBeGreaterThan(0);
     });
 
-    test("should have responsive grid classes", async () => {
+    test("should have responsive layout items with sizing", async () => {
       element.teams = [{ id: "team1", name: "Team 1" }];
       await flushPromises();
 
-      const col = element.shadowRoot.querySelector(".slds-col");
-      // Check for responsive sizing classes
-      const hasResponsiveClass =
-        col.classList.contains("slds-medium-size--1-of-2") ||
-        col.classList.contains("slds-large-size--1-of-4");
-      expect(hasResponsiveClass).toBe(true);
+      const layoutItem = element.shadowRoot.querySelector(
+        "lightning-layout-item"
+      );
+      expect(layoutItem).toBeTruthy();
+      // Layout items should have size properties defined
+      expect(layoutItem.size || layoutItem.getAttribute("size")).toBeTruthy();
+    });
+
+    test("should have lightning-layout component", async () => {
+      await flushPromises();
+
+      const layout = element.shadowRoot.querySelector("lightning-layout");
+      expect(layout).toBeTruthy();
     });
   });
 
@@ -248,26 +252,25 @@ describe("filterPanel", () => {
       expect(h3).toBeTruthy();
     });
 
-    test("should have accessible form labels", async () => {
+    test("should have accessible combobox labels", async () => {
       element.teams = [{ id: "team1", name: "Team 1" }];
       await flushPromises();
 
-      const labels = element.shadowRoot.querySelectorAll(
-        ".slds-form-element__label"
-      );
-      expect(labels.length).toBeGreaterThan(0);
+      const comboboxes =
+        element.shadowRoot.querySelectorAll("lightning-combobox");
+      expect(comboboxes.length).toBeGreaterThan(0);
 
-      labels.forEach((label) => {
-        expect(label.textContent.length).toBeGreaterThan(0);
+      comboboxes.forEach((combobox) => {
+        expect(combobox.label).toBeTruthy();
       });
     });
 
-    test("should have button with aria attributes", async () => {
+    test("should have button with title attribute", async () => {
       await flushPromises();
 
-      const button = element.shadowRoot.querySelector("button");
+      const button = element.shadowRoot.querySelector("lightning-button");
       expect(button).toBeTruthy();
-      expect(button.getAttribute("aria-label")).toBeTruthy();
+      expect(button.getAttribute("title")).toBeTruthy();
     });
   });
 
@@ -293,11 +296,11 @@ describe("filterPanel", () => {
   });
 
   describe("Filter Panel CSS Classes", () => {
-    test("should have filter-panel class", async () => {
+    test("should have filter-panel-card class", async () => {
       await flushPromises();
 
-      const panel = element.shadowRoot.querySelector(".filter-panel");
-      expect(panel.classList.contains("filter-panel")).toBe(true);
+      const card = element.shadowRoot.querySelector(".filter-panel-card");
+      expect(card).toBeTruthy();
     });
 
     test("should have filter-grid class for grid layout", async () => {

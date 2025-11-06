@@ -1,126 +1,100 @@
 <template>
-  <div class="slds-box filter-panel">
+  <lightning-card class="filter-panel-card">
     <!-- Filter Header -->
-    <div class="slds-grid slds-grid--align-spread slds-m-bottom--medium">
-      <div>
-        <h3 class="slds-text-heading--small">Filters</h3>
-      </div>
-      <div class="filter-count slds-text-body--small slds-text-color--success">
-        <span>{filterCountText}</span>
-      </div>
+    <div slot="title" class="filter-header">
+      <h3 class="slds-text-heading--small">Filters</h3>
+      <span class="filter-count slds-text-body--small slds-text-color--success">
+        {filterCountText}
+      </span>
     </div>
 
     <!-- Filters Grid -->
-    <div class="slds-grid slds-wrap slds-grid--pull-padded filter-grid">
+    <lightning-layout multiple-rows="true" class="filter-grid">
       <!-- Teams Filter -->
-      <div
-        class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-4 slds-p-horizontal--small"
+      <lightning-layout-item
+        size="12"
+        medium-device-size="6"
+        large-device-size="3"
+        class="filter-item"
       >
-        <div class="slds-form-element">
-          <label class="slds-form-element__label">
-            <span class="slds-required-mark">*</span>
-            <span>Teams</span>
-          </label>
-          <div class="slds-form-element__control">
-            <lightning-combobox
-              data-filter="teams"
-              name="teams"
-              label=""
-              placeholder="Select teams..."
-              options={teamOptions}
-              value={selectedTeams}
-              onchange={handleTeamChange}
-            ></lightning-combobox>
-          </div>
-        </div>
-      </div>
+        <lightning-combobox
+          data-filter="teams"
+          name="teams"
+          label="Teams"
+          placeholder="Select teams..."
+          options={teamOptions}
+          value={selectedTeams}
+          onchange={handleTeamChange}
+        ></lightning-combobox>
+      </lightning-layout-item>
 
       <!-- Event Types Filter -->
-      <div
-        class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-4 slds-p-horizontal--small"
+      <lightning-layout-item
+        size="12"
+        medium-device-size="6"
+        large-device-size="3"
+        class="filter-item"
       >
-        <div class="slds-form-element">
-          <label class="slds-form-element__label">
-            <span class="slds-required-mark">*</span>
-            <span>Event Types</span>
-          </label>
-          <div class="slds-form-element__control">
-            <lightning-combobox
-              data-filter="eventTypes"
-              name="eventTypes"
-              label=""
-              placeholder="Select event types..."
-              options={eventTypeOptions}
-              value={selectedEventTypes}
-              onchange={handleEventTypeChange}
-            ></lightning-combobox>
-          </div>
-        </div>
-      </div>
+        <lightning-combobox
+          data-filter="eventTypes"
+          name="eventTypes"
+          label="Event Types"
+          placeholder="Select event types..."
+          options={eventTypeOptions}
+          value={selectedEventTypes}
+          onchange={handleEventTypeChange}
+        ></lightning-combobox>
+      </lightning-layout-item>
 
       <!-- Arenas Filter -->
-      <div
-        class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-4 slds-p-horizontal--small"
+      <lightning-layout-item
+        size="12"
+        medium-device-size="6"
+        large-device-size="3"
+        class="filter-item"
       >
-        <div class="slds-form-element">
-          <label class="slds-form-element__label">
-            <span class="slds-required-mark">*</span>
-            <span>Arenas</span>
-          </label>
-          <div class="slds-form-element__control">
-            <lightning-combobox
-              data-filter="arenas"
-              name="arenas"
-              label=""
-              placeholder="Select arenas..."
-              options={arenaOptions}
-              value={selectedArenas}
-              onchange={handleArenaChange}
-            ></lightning-combobox>
-          </div>
-        </div>
-      </div>
+        <lightning-combobox
+          data-filter="arenas"
+          name="arenas"
+          label="Arenas"
+          placeholder="Select arenas..."
+          options={arenaOptions}
+          value={selectedArenas}
+          onchange={handleArenaChange}
+        ></lightning-combobox>
+      </lightning-layout-item>
 
       <!-- Divisions Filter -->
-      <div
-        class="slds-col slds-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-4 slds-p-horizontal--small"
+      <lightning-layout-item
+        size="12"
+        medium-device-size="6"
+        large-device-size="3"
+        class="filter-item"
       >
-        <div class="slds-form-element">
-          <label class="slds-form-element__label">
-            <span class="slds-required-mark">*</span>
-            <span>Divisions</span>
-          </label>
-          <div class="slds-form-element__control">
-            <lightning-combobox
-              data-filter="divisions"
-              name="divisions"
-              label=""
-              placeholder="Select divisions..."
-              options={divisionOptions}
-              value={selectedDivisions}
-              onchange={handleDivisionChange}
-            ></lightning-combobox>
-          </div>
-        </div>
-      </div>
-    </div>
+        <lightning-combobox
+          data-filter="divisions"
+          name="divisions"
+          label="Divisions"
+          placeholder="Select divisions..."
+          options={divisionOptions}
+          value={selectedDivisions}
+          onchange={handleDivisionChange}
+        ></lightning-combobox>
+      </lightning-layout-item>
+    </lightning-layout>
 
     <!-- Clear Filters Button -->
-    <div class="slds-m-top--medium slds-border-top--thin slds-p-top--medium">
-      <button
+    <div slot="footer" class="filter-footer">
+      <lightning-button
         data-action="clear"
-        class="slds-button slds-button--neutral"
+        variant="neutral"
+        label="Clear All Filters"
+        icon-name="utility:slash-list"
+        icon-position="left"
         disabled={isClearButtonDisabled}
         onclick={handleClearFilters}
-        aria-label="Clear all filters"
-      >
-        <lightning-icon
-          icon-name="utility-slash-list"
-          size="x-small"
-          class="slds-m-right--x-small"
-        ></lightning-icon>
-        Clear All Filters
-      </button>
+        title="Clear all active filters"
+      ></lightning-button>
     </div>
-  </div>
+  </lightning-card>
 </template>

@@ -33,20 +33,20 @@ export default class CalendarHeader extends LightningElement {
     return this._formatDateForInput(dateToDisplay);
   }
 
-  get monthButtonClass() {
-    return this._getButtonClass("month");
+  get monthButtonVariant() {
+    return this.currentView === "month" ? "brand" : "neutral";
   }
 
-  get weekButtonClass() {
-    return this._getButtonClass("week");
+  get weekButtonVariant() {
+    return this.currentView === "week" ? "brand" : "neutral";
   }
 
-  get dayButtonClass() {
-    return this._getButtonClass("day");
+  get dayButtonVariant() {
+    return this.currentView === "day" ? "brand" : "neutral";
   }
 
-  get ganttButtonClass() {
-    return this._getButtonClass("gantt");
+  get ganttButtonVariant() {
+    return this.currentView === "gantt" ? "brand" : "neutral";
   }
 
   // ===== EVENT HANDLERS =====
@@ -160,17 +160,6 @@ export default class CalendarHeader extends LightningElement {
         composed: true
       })
     );
-  }
-
-  /**
-   * Get button class (active or neutral)
-   * @private
-   */
-  _getButtonClass(view) {
-    const baseClass = "slds-button";
-    const variantClass =
-      this.currentView === view ? "slds-button--brand" : "slds-button--neutral";
-    return `${baseClass} ${variantClass}`;
   }
 
   /**
