@@ -175,6 +175,24 @@ export default class WeekCalendarView extends LightningElement {
   }
 
   /**
+   * Get week days with computed date keys and events for template rendering
+   */
+  get weekDaysWithKeys() {
+    const eventsByDay = this.eventsByDay;
+
+    return this.weekDays.map((day, index) => {
+      const dateKey = this.getDateKey(day);
+      return {
+        date: day,
+        index: index,
+        key: dateKey,
+        isToday: this.isToday(day),
+        events: eventsByDay[dateKey] || []
+      };
+    });
+  }
+
+  /**
    * Get all events positioned for rendering
    */
   get positionedEvents() {
@@ -191,22 +209,38 @@ export default class WeekCalendarView extends LightningElement {
 
   /**
    * Group events by day column for rendering
+   * Uses ISO date strings as keys for template compatibility
    */
   get eventsByDay() {
     const eventsByDay = {};
 
-    this.weekDays.forEach((_, dayIndex) => {
-      eventsByDay[dayIndex] = [];
+    // Initialize empty arrays for each day using ISO date string as key
+    this.weekDays.forEach((day) => {
+      const dateKey = this.getDateKey(day);
+      eventsByDay[dateKey] = [];
     });
 
+    // Add events to their respective days
     this.positionedEvents.forEach((event) => {
       const dayIndex = event.dayIndex;
-      if (dayIndex !== undefined) {
-        eventsByDay[dayIndex].push(event);
+      if (dayIndex !== undefined && dayIndex >= 0 && dayIndex < this.weekDays.length) {
+        const day = this.weekDays[dayIndex];
+        const dateKey = this.getDateKey(day);
+        eventsByDay[dateKey].push(event);
       }
     });
 
     return eventsByDay;
+  }
+
+  /**
+   * Convert Date to ISO date string key (YYYY-MM-DD) for object access
+   */
+  getDateKey(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
   }
 
 
@@ -507,6 +541,10 @@ export default class WeekCalendarView extends LightningElement {
    * Initialize drag-drop event handlers
    */
   initializeDragHandlers() {
+    if (!this.shadowRoot) {
+      return;
+    }
+
     const eventBlocks = this.shadowRoot.querySelectorAll(".event-block");
     eventBlocks.forEach((block) => {
       if (!block.hasAttribute("draggable")) {

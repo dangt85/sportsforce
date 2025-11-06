@@ -28,14 +28,15 @@
 
         <!-- Day columns -->
         <div class="day-columns">
-          <template for:each={weekDays} for:item="day">
-            <div key={day} class="day-column" data-day={day}>
+          <template for:each={weekDaysWithKeys} for:item="dayObj">
+            <div key={dayObj.key} class="day-column" data-day={dayObj.date}>
               <!-- Time slot cells (clickable) -->
-              <template for:each={timeSlots} for:item="slot">
+              <template for:each={timeSlots} for:item="slot" for:index="slotIndex">
                 <div
                   key={slot}
                   class="time-slot-cell"
-                  data-day={day}
+                  data-day-index={dayObj.index}
+                  data-slot-index={slotIndex}
                   data-slot={slot}
                   onclick={handleTimeSlotClick}
                   ondragover={handleDragOver}
@@ -48,12 +49,12 @@
               </template>
 
               <!-- Event blocks (positioned absolutely) -->
-              <template for:each={eventsByDay[day]} for:item="event">
+              <template for:each={dayObj.events} for:item="event">
                 <div
                   key={event.id}
                   class={event.cssClass}
                   data-event-id={event.id}
-                  data-day={day}
+                  data-day={dayObj.date}
                   data-top={event.top}
                   data-height={event.height}
                   draggable="true"
@@ -87,7 +88,7 @@
               </template>
 
               <!-- Current time indicator (visible only on today's column) -->
-              <template if:true={day.isToday}>
+              <template if:true={dayObj.isToday}>
                 <div class="current-time-indicator">
                   <span class="current-time-label"></span>
                 </div>
@@ -106,7 +107,10 @@
             <h3>Create Event</h3>
             <lightning-button-icon
               icon-name="utility:close"
+              variant="bare"
               alternative-text="Close"
+              title="Close"
+              aria-label="Close quick create form"
               onclick={handleQuickCreateCancel}
             ></lightning-button-icon>
           </div>
