@@ -21,8 +21,8 @@ describe("GanttArenaView", () => {
     expect(element).toBeTruthy();
   });
 
-  it("should set default zoom level to month", () => {
-    expect(element.zoomLevel).toBe("month");
+  it("should set default zoom level to week", () => {
+    expect(element.zoomLevel).toBe("week");
   });
 
   it("should initialize with empty events", () => {
@@ -126,9 +126,6 @@ describe("GanttArenaView", () => {
 
     element.zoomLevel = "month";
     expect(element.zoomLevel).toBe("month");
-
-    element.zoomLevel = "quarter";
-    expect(element.zoomLevel).toBe("quarter");
   });
 
   it("should have ZOOM_LEVELS constant with week config", () => {
@@ -139,10 +136,5 @@ describe("GanttArenaView", () => {
   it("should have ZOOM_LEVELS constant with month config", () => {
     expect(GanttArenaView.ZOOM_LEVELS.month).toBeDefined();
     expect(GanttArenaView.ZOOM_LEVELS.month.days).toBe(30);
-  });
-
-  it("should have ZOOM_LEVELS constant with quarter config", () => {
-    expect(GanttArenaView.ZOOM_LEVELS.quarter).toBeDefined();
-    expect(GanttArenaView.ZOOM_LEVELS.quarter.days).toBe(90);
   });
 });

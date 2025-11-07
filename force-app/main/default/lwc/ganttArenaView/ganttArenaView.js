@@ -18,7 +18,7 @@ import { LightningElement, api } from "lwc";
  * @api currentDate - Date to center timeline on
  * @api events - Array of calendar events
  * @api selectedFilters - Filter state {teams, eventTypes, arenas, divisions}
- * @api zoomLevel - 'week', 'month', or 'quarter'
+ * @api zoomLevel - 'week' or 'month'
  *
  * Output Events:
  * @fires eventclick - When an event block is clicked
@@ -65,7 +65,7 @@ export default class GanttArenaView extends LightningElement {
     }
   }
 
-  _zoomLevel = "month";
+  _zoomLevel = "week";
 
   @api
   get zoomLevel() {
@@ -83,8 +83,7 @@ export default class GanttArenaView extends LightningElement {
 
   static ZOOM_LEVELS = {
     week: { label: "Week", days: 7, blockType: "day" },
-    month: { label: "Month", days: 30, blockType: "day" },
-    quarter: { label: "Quarter", days: 90, blockType: "week" }
+    month: { label: "Month", days: 30, blockType: "day" }
   };
 
   // ===== INTERNAL STATE =====
@@ -109,20 +108,12 @@ export default class GanttArenaView extends LightningElement {
     return this.zoomLevel === "month";
   }
 
-  get isQuarterZoom() {
-    return this.zoomLevel === "quarter";
-  }
-
   get weekZoomVariant() {
     return this.isWeekZoom ? "brand" : "neutral";
   }
 
   get monthZoomVariant() {
     return this.isMonthZoom ? "brand" : "neutral";
-  }
-
-  get quarterZoomVariant() {
-    return this.isQuarterZoom ? "brand" : "neutral";
   }
 
   // ===== LIFECYCLE HOOKS =====
@@ -159,10 +150,6 @@ export default class GanttArenaView extends LightningElement {
 
   handleMonthZoom() {
     this.setZoomLevel("month");
-  }
-
-  handleQuarterZoom() {
-    this.setZoomLevel("quarter");
   }
 
   // ===== DATA METHODS =====
