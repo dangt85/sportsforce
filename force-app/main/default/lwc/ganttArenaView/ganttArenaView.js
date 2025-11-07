@@ -27,7 +27,19 @@ import { LightningElement, api } from "lwc";
 export default class GanttArenaView extends LightningElement {
   // ===== API PROPERTIES =====
 
-  @api currentDate = new Date();
+  _currentDate = new Date();
+
+  @api
+  get currentDate() {
+    return this._currentDate;
+  }
+
+  set currentDate(value) {
+    if (value) {
+      this._currentDate = value;
+      this.updateGanttData();
+    }
+  }
 
   @api
   get events() {
@@ -147,6 +159,13 @@ export default class GanttArenaView extends LightningElement {
     }
   }
 
+  setCurrentDate(date) {
+    if (date) {
+      this._currentDate = date;
+      this.updateGanttData();
+    }
+  }
+
   // ===== ZOOM HANDLERS =====
 
   handleWeekZoom() {
@@ -155,6 +174,28 @@ export default class GanttArenaView extends LightningElement {
 
   handleMonthZoom() {
     this.setZoomLevel("month");
+  }
+
+  // ===== NAVIGATION HANDLERS =====
+
+  handlePrevious() {
+    const newDate = new Date(this.currentDate);
+    if (this.isWeekZoom) {
+      newDate.setDate(newDate.getDate() - 7);
+    } else {
+      newDate.setMonth(newDate.getMonth() - 1);
+    }
+    this.setCurrentDate(newDate);
+  }
+
+  handleNext() {
+    const newDate = new Date(this.currentDate);
+    if (this.isWeekZoom) {
+      newDate.setDate(newDate.getDate() + 7);
+    } else {
+      newDate.setMonth(newDate.getMonth() + 1);
+    }
+    this.setCurrentDate(newDate);
   }
 
   // ===== DATA METHODS =====

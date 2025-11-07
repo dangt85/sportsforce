@@ -40,11 +40,29 @@
   flex: 1;
 }
 
+.gantt-nav-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.gantt-nav-button {
+  flex-shrink: 0;
+}
+
+.gantt-nav-button ::part(button) {
+  padding: 0.25rem 0.5rem;
+  min-width: auto;
+  min-height: auto;
+}
+
 .gantt-title {
   margin: 0;
   font-size: 18px;
   font-weight: 600;
   color: var(--gantt-text-color);
+  flex: 1;
+  text-align: center;
 }
 
 .gantt-zoom {

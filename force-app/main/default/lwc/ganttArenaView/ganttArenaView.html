@@ -3,7 +3,21 @@
     <!-- Header -->
     <div class="gantt-header">
       <div class="gantt-title-section">
-        <h2 class="gantt-title">{ganttTitle}</h2>
+        <div class="gantt-nav-controls">
+          <lightning-button
+            icon-name="utility:chevronleft"
+            title="Previous period"
+            onclick={handlePrevious}
+            class="gantt-nav-button"
+          ></lightning-button>
+          <h2 class="gantt-title">{ganttTitle}</h2>
+          <lightning-button
+            icon-name="utility:chevronright"
+            title="Next period"
+            onclick={handleNext}
+            class="gantt-nav-button"
+          ></lightning-button>
+        </div>
       </div>
 
       <div class="gantt-zoom">
