@@ -1,7 +1,19 @@
 <template>
   <lightning-tabset variant="vertical">
     <lightning-tab label="Builder" icon-name="utility:event">
-      <c-schedule-calendar></c-schedule-calendar>
+      <c-schedule-calendar
+        oneventsupdated={handleEventsUpdated}
+        onfiltersupdated={handleFiltersUpdated}
+      ></c-schedule-calendar>
+    </lightning-tab>
+
+    <lightning-tab label="Gantt" icon-name="utility:table">
+      <c-gantt-arena-view
+        current-date={currentDate}
+        events={events}
+        selected-filters={selectedFilters}
+        oneventclick={handleEventSelected}
+      ></c-gantt-arena-view>
     </lightning-tab>
 
     <lightning-tab label="Tryouts" icon-name="utility:people">
