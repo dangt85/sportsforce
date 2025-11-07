@@ -173,8 +173,19 @@ lightning-button-group {
 
 .gantt-utilization-fill {
   height: 100%;
-  background-color: #0076d6;
   transition: width 0.2s ease;
+}
+
+.gantt-utilization-fill--high {
+  background-color: #dc2626;
+}
+
+.gantt-utilization-fill--medium {
+  background-color: #0076d6;
+}
+
+.gantt-utilization-fill--low {
+  background-color: #10b981;
 }
 
 /* ===== TIMELINE COLUMN ===== */

@@ -342,10 +342,29 @@ export default class GanttArenaView extends LightningElement {
   calculateUtilization(blocks) {
     const bookedCount = blocks.filter((b) => b.isBooked).length;
     const percentage = Math.round((bookedCount / blocks.length) * 100);
+
+    // Determine utilization level: High (80%+), Medium (50-79%), Low (<50%)
+    let level = "low";
+    if (percentage >= 80) {
+      level = "high";
+    } else if (percentage >= 50) {
+      level = "medium";
+    }
+
+    // Compute the bar class based on level
+    const barClass =
+      level === "high"
+        ? "gantt-utilization-fill gantt-utilization-fill--high"
+        : level === "medium"
+          ? "gantt-utilization-fill gantt-utilization-fill--medium"
+          : "gantt-utilization-fill gantt-utilization-fill--low";
+
     return {
       percentage,
       bookedCount,
-      totalCount: blocks.length
+      totalCount: blocks.length,
+      level,
+      barClass
     };
   }
 

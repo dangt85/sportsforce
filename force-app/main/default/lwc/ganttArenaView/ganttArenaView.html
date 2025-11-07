@@ -6,16 +6,18 @@
         <div class="gantt-nav-controls">
           <lightning-button
             icon-name="utility:chevronleft"
-            title="Previous period"
+            variant="border"
             onclick={handlePrevious}
             class="gantt-nav-button"
+            title="Previous period"
           ></lightning-button>
           <h2 class="gantt-title">{ganttTitle}</h2>
           <lightning-button
             icon-name="utility:chevronright"
-            title="Next period"
+            variant="border"
             onclick={handleNext}
             class="gantt-nav-button"
+            title="Next period"
           ></lightning-button>
         </div>
       </div>
@@ -57,7 +59,7 @@
               </div>
               <div class="gantt-utilization-bar">
                 <div
-                  class="gantt-utilization-fill"
+                  class={arena.utilization.barClass}
                   data-width={arena.utilization.percentage}
                 ></div>
               </div>
@@ -139,19 +141,25 @@
         <div class="legend-items">
           <div class="legend-item">
             <div class="gantt-utilization-bar legend-bar">
-              <div class="gantt-utilization-fill legend-high"></div>
+              <div
+                class="gantt-utilization-fill gantt-utilization-fill--high legend-high"
+              ></div>
             </div>
             <span>High (80%+)</span>
           </div>
           <div class="legend-item">
             <div class="gantt-utilization-bar legend-bar">
-              <div class="gantt-utilization-fill legend-medium"></div>
+              <div
+                class="gantt-utilization-fill gantt-utilization-fill--medium legend-medium"
+              ></div>
             </div>
             <span>Medium (50-79%)</span>
           </div>
           <div class="legend-item">
             <div class="gantt-utilization-bar legend-bar">
-              <div class="gantt-utilization-fill legend-low"></div>
+              <div
+                class="gantt-utilization-fill gantt-utilization-fill--low legend-low"
+              ></div>
             </div>
             <span>Low (&lt;50%)</span>
           </div>
