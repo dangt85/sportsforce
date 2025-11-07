@@ -166,7 +166,6 @@ lightning-button-group {
   display: flex;
   flex-direction: column;
   min-width: 0;
-  position: relative;
 }
 
 .gantt-timeline-header {
@@ -283,26 +282,6 @@ lightning-button-group {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-/* ===== CURRENT DAY INDICATOR ===== */
-
-.gantt-current-day-indicator {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background: linear-gradient(
-    to right,
-    transparent 0%,
-    rgba(239, 68, 68, 0.1) 0%,
-    rgba(239, 68, 68, 0.1) calc(100% - 2px),
-    #ef4444 calc(100% - 2px),
-    #ef4444 100%
-  );
-  pointer-events: none;
-  z-index: 3;
 }
 
 /* ===== LEGEND ===== */
