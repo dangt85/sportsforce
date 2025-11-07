@@ -406,10 +406,8 @@ describe("monthCalendarView", () => {
       element.currentDate = new Date(2025, 10, 1);
       await flushPromises();
 
-      const calendarContainer = element.shadowRoot.querySelector(
-        ".calendar-container"
-      );
-      expect(calendarContainer).toBeTruthy();
+      const calendarGrid = element.shadowRoot.querySelector(".calendar-grid");
+      expect(calendarGrid).toBeTruthy();
     });
 
     test("should display day cells in mobile layout", async () => {
@@ -476,21 +474,19 @@ describe("monthCalendarView", () => {
   });
 
   describe("Lightning Components Structure", () => {
-    test("should render calendar container", async () => {
+    test("should render calendar grid", async () => {
       await flushPromises();
 
-      const container = element.shadowRoot.querySelector(".calendar-container");
-      expect(container).toBeTruthy();
+      const grid = element.shadowRoot.querySelector(".calendar-grid");
+      expect(grid).toBeTruthy();
     });
 
     test("should render calendar with proper structure", async () => {
       element.currentDate = new Date(2025, 10, 1);
       await flushPromises();
 
-      const calendarContainer = element.shadowRoot.querySelector(
-        ".calendar-container"
-      );
-      expect(calendarContainer).toBeTruthy();
+      const calendarGrid = element.shadowRoot.querySelector(".calendar-grid");
+      expect(calendarGrid).toBeTruthy();
     });
 
     test("should have accessible calendar structure", async () => {

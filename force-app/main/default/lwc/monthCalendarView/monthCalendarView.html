@@ -1,48 +1,45 @@
 <template>
-  <!-- Calendar Container -->
-  <div class="calendar-container">
-    <!-- Days of Week Header -->
-    <div class="calendar-day-headers">
-      <template for:each={daysOfWeek} for:item="day">
-        <div key={day} class="calendar-day-header slds-text-body--small">
-          {day}
-        </div>
-      </template>
-    </div>
+  <!-- Days of Week Header -->
+  <div class="calendar-day-headers">
+    <template for:each={daysOfWeek} for:item="day">
+      <div key={day} class="calendar-day-header slds-text-body--small">
+        {day}
+      </div>
+    </template>
+  </div>
 
-    <!-- Calendar Grid -->
-    <div class="calendar-grid">
-      <template for:each={calendarWeeks} for:item="week">
-        <div key={week.id} class="calendar-week">
-          <template for:each={week.days} for:item="day">
-            <div
-              key={day.dateStr}
-              class={day.cellClass}
-              data-date={day.dateStr}
-              onclick={handleDayClick}
-            >
-              <!-- Day Number -->
-              <div class="day-number">{day.dayOfMonth}</div>
+  <!-- Calendar Grid -->
+  <div class="calendar-grid">
+    <template for:each={calendarWeeks} for:item="week">
+      <div key={week.id} class="calendar-week">
+        <template for:each={week.days} for:item="day">
+          <div
+            key={day.dateStr}
+            class={day.cellClass}
+            data-date={day.dateStr}
+            onclick={handleDayClick}
+          >
+            <!-- Day Number -->
+            <div class="day-number">{day.dayOfMonth}</div>
 
-              <!-- Events Container -->
-              <div class="events-container">
-                <template for:each={day.events} for:item="event">
-                  <div
-                    key={event.id}
-                    class={event.eventClass}
-                    title={event.title}
-                    onclick={handleEventClick}
-                    data-event-id={event.id}
-                  >
-                    <span class="event-time">{event.displayTime}</span>
-                    <span class="event-title truncate">{event.title}</span>
-                  </div>
-                </template>
-              </div>
+            <!-- Events Container -->
+            <div class="events-container">
+              <template for:each={day.events} for:item="event">
+                <div
+                  key={event.id}
+                  class={event.eventClass}
+                  title={event.title}
+                  onclick={handleEventClick}
+                  data-event-id={event.id}
+                >
+                  <span class="event-time">{event.displayTime}</span>
+                  <span class="event-title truncate">{event.title}</span>
+                </div>
+              </template>
             </div>
-          </template>
-        </div>
-      </template>
-    </div>
+          </div>
+        </template>
+      </div>
+    </template>
   </div>
 </template>

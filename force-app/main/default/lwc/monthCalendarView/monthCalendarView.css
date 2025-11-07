@@ -20,16 +20,11 @@
   color: #000000;
 }
 
-.calendar-container {
-  padding: 1rem 0.5rem;
-}
-
 /* Days of Week Header */
 .calendar-day-headers {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 0;
-  margin-bottom: 0.5rem;
 }
 
 .calendar-day-header {
@@ -225,10 +220,6 @@
 }
 
 @media (max-width: 480px) {
-  .calendar-container {
-    padding: 0.5rem 0.25rem;
-  }
-
   .day-cell {
     min-height: 60px;
     padding: 0.25rem;
