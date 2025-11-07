@@ -1,4 +1,5 @@
 import { LightningElement, track } from "lwc";
+import CalendarService from "c/calendarService";
 
 export default class SchedulingContainer extends LightningElement {
   @track currentDate = new Date();
@@ -10,6 +11,8 @@ export default class SchedulingContainer extends LightningElement {
     divisions: []
   };
 
+  calendarService = new CalendarService(null);
+
   connectedCallback() {
     // Container component for scheduling features
     // Uses lightning-tabset with vertical variant to display:
@@ -17,6 +20,45 @@ export default class SchedulingContainer extends LightningElement {
     // - Gantt (Arena utilization Gantt chart view)
     // - Tryouts (tryout management)
     // - Statistics (player stats dashboard)
+    this.loadInitialMockData();
+  }
+
+  loadInitialMockData() {
+    // Get first day of month
+    const startDate = new Date(
+      this.currentDate.getFullYear(),
+      this.currentDate.getMonth(),
+      1
+    );
+    // Get last day of month
+    const endDate = new Date(
+      this.currentDate.getFullYear(),
+      this.currentDate.getMonth() + 1,
+      0
+    );
+
+    const mockEvents = this.calendarService.generateMockEvents(
+      startDate,
+      endDate
+    );
+
+    this.events = mockEvents.map((event) => ({
+      id: event.id,
+      title: event.title,
+      startTime: new Date(event.startTime),
+      endTime: new Date(event.endTime),
+      startDateTime: new Date(event.startTime),
+      endDateTime: new Date(event.endTime),
+      type: event.type,
+      eventType: event.type,
+      status: event.status,
+      location: event.location,
+      arena: event.location,
+      team: event.title.split(":")[1]?.trim() || "Unknown",
+      division: "Unknown",
+      durationMinutes:
+        (new Date(event.endTime) - new Date(event.startTime)) / (1000 * 60)
+    }));
   }
 
   // ===== EVENT HANDLERS =====

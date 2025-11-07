@@ -107,20 +107,22 @@ lightning-button-group {
 
 .gantt-arena-row {
   display: flex;
-  flex-direction: column;
-  padding: 12px 8px;
+  flex-direction: row;
+  padding: 8px 8px;
   border-bottom: 1px solid var(--gantt-border-color);
   gap: 8px;
   height: 60px;
   flex-shrink: 0;
+  align-items: center;
 }
 
 .gantt-arena-info {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
   flex: 1;
   min-height: 0;
+  min-width: 0;
 }
 
 .gantt-arena-name {
@@ -128,10 +130,11 @@ lightning-button-group {
   font-weight: 600;
   color: var(--gantt-text-color);
   word-break: break-word;
-  white-space: normal;
+  white-space: nowrap;
   flex-shrink: 0;
   overflow: hidden;
   text-overflow: ellipsis;
+  line-height: 1.2;
 }
 
 .gantt-utilization-percent {
@@ -139,14 +142,16 @@ lightning-button-group {
   color: #6b7280;
   font-weight: 500;
   flex-shrink: 0;
+  line-height: 1;
 }
 
 .gantt-utilization-bar {
-  height: 8px;
+  height: 6px;
   background-color: #e5e7eb;
-  border-radius: 4px;
+  border-radius: 3px;
   overflow: hidden;
   flex-shrink: 0;
+  width: 100%;
 }
 
 .gantt-utilization-fill {
