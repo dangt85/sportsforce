@@ -16,12 +16,13 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  background-color: var(--gantt-bg-color);
+  background-color: #f8f9fa;
   color: var(--gantt-text-color);
   font-family:
     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
     Arial, sans-serif;
   overflow: hidden;
+  padding: 1rem;
 }
 
 /* ===== HEADER ===== */
@@ -85,7 +86,9 @@ lightning-button-group {
 .gantt-grid {
   display: flex;
   min-height: 100%;
-  background-color: var(--gantt-bg-color);
+  background-color: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 /* ===== ARENA COLUMN (STICKY LEFT) ===== */
