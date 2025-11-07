@@ -250,6 +250,7 @@ lightning-button-group {
 .gantt-block--empty {
   background-color: #f9fafb;
   color: #d1d5db;
+  border-left: 3px solid transparent;
 }
 
 .gantt-block--game {
