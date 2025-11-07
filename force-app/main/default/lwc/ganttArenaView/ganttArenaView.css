@@ -55,6 +55,7 @@
 
 .gantt-zoom {
   display: flex;
+  gap: 0;
 }
 
 .zoom-button {
@@ -167,6 +168,7 @@
   position: sticky;
   top: 0;
   z-index: 5;
+  min-height: 50px;
 }
 
 .gantt-timeline-label {
@@ -178,6 +180,9 @@
   font-size: 11px;
   font-weight: 500;
   color: #6b7280;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .gantt-timeline-label:last-child {
