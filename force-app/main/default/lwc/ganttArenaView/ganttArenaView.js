@@ -92,6 +92,7 @@ export default class GanttArenaView extends LightningElement {
   timelineBlocks = [];
   timelineLabels = [];
   visibleArenas = [];
+  currentDayIndex = -1; // -1 means today is not in the visible range
 
   // ===== COMPUTED PROPERTIES =====
 
@@ -114,6 +115,10 @@ export default class GanttArenaView extends LightningElement {
 
   get monthZoomVariant() {
     return this.isMonthZoom ? "brand" : "neutral";
+  }
+
+  isCurrentDayBlock(blockIndex) {
+    return blockIndex === this.currentDayIndex;
   }
 
   // ===== LIFECYCLE HOOKS =====
@@ -171,6 +176,9 @@ export default class GanttArenaView extends LightningElement {
       GanttArenaView.ZOOM_LEVELS.month;
     this.generateTimeline(zoomConfig);
 
+    // Calculate current day index for header highlighting
+    this.calculateCurrentDayIndex();
+
     // Build arena rows with blocks
     this.arenaRows = arenas.map((arena, index) => {
       const eventsForArena = this._events.filter((e) => e.location === arena);
@@ -202,9 +210,15 @@ export default class GanttArenaView extends LightningElement {
       const blockDate = new Date(startDate);
       blockDate.setDate(blockDate.getDate() + i);
 
+      const isCurrentDay = this.isCurrentDayDate(blockDate);
+      const headerClass = isCurrentDay
+        ? "gantt-timeline-label gantt-timeline-label--current-day"
+        : "gantt-timeline-label";
+
       blocks.push({
         date: blockDate,
-        label: formatter.format(blockDate)
+        label: formatter.format(blockDate),
+        headerClass
       });
 
       // Add period labels for month/quarter views
@@ -221,6 +235,14 @@ export default class GanttArenaView extends LightningElement {
 
     this.timelineBlocks = blocks;
     this.timelineLabels = labels;
+  }
+
+  isCurrentDayDate(date) {
+    const testDate = new Date(date);
+    testDate.setHours(0, 0, 0, 0);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return testDate.getTime() === today.getTime();
   }
 
   generateBlocksForArena(arena, events) {
@@ -284,6 +306,19 @@ export default class GanttArenaView extends LightningElement {
       bookedCount,
       totalCount: blocks.length
     };
+  }
+
+  calculateCurrentDayIndex() {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const index = this.timelineBlocks.findIndex((block) => {
+      const blockDate = new Date(block.date);
+      blockDate.setHours(0, 0, 0, 0);
+      return blockDate.getTime() === today.getTime();
+    });
+
+    this.currentDayIndex = index;
   }
 
   // ===== EVENT HANDLERS =====

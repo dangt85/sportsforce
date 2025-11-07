@@ -60,7 +60,7 @@
               for:item="block"
               for:index="blockIndex"
             >
-              <div key={block.label} class="gantt-timeline-label">
+              <div key={block.label} class={block.headerClass}>
                 <span class="gantt-date-label">{block.label}</span>
               </div>
             </template>

@@ -197,6 +197,13 @@ lightning-button-group {
   border-right: none;
 }
 
+.gantt-timeline-label--current-day {
+  background-color: #dbeafe;
+  color: #1e40af;
+  font-weight: 600;
+  border-bottom: 3px solid #0076d6;
+}
+
 .gantt-date-label {
   display: block;
   white-space: nowrap;
