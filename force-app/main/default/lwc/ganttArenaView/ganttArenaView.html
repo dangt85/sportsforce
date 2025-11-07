@@ -1,0 +1,159 @@
+<template>
+  <div class="gantt-arena-view">
+    <!-- Header -->
+    <div class="gantt-header">
+      <div class="gantt-title-section">
+        <h2 class="gantt-title">{ganttTitle}</h2>
+      </div>
+
+      <div class="gantt-controls">
+        <div class="gantt-zoom">
+          <lightning-button-group>
+            <lightning-button
+              label="Week"
+              variant={weekZoomVariant}
+              onclick={handleWeekZoom}
+              class="zoom-button"
+            ></lightning-button>
+            <lightning-button
+              label="Month"
+              variant={monthZoomVariant}
+              onclick={handleMonthZoom}
+              class="zoom-button"
+            ></lightning-button>
+            <lightning-button
+              label="Quarter"
+              variant={quarterZoomVariant}
+              onclick={handleQuarterZoom}
+              class="zoom-button"
+            ></lightning-button>
+          </lightning-button-group>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gantt Chart -->
+    <div class="gantt-scroll-container">
+      <div class="gantt-grid">
+        <!-- Arena Column (Sticky Left) -->
+        <div class="gantt-arena-column">
+          <!-- Arena Column Header -->
+          <div class="gantt-arena-header">
+            <div class="gantt-arena-name-header">Arena Name</div>
+            <div class="gantt-utilization-header">Utilization</div>
+          </div>
+
+          <!-- Arena Rows -->
+          <template for:each={arenaRows} for:item="arena">
+            <div key={arena.id} class="gantt-arena-row">
+              <div class="gantt-arena-info">
+                <div class="gantt-arena-name">{arena.name}</div>
+                <div class="gantt-utilization-percent">
+                  {arena.utilization.percentage}%
+                </div>
+              </div>
+              <div class="gantt-utilization-bar">
+                <div
+                  class="gantt-utilization-fill"
+                  data-width={arena.utilization.percentage}
+                ></div>
+              </div>
+            </div>
+          </template>
+        </div>
+
+        <!-- Timeline Column (Scrollable) -->
+        <div class="gantt-timeline-column">
+          <!-- Timeline Header -->
+          <div class="gantt-timeline-header">
+            <template
+              for:each={timelineBlocks}
+              for:item="block"
+              for:index="blockIndex"
+            >
+              <div key={block.label} class="gantt-timeline-label">
+                <span class="gantt-date-label">{block.label}</span>
+              </div>
+            </template>
+          </div>
+
+          <!-- Timeline Blocks for Each Arena -->
+          <template for:each={arenaRows} for:item="arena">
+            <div
+              key={arena.id}
+              class="gantt-block-row"
+              data-arena-index={arena.index}
+            >
+              <template
+                for:each={arena.blocks}
+                for:item="block"
+                for:index="blockIndex"
+              >
+                <div
+                  key={block.label}
+                  class={block.cssClass}
+                  data-block-index={blockIndex}
+                  data-arena-index={arena.index}
+                  onclick={handleBlockClick}
+                  onmouseover={handleBlockHover}
+                  role="button"
+                  tabindex="0"
+                  aria-label="Time slot: {block.label}"
+                >
+                  <template if:true={block.isBooked}>
+                    <span class="gantt-block-text">{block.eventTypes}</span>
+                  </template>
+                </div>
+              </template>
+            </div>
+          </template>
+        </div>
+      </div>
+    </div>
+
+    <!-- Legend -->
+    <div class="gantt-legend">
+      <div class="legend-section">
+        <div class="legend-title">Event Types:</div>
+        <div class="legend-items">
+          <div class="legend-item">
+            <span class="legend-indicator legend-indicator--game"></span>
+            <span>Game (G)</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-indicator legend-indicator--practice"></span>
+            <span>Practice (P)</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-indicator legend-indicator--tryout"></span>
+            <span>Tryout (T)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="legend-section">
+        <div class="legend-title">Utilization:</div>
+        <div class="legend-items">
+          <div class="legend-item">
+            <div class="gantt-utilization-bar legend-bar">
+              <div class="gantt-utilization-fill legend-high"></div>
+            </div>
+            <span>High (80%+)</span>
+          </div>
+          <div class="legend-item">
+            <div class="gantt-utilization-bar legend-bar">
+              <div class="gantt-utilization-fill legend-medium"></div>
+            </div>
+            <span>Medium (50-79%)</span>
+          </div>
+          <div class="legend-item">
+            <div class="gantt-utilization-bar legend-bar">
+              <div class="gantt-utilization-fill legend-low"></div>
+            </div>
+            <span>Low (&lt;50%)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
