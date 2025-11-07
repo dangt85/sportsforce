@@ -186,9 +186,17 @@ export default class ScheduleCalendar extends LightningElement {
           title: event.title,
           startTime: new Date(event.startTime),
           endTime: new Date(event.endTime),
+          startDateTime: new Date(event.startTime),
+          endDateTime: new Date(event.endTime),
           type: event.type,
+          eventType: event.type,
           status: event.status,
-          location: event.location
+          location: event.location,
+          arena: event.location,
+          team: event.title.split(":")[1]?.trim() || "Unknown",
+          division: "Unknown",
+          durationMinutes:
+            (new Date(event.endTime) - new Date(event.startTime)) / (1000 * 60)
         }));
         return;
       }
