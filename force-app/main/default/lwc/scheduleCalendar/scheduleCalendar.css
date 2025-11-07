@@ -66,13 +66,15 @@
   display: inline-block;
 }
 
-.calendar-wrapper {
+c-month-calendar-view,
+c-week-calendar-view,
+c-day-calendar-view {
   flex: 1;
   background-color: #ffffff;
   border-radius: 4px;
-  padding: 1rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  overflow-y: auto;
+  display: block;
+  overflow: auto;
 }
 
 .calendar {

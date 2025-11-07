@@ -88,40 +88,38 @@
       </div>
     </div>
 
-    <div class="calendar-wrapper">
-      <!-- Month View -->
-      <template if:true={isMonthView}>
-        <c-month-calendar-view
-          current-date={currentDate}
-          events={events}
-          selected-filters={selectedFilters}
-          selected-date={selectedDate}
-          ondayselected={handleDaySelected}
-          oneventselected={handleEventSelected}
-        ></c-month-calendar-view>
-      </template>
+    <!-- Month View -->
+    <template if:true={isMonthView}>
+      <c-month-calendar-view
+        current-date={currentDate}
+        events={events}
+        selected-filters={selectedFilters}
+        selected-date={selectedDate}
+        ondayselected={handleDaySelected}
+        oneventselected={handleEventSelected}
+      ></c-month-calendar-view>
+    </template>
 
-      <!-- Week View -->
-      <template if:true={isWeekView}>
-        <c-week-calendar-view
-          current-date={currentDate}
-          events={events}
-          selected-filters={selectedFilters}
-          oneventclick={handleEventSelected}
-        ></c-week-calendar-view>
-      </template>
+    <!-- Week View -->
+    <template if:true={isWeekView}>
+      <c-week-calendar-view
+        current-date={currentDate}
+        events={events}
+        selected-filters={selectedFilters}
+        oneventclick={handleEventSelected}
+      ></c-week-calendar-view>
+    </template>
 
-      <!-- Day View -->
-      <template if:true={isDayView}>
-        <c-day-calendar-view
-          selected-date={currentDate}
-          events={events}
-          selected-filters={selectedFilters}
-          oneventclick={handleEventSelected}
-          oneventdrop={handleEventDrop}
-        ></c-day-calendar-view>
-      </template>
-    </div>
+    <!-- Day View -->
+    <template if:true={isDayView}>
+      <c-day-calendar-view
+        selected-date={currentDate}
+        events={events}
+        selected-filters={selectedFilters}
+        oneventclick={handleEventSelected}
+        oneventdrop={handleEventDrop}
+      ></c-day-calendar-view>
+    </template>
 
     <template if:true={showEventModal}>
       <lightning-modal-header label="Event Details"></lightning-modal-header>
