@@ -43,21 +43,6 @@
   text-align: left;
 }
 
-/* Dark Mode Support */
-@media (prefers-color-scheme: dark) {
-  .filter-header h3 {
-    color: #ffffff;
-  }
-
-  .filter-count {
-    color: #1ae325;
-  }
-
-  .filter-footer {
-    border-top-color: #4d4d4d;
-  }
-}
-
 /* Print Styles */
 @media print {
   .filter-footer {
