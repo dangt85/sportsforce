@@ -47,6 +47,12 @@
             onclick={handleDayViewClick}
             class="view-button"
           ></lightning-button>
+          <lightning-button
+            label="Gantt"
+            variant={ganttButtonVariant}
+            onclick={handleGanttViewClick}
+            class="view-button"
+          ></lightning-button>
         </lightning-button-group>
         <lightning-button
           label="New Event"
@@ -118,6 +124,16 @@
           oneventclick={handleEventSelected}
           oneventdrop={handleEventDrop}
         ></c-day-calendar-view>
+      </template>
+
+      <!-- Gantt View -->
+      <template if:true={isGanttView}>
+        <c-gantt-arena-view
+          current-date={currentDate}
+          events={events}
+          selected-filters={selectedFilters}
+          oneventclick={handleEventSelected}
+        ></c-gantt-arena-view>
       </template>
     </div>
 

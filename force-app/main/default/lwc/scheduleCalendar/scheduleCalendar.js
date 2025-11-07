@@ -11,7 +11,7 @@ export default class ScheduleCalendar extends LightningElement {
   @track calendarTitle = "";
   @track currentDate = new Date();
   @track events = [];
-  @track currentView = "month"; // 'month', 'week', or 'day'
+  @track currentView = "month"; // 'month', 'week', 'day', or 'gantt'
   @track selectedDate = null;
 
   _selectedFilters = {
@@ -56,6 +56,10 @@ export default class ScheduleCalendar extends LightningElement {
     return this.currentView === "day";
   }
 
+  get isGanttView() {
+    return this.currentView === "gantt";
+  }
+
   get monthButtonVariant() {
     return this.isMonthView ? "brand" : "neutral";
   }
@@ -66,6 +70,10 @@ export default class ScheduleCalendar extends LightningElement {
 
   get dayButtonVariant() {
     return this.isDayView ? "brand" : "neutral";
+  }
+
+  get ganttButtonVariant() {
+    return this.isGanttView ? "brand" : "neutral";
   }
 
   handleMonthViewClick() {
@@ -83,6 +91,11 @@ export default class ScheduleCalendar extends LightningElement {
     this.updateCalendarTitle();
   }
 
+  handleGanttViewClick() {
+    this.currentView = "gantt";
+    this.updateCalendarTitle();
+  }
+
   // ===== TOOLBAR HANDLERS =====
 
   handleTodayClick() {
@@ -93,7 +106,7 @@ export default class ScheduleCalendar extends LightningElement {
 
   handlePreviousClick() {
     const newDate = new Date(this.currentDate);
-    if (this.currentView === "month") {
+    if (this.currentView === "month" || this.currentView === "gantt") {
       newDate.setMonth(newDate.getMonth() - 1);
     } else if (this.currentView === "week") {
       newDate.setDate(newDate.getDate() - 7);
@@ -107,7 +120,7 @@ export default class ScheduleCalendar extends LightningElement {
 
   handleNextClick() {
     const newDate = new Date(this.currentDate);
-    if (this.currentView === "month") {
+    if (this.currentView === "month" || this.currentView === "gantt") {
       newDate.setMonth(newDate.getMonth() + 1);
     } else if (this.currentView === "week") {
       newDate.setDate(newDate.getDate() + 7);
@@ -129,7 +142,7 @@ export default class ScheduleCalendar extends LightningElement {
       // Calculate date range based on view
       let startDate, endDate;
 
-      if (this.currentView === "month") {
+      if (this.currentView === "month" || this.currentView === "gantt") {
         // Get first day of month
         startDate = new Date(
           this.currentDate.getFullYear(),
