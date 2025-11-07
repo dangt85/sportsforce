@@ -110,7 +110,7 @@ export default class GanttArenaView extends LightningElement {
 
   get ganttTitle() {
     const season = this.currentDate.getFullYear();
-    return `Arena Utilization - Season ${season}-${season + 1}`;
+    return `Season ${season}-${season + 1}`;
   }
 
   get isWeekZoom() {
@@ -186,6 +186,10 @@ export default class GanttArenaView extends LightningElement {
       newDate.setMonth(newDate.getMonth() - 1);
     }
     this.setCurrentDate(newDate);
+  }
+
+  handleToday() {
+    this.setCurrentDate(new Date());
   }
 
   handleNext() {

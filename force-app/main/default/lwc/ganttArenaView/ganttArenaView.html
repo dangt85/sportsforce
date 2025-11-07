@@ -2,25 +2,30 @@
   <div class="gantt-arena-view">
     <!-- Header -->
     <div class="gantt-header">
-      <div class="gantt-title-section">
-        <div class="gantt-nav-controls">
-          <lightning-button
-            icon-name="utility:chevronleft"
-            variant="border"
-            onclick={handlePrevious}
-            class="gantt-nav-button"
-            title="Previous period"
-          ></lightning-button>
-          <h2 class="gantt-title">{ganttTitle}</h2>
-          <lightning-button
-            icon-name="utility:chevronright"
-            variant="border"
-            onclick={handleNext}
-            class="gantt-nav-button"
-            title="Next period"
-          ></lightning-button>
-        </div>
+      <div class="gantt-nav-controls">
+        <lightning-button
+          icon-name="utility:chevronleft"
+          variant="border"
+          onclick={handlePrevious}
+          class="gantt-nav-button"
+          title="Previous period"
+        ></lightning-button>
+        <lightning-button
+          label="Today"
+          icon-name="utility:event"
+          onclick={handleToday}
+          class="gantt-nav-button"
+        ></lightning-button>
+        <lightning-button
+          icon-name="utility:chevronright"
+          variant="border"
+          onclick={handleNext}
+          class="gantt-nav-button"
+          title="Next period"
+        ></lightning-button>
       </div>
+
+      <h2 class="gantt-title">{ganttTitle}</h2>
 
       <div class="gantt-zoom">
         <lightning-button-group>
@@ -45,7 +50,7 @@
         <div class="gantt-arena-column">
           <!-- Arena Column Header -->
           <div class="gantt-arena-header">
-            <div class="gantt-arena-label">Arena / Utilization</div>
+            <div class="gantt-arena-label">Arena Utilization</div>
           </div>
 
           <!-- Arena Rows -->

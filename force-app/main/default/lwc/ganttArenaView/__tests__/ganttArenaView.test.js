@@ -44,7 +44,7 @@ describe("GanttArenaView", () => {
     return Promise.resolve().then(() => {
       const title = element.shadowRoot.querySelector(".gantt-title");
       expect(title).toBeTruthy();
-      expect(title.textContent).toContain("Arena Utilization");
+      expect(title.textContent).toContain("Season");
     });
   });
 
