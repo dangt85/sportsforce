@@ -92,6 +92,7 @@ export default class GanttArenaView extends LightningElement {
   timelineBlocks = [];
   timelineLabels = [];
   visibleArenas = [];
+  currentDayIndex = -1; // -1 means today is not in the visible range
 
   // ===== COMPUTED PROPERTIES =====
 
@@ -116,6 +117,10 @@ export default class GanttArenaView extends LightningElement {
     return this.isMonthZoom ? "brand" : "neutral";
   }
 
+  get hasCurrentDay() {
+    return this.currentDayIndex >= 0;
+  }
+
   // ===== LIFECYCLE HOOKS =====
 
   connectedCallback() {
@@ -131,6 +136,33 @@ export default class GanttArenaView extends LightningElement {
         bar.style.width = `${width}%`;
       }
     });
+
+    // Position current day indicator overlay
+    if (this.hasCurrentDay) {
+      this.positionCurrentDayIndicator();
+    }
+  }
+
+  positionCurrentDayIndicator() {
+    const indicator = this.template.querySelector(
+      ".gantt-current-day-indicator"
+    );
+    const blocks = this.template.querySelectorAll(".gantt-block");
+
+    if (!indicator || blocks.length === 0) {
+      return;
+    }
+
+    // Get the first block's width
+    const firstBlock = blocks[0];
+    const blockWidth = firstBlock.offsetWidth;
+
+    // Calculate left position: block width × current day index
+    const leftPosition = blockWidth * this.currentDayIndex;
+
+    // Position the indicator
+    indicator.style.left = `${leftPosition}px`;
+    indicator.style.width = `${blockWidth}px`;
   }
 
   // ===== PRIVATE METHODS =====
@@ -170,6 +202,9 @@ export default class GanttArenaView extends LightningElement {
       GanttArenaView.ZOOM_LEVELS[this.zoomLevel] ||
       GanttArenaView.ZOOM_LEVELS.month;
     this.generateTimeline(zoomConfig);
+
+    // Calculate current day index for visual indicator
+    this.calculateCurrentDayIndex();
 
     // Build arena rows with blocks
     this.arenaRows = arenas.map((arena, index) => {
@@ -224,7 +259,7 @@ export default class GanttArenaView extends LightningElement {
   }
 
   generateBlocksForArena(arena, events) {
-    return this.timelineBlocks.map((timeBlock) => {
+    return this.timelineBlocks.map((timeBlock, blockIndex) => {
       const eventsOnDate = events.filter((event) => {
         const eventDate = new Date(event.startTime);
         return (
@@ -265,13 +300,16 @@ export default class GanttArenaView extends LightningElement {
         }
       }
 
+      const isCurrentDay = blockIndex === this.currentDayIndex;
+
       return {
         date: timeBlock.date,
         isBooked,
         eventTypes: eventTypes.slice(0, 2).join(""), // Show max 2 event type letters
         events: eventsOnDate,
         label: timeBlock.label,
-        cssClass: blockClass
+        cssClass: blockClass,
+        isCurrentDay
       };
     });
   }
@@ -284,6 +322,19 @@ export default class GanttArenaView extends LightningElement {
       bookedCount,
       totalCount: blocks.length
     };
+  }
+
+  calculateCurrentDayIndex() {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const index = this.timelineBlocks.findIndex((block) => {
+      const blockDate = new Date(block.date);
+      blockDate.setHours(0, 0, 0, 0);
+      return blockDate.getTime() === today.getTime();
+    });
+
+    this.currentDayIndex = index;
   }
 
   // ===== EVENT HANDLERS =====

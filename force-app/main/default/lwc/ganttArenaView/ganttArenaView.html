@@ -83,6 +83,7 @@
                   class={block.cssClass}
                   data-block-index={blockIndex}
                   data-arena-index={arena.index}
+                  data-is-current-day={block.isCurrentDay}
                   onclick={handleBlockClick}
                   onmouseover={handleBlockHover}
                   role="button"
@@ -95,6 +96,14 @@
                 </div>
               </template>
             </div>
+          </template>
+
+          <!-- Current Day Indicator Overlay -->
+          <template if:true={hasCurrentDay}>
+            <div
+              class="gantt-current-day-indicator"
+              data-current-day-index={currentDayIndex}
+            ></div>
           </template>
         </div>
       </div>
