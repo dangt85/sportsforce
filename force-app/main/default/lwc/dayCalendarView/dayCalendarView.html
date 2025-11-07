@@ -69,25 +69,24 @@
                     <div class="event-time">
                       {event.startTime} - {event.endTime}
                     </div>
-                    <template if:true={event.hasConflict}>
-                      <div class="event-conflict-indicator">
-                        <lightning-icon
-                          icon-name="utility:warning"
-                          size="x-small"
-                        ></lightning-icon>
-                        Conflict
-                      </div>
-                    </template>
+                    <div
+                      lwc:if={event.hasConflict}
+                      class="event-conflict-indicator"
+                    >
+                      <lightning-icon
+                        icon-name="utility:warning"
+                        size="x-small"
+                      ></lightning-icon>
+                      Conflict
+                    </div>
                   </div>
                 </div>
               </template>
 
               <!-- Current time indicator (visible only for today) -->
-              <template if:true={isToday}>
-                <div class="current-time-indicator">
-                  <span class="current-time-label"></span>
-                </div>
-              </template>
+              <div lwc:if={isToday} class="current-time-indicator">
+                <span class="current-time-label"></span>
+              </div>
             </div>
           </template>
         </div>
@@ -95,7 +94,7 @@
     </div>
 
     <!-- Quick-create form overlay -->
-    <template if:true={quickCreateSlot}>
+    <div lwc:if={quickCreateSlot} class="quick-create-overlay-container">
       <div class="quick-create-overlay">
         <div class="quick-create-form">
           <div class="form-header">
@@ -156,6 +155,6 @@
           </div>
         </div>
       </div>
-    </template>
+    </div>
   </div>
 </template>

@@ -89,7 +89,7 @@
     </div>
 
     <!-- Month View -->
-    <template if:true={isMonthView}>
+    <div lwc:if={isMonthView}>
       <c-month-calendar-view
         current-date={currentDate}
         events={events}
@@ -98,20 +98,20 @@
         ondayselected={handleDaySelected}
         oneventselected={handleEventSelected}
       ></c-month-calendar-view>
-    </template>
+    </div>
 
     <!-- Week View -->
-    <template if:true={isWeekView}>
+    <div lwc:if={isWeekView}>
       <c-week-calendar-view
         current-date={currentDate}
         events={events}
         selected-filters={selectedFilters}
         oneventclick={handleEventSelected}
       ></c-week-calendar-view>
-    </template>
+    </div>
 
     <!-- Day View -->
-    <template if:true={isDayView}>
+    <div lwc:if={isDayView}>
       <c-day-calendar-view
         selected-date={currentDate}
         events={events}
@@ -119,13 +119,13 @@
         oneventclick={handleEventSelected}
         oneventdrop={handleEventDrop}
       ></c-day-calendar-view>
-    </template>
+    </div>
 
-    <template if:true={showEventModal}>
+    <template lwc:if={showEventModal}>
       <lightning-modal-header label="Event Details"></lightning-modal-header>
       <lightning-modal-body>
         <div class="event-details">
-          <template if:true={selectedEvent}>
+          <div lwc:if={selectedEvent}>
             <div class="detail-row">
               <strong>Event Type:</strong>
               <span>{selectedEvent.eventType}</span>
@@ -146,7 +146,7 @@
               <strong>Status:</strong>
               <span>{selectedEvent.status}</span>
             </div>
-          </template>
+          </div>
         </div>
       </lightning-modal-body>
       <lightning-modal-footer>
@@ -169,7 +169,7 @@
       </lightning-modal-footer>
     </template>
 
-    <template if:true={showErrorModal}>
+    <template lwc:if={showErrorModal}>
       <lightning-modal-header label="Error"></lightning-modal-header>
       <lightning-modal-body>
         <p>{errorMessage}</p>
@@ -182,7 +182,7 @@
       </lightning-modal-footer>
     </template>
 
-    <template if:true={isLoading}>
+    <template lwc:if={isLoading}>
       <lightning-spinner
         alternative-text="Loading"
         size="large"

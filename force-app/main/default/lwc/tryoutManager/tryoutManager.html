@@ -18,15 +18,15 @@
       </lightning-input>
     </div>
 
-    <template if:true={isLoading}>
+    <div lwc:if={isLoading}>
       <lightning-spinner
         alternative-text="Loading"
         size="large"
       ></lightning-spinner>
-    </template>
+    </div>
 
-    <template if:false={isLoading}>
-      <template if:true={hasRecords}>
+    <template lwc:if={isLoaded}>
+      <template lwc:if={hasRecords}>
         <lightning-datatable
           key-field="id"
           data={tryouts}
@@ -38,17 +38,17 @@
         </lightning-datatable>
       </template>
 
-      <template if:false={hasRecords}>
+      <template lwc:if={noRecords}>
         <div class="no-records">
           <p>No tryouts found. Create a new tryout to get started.</p>
         </div>
       </template>
     </template>
 
-    <template if:true={showRecordModal}>
+    <template lwc:if={showRecordModal}>
       <lightning-modal-header label={modalTitle}></lightning-modal-header>
       <lightning-modal-body>
-        <template if:true={selectedRecord}>
+        <div lwc:if={selectedRecord}>
           <div class="record-details">
             <div class="detail-section">
               <h3>Basic Information</h3>
@@ -64,7 +64,7 @@
               <p><strong>Status:</strong> {selectedRecord.Status__c}</p>
             </div>
           </div>
-        </template>
+        </div>
       </lightning-modal-body>
       <lightning-modal-footer>
         <lightning-button
@@ -82,7 +82,7 @@
       </lightning-modal-footer>
     </template>
 
-    <template if:true={showErrorModal}>
+    <template lwc:if={showErrorModal}>
       <lightning-modal-header label="Error"></lightning-modal-header>
       <lightning-modal-body>
         <p>{errorMessage}</p>

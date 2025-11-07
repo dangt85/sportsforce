@@ -35,15 +35,15 @@
     <div class="statistics-tabs">
       <lightning-tabset>
         <lightning-tab label="Skaters">
-          <template if:true={isLoading}>
+          <div lwc:if={isLoading}>
             <lightning-spinner
               alternative-text="Loading"
               size="large"
             ></lightning-spinner>
-          </template>
+          </div>
 
-          <template if:false={isLoading}>
-            <template if:true={hasSkaterRecords}>
+          <template lwc:if={isLoaded}>
+            <template lwc:if={hasSkaterRecords}>
               <lightning-datatable
                 key-field="id"
                 data={skaterStats}
@@ -54,7 +54,7 @@
               </lightning-datatable>
             </template>
 
-            <template if:false={hasSkaterRecords}>
+            <template lwc:if={noSkaterRecords}>
               <div class="no-records">
                 <p>No skater statistics found for the selected filters.</p>
               </div>
@@ -63,15 +63,15 @@
         </lightning-tab>
 
         <lightning-tab label="Goalies">
-          <template if:true={isLoading}>
+          <div lwc:if={isLoading}>
             <lightning-spinner
               alternative-text="Loading"
               size="large"
             ></lightning-spinner>
-          </template>
+          </div>
 
-          <template if:false={isLoading}>
-            <template if:true={hasGoalieRecords}>
+          <template lwc:if={isLoaded}>
+            <template lwc:if={hasGoalieRecords}>
               <lightning-datatable
                 key-field="id"
                 data={goalieStats}
@@ -82,7 +82,7 @@
               </lightning-datatable>
             </template>
 
-            <template if:false={hasGoalieRecords}>
+            <template lwc:if={noGoalieRecords}>
               <div class="no-records">
                 <p>No goalie statistics found for the selected filters.</p>
               </div>
@@ -92,7 +92,7 @@
       </lightning-tabset>
     </div>
 
-    <template if:true={showErrorModal}>
+    <template lwc:if={showErrorModal}>
       <lightning-modal-header label="Error"></lightning-modal-header>
       <lightning-modal-body>
         <p>{errorMessage}</p>

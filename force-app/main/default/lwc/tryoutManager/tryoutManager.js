@@ -96,6 +96,14 @@ export default class TryoutManager extends LightningElement {
     return this.tryouts && this.tryouts.length > 0;
   }
 
+  get isLoaded() {
+    return !this.isLoading;
+  }
+
+  get noRecords() {
+    return !this.hasRecords;
+  }
+
   handleNewTryoutClick() {
     // Navigate to create new tryout record
     window.open("/lightning/o/Tryout__c/new", "_blank");

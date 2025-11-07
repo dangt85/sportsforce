@@ -161,9 +161,9 @@
                   tabindex="0"
                   aria-label="Time slot: {block.label}"
                 >
-                  <template if:true={block.isBooked}>
-                    <span class="gantt-block-text">{block.eventTypes}</span>
-                  </template>
+                  <span lwc:if={block.isBooked} class="gantt-block-text"
+                    >{block.eventTypes}</span
+                  >
                 </div>
               </template>
             </div>

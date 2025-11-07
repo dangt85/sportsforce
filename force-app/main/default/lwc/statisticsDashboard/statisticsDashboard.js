@@ -237,6 +237,18 @@ export default class StatisticsDashboard extends LightningElement {
     return this.goalieStats && this.goalieStats.length > 0;
   }
 
+  get isLoaded() {
+    return !this.isLoading;
+  }
+
+  get noSkaterRecords() {
+    return !this.hasSkaterRecords;
+  }
+
+  get noGoalieRecords() {
+    return !this.hasGoalieRecords;
+  }
+
   handleSeasonChange(event) {
     this.selectedSeason = event.detail.value;
     this.loadStatistics();

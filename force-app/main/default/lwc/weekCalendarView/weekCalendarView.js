@@ -879,6 +879,13 @@ export default class WeekCalendarView extends LightningElement {
   }
 
   /**
+   * Check if calendar is ready to display (not loading and no errors)
+   */
+  get calendarReady() {
+    return !this.isLoading && !this.error;
+  }
+
+  /**
    * Get start time for quick-create form (current slot time)
    */
   getQuickCreateStartTime() {
