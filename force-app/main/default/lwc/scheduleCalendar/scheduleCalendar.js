@@ -1,6 +1,7 @@
 import { LightningElement, track } from "lwc";
 import getEvents from "@salesforce/apex/ScheduleCalendarController.getEventsByDateRange";
 import deleteEvent from "@salesforce/apex/ScheduleCalendarController.deleteEvent";
+import CalendarService from "c/calendarService";
 
 export default class ScheduleCalendar extends LightningElement {
   @track showEventModal = false;
@@ -13,6 +14,10 @@ export default class ScheduleCalendar extends LightningElement {
   @track events = [];
   @track currentView = "month"; // 'month', 'week', 'day', or 'gantt'
   @track selectedDate = null;
+
+  // Development flag - set to true to use mock data
+  useMockData = true;
+  calendarService = new CalendarService(null);
 
   _selectedFilters = {
     teams: [],
@@ -168,6 +173,24 @@ export default class ScheduleCalendar extends LightningElement {
         // Day view: just the current date
         startDate = new Date(this.currentDate);
         endDate = new Date(this.currentDate);
+      }
+
+      // Use mock data for development/testing
+      if (this.useMockData) {
+        const mockEvents = this.calendarService.generateMockEvents(
+          startDate,
+          endDate
+        );
+        this.events = mockEvents.map((event) => ({
+          id: event.id,
+          title: event.title,
+          startTime: new Date(event.startTime),
+          endTime: new Date(event.endTime),
+          type: event.type,
+          status: event.status,
+          location: event.location
+        }));
+        return;
       }
 
       // Format dates

@@ -271,6 +271,94 @@ export default class CalendarService {
     }
   }
 
+  // ===== MOCK DATA FOR DEVELOPMENT =====
+
+  /**
+   * Generate mock events for UI testing and development
+   * Includes Games, Practices, and Tryouts across multiple arenas
+   *
+   * @param {Date} startDate - Start of date range
+   * @param {Date} endDate - End of date range
+   * @returns {Array} Array of mock event objects
+   */
+  generateMockEvents(startDate, endDate) {
+    const arenas = [
+      "Downtown Arena",
+      "North Ice Complex",
+      "South Rink",
+      "East Hockey Center",
+      "West Sports Complex"
+    ];
+
+    const teams = [
+      "Atoms U10",
+      "Atoms U12",
+      "Peewees A",
+      "Peewees B",
+      "Midgets A",
+      "Midgets B",
+      "Juniors"
+    ];
+
+    const eventTypes = ["Game", "Practice", "Tryout"];
+
+    const mockEvents = [];
+    let eventId = 1;
+    const current = new Date(startDate);
+
+    while (current <= endDate) {
+      // 40% chance of an event on this day
+      if (Math.random() < 0.4) {
+        const eventCount = Math.floor(Math.random() * 3) + 1; // 1-3 events per day
+
+        for (let i = 0; i < eventCount; i++) {
+          const arena = arenas[Math.floor(Math.random() * arenas.length)];
+          const team = teams[Math.floor(Math.random() * teams.length)];
+          const eventType =
+            eventTypes[Math.floor(Math.random() * eventTypes.length)];
+
+          // Random time between 6 AM and 9 PM
+          const startHour = 6 + Math.floor(Math.random() * 15);
+          const startMinutes = [0, 15, 30, 45][Math.floor(Math.random() * 4)];
+
+          const eventStart = new Date(current);
+          eventStart.setHours(startHour, startMinutes, 0, 0);
+
+          // Event duration: 1-2 hours
+          const durationHours = 1 + Math.random();
+          const eventEnd = new Date(eventStart);
+          eventEnd.setHours(
+            eventEnd.getHours() + Math.floor(durationHours),
+            eventEnd.getMinutes() + Math.floor((durationHours % 1) * 60)
+          );
+
+          mockEvents.push({
+            id: `mock-event-${eventId}`,
+            title: `${eventType}: ${team}`,
+            startTime: eventStart.toISOString(),
+            endTime: eventEnd.toISOString(),
+            type: eventType,
+            status: "Scheduled",
+            location: arena,
+            eventType: eventType,
+            description: `${eventType} event for ${team} at ${arena}`,
+            homeTeamId: Math.random().toString(),
+            awayTeamId: Math.random().toString(),
+            teamId: Math.random().toString(),
+            arenaId: arena,
+            divisionId: Math.random().toString()
+          });
+
+          eventId++;
+        }
+      }
+
+      current.setDate(current.getDate() + 1);
+    }
+
+    return mockEvents;
+  }
+
   // ===== EVENT POSITIONING =====
 
   /**
