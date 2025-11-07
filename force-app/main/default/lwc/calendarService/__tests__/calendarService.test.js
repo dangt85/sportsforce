@@ -73,6 +73,11 @@ describe("CalendarService", () => {
     let mockEvents;
 
     beforeEach(() => {
+      // Use future dates to avoid past event filtering issues
+      const futureDate = new Date();
+      futureDate.setDate(futureDate.getDate() + 7); // 7 days in future
+      const isoDate = futureDate.toISOString().split("T")[0];
+
       mockEvents = [
         {
           id: "1",
@@ -81,7 +86,7 @@ describe("CalendarService", () => {
           awayTeamId: "team2",
           arenaId: "arena1",
           divisionId: "div1",
-          startDateTime: "2025-11-06T19:00:00Z"
+          startDateTime: `${isoDate}T19:00:00Z`
         },
         {
           id: "2",
@@ -89,14 +94,14 @@ describe("CalendarService", () => {
           teamId: "team1",
           arenaId: "arena2",
           divisionId: "div1",
-          startDateTime: "2025-11-06T20:00:00Z"
+          startDateTime: `${isoDate}T20:00:00Z`
         },
         {
           id: "3",
           type: "Tryout",
           divisionId: "div2",
           arenaId: "arena1",
-          startDateTime: "2025-11-06T21:00:00Z"
+          startDateTime: `${isoDate}T21:00:00Z`
         }
       ];
     });
@@ -148,9 +153,20 @@ describe("CalendarService", () => {
     test("should sort events by start date", () => {
       const filtered = service.filterEvents(mockEvents);
 
-      expect(filtered[0].startDateTime).toBe("2025-11-06T19:00:00Z");
-      expect(filtered[1].startDateTime).toBe("2025-11-06T20:00:00Z");
-      expect(filtered[2].startDateTime).toBe("2025-11-06T21:00:00Z");
+      // Check events are sorted in chronological order
+      expect(filtered[0].id).toBe("1"); // 19:00
+      expect(filtered[1].id).toBe("2"); // 20:00
+      expect(filtered[2].id).toBe("3"); // 21:00
+
+      // Verify actual chronological ordering
+      expect(
+        new Date(filtered[0].startDateTime) <=
+          new Date(filtered[1].startDateTime)
+      ).toBe(true);
+      expect(
+        new Date(filtered[1].startDateTime) <=
+          new Date(filtered[2].startDateTime)
+      ).toBe(true);
     });
 
     test("should hide past events if requested", () => {
