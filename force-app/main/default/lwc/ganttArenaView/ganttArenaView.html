@@ -6,23 +6,19 @@
         <h2 class="gantt-title">{ganttTitle}</h2>
       </div>
 
-      <div class="gantt-controls">
-        <div class="gantt-zoom">
-          <lightning-button-group>
-            <lightning-button
-              label="Week"
-              variant={weekZoomVariant}
-              onclick={handleWeekZoom}
-              class="zoom-button"
-            ></lightning-button>
-            <lightning-button
-              label="Month"
-              variant={monthZoomVariant}
-              onclick={handleMonthZoom}
-              class="zoom-button"
-            ></lightning-button>
-          </lightning-button-group>
-        </div>
+      <div class="gantt-zoom">
+        <lightning-button-group>
+          <lightning-button
+            label="Week"
+            variant={weekZoomVariant}
+            onclick={handleWeekZoom}
+          ></lightning-button>
+          <lightning-button
+            label="Month"
+            variant={monthZoomVariant}
+            onclick={handleMonthZoom}
+          ></lightning-button>
+        </lightning-button-group>
       </div>
     </div>
 
