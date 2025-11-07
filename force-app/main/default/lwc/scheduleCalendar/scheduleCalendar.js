@@ -185,6 +185,7 @@ export default class ScheduleCalendar extends LightningElement {
           durationMinutes:
             (new Date(event.endTime) - new Date(event.startTime)) / (1000 * 60)
         }));
+        this._dispatchEventsUpdated();
         return;
       }
 
@@ -212,6 +213,7 @@ export default class ScheduleCalendar extends LightningElement {
           status: event.status,
           location: event.location
         }));
+        this._dispatchEventsUpdated();
       } else if (response && response.errorMessage) {
         console.error("Apex error:", response.errorMessage);
         this.showError(response.errorMessage);
@@ -301,6 +303,15 @@ export default class ScheduleCalendar extends LightningElement {
   showError(message) {
     this.errorMessage = message;
     this.showErrorModal = true;
+  }
+
+  _dispatchEventsUpdated() {
+    const event = new CustomEvent("eventsupdated", {
+      detail: this.events,
+      composed: true,
+      bubbles: true
+    });
+    this.dispatchEvent(event);
   }
 
   updateCalendarTitle() {
