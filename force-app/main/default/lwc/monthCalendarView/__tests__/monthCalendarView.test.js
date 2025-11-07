@@ -476,11 +476,11 @@ describe("monthCalendarView", () => {
   });
 
   describe("Lightning Components Structure", () => {
-    test("should use lightning-card for calendar container", async () => {
+    test("should render calendar container", async () => {
       await flushPromises();
 
-      const card = element.shadowRoot.querySelector("lightning-card");
-      expect(card).toBeTruthy();
+      const container = element.shadowRoot.querySelector(".calendar-container");
+      expect(container).toBeTruthy();
     });
 
     test("should render calendar with proper structure", async () => {
