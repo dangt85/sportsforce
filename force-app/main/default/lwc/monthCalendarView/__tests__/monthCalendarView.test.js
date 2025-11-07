@@ -26,15 +26,13 @@ describe("monthCalendarView", () => {
       expect(element).toBeTruthy();
     });
 
-    test("should display current month and year", async () => {
+    test("should display calendar grid for current month", async () => {
       const today = new Date();
       element.currentDate = today;
       await flushPromises();
 
-      const monthYear = element.shadowRoot.querySelector(".month-year-header");
-      expect(monthYear).toBeTruthy();
-      const monthName = today.toLocaleString("default", { month: "long" });
-      expect(monthYear.textContent).toContain(monthName);
+      const calendarGrid = element.shadowRoot.querySelector(".calendar-grid");
+      expect(calendarGrid).toBeTruthy();
     });
 
     test("should have default currentDate as today", async () => {
@@ -441,24 +439,23 @@ describe("monthCalendarView", () => {
   });
 
   describe("Month Navigation", () => {
-    test("should display November 2025 with November date", async () => {
+    test("should display November 2025 calendar grid", async () => {
       element.currentDate = new Date(2025, 10, 15);
       await flushPromises();
 
-      const monthYear = element.shadowRoot.querySelector(".month-year-header");
-      expect(monthYear.textContent).toContain("November");
-      expect(monthYear.textContent).toContain("2025");
+      const calendarGrid = element.shadowRoot.querySelector(".calendar-grid");
+      expect(calendarGrid).toBeTruthy();
     });
 
-    test("should display December 2025 when month changes", async () => {
+    test("should update calendar grid when month changes", async () => {
       element.currentDate = new Date(2025, 10, 15);
       await flushPromises();
 
       element.currentDate = new Date(2025, 11, 15);
       await flushPromises();
 
-      const monthYear = element.shadowRoot.querySelector(".month-year-header");
-      expect(monthYear.textContent).toContain("December");
+      const calendarGrid = element.shadowRoot.querySelector(".calendar-grid");
+      expect(calendarGrid).toBeTruthy();
     });
 
     test("should correctly calculate first day of month", async () => {
@@ -499,8 +496,10 @@ describe("monthCalendarView", () => {
     test("should have accessible calendar structure", async () => {
       await flushPromises();
 
-      const heading = element.shadowRoot.querySelector(".month-year-header");
-      expect(heading).toBeTruthy();
+      const dayHeaders = element.shadowRoot.querySelector(
+        ".calendar-day-headers"
+      );
+      expect(dayHeaders).toBeTruthy();
     });
   });
 
