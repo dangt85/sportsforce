@@ -407,16 +407,14 @@ export default class GanttArenaView extends LightningElement {
       let eventsInBlock;
 
       if (this.isDayZoom) {
-        // Day view: filter events by hour
+        // Day view: filter events by start hour only (1 event per hour)
         eventsInBlock = events.filter((event) => {
           const eventStart = new Date(event.startTime);
-          const eventEnd = new Date(event.endTime);
           const blockHour = timeBlock.hour;
 
-          // Check if event overlaps with this hour block
+          // Only show event in the hour it starts
           return (
-            eventStart.getHours() <= blockHour &&
-            eventEnd.getHours() >= blockHour &&
+            eventStart.getHours() === blockHour &&
             eventStart.getDate() === timeBlock.date.getDate() &&
             eventStart.getMonth() === timeBlock.date.getMonth() &&
             eventStart.getFullYear() === timeBlock.date.getFullYear()

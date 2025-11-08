@@ -289,6 +289,8 @@ lightning-button-group {
   background-color: #f9fafb;
   color: #d1d5db;
   border-left: 3px solid transparent;
+  cursor: default;
+  pointer-events: none;
 }
 
 .gantt-block--game {
