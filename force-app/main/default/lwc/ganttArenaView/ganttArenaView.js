@@ -700,11 +700,11 @@ export default class GanttArenaView extends LightningElement {
 
       // Create event visuals for mini-blocks (week view with multiple events)
       // Calculate max visible blocks based on available space:
-      // - Cell min-width: 40px
+      // - Cell min-width: 60px
       // - Each mini-block: 12px width + 2px gap = 14px
-      // - Show overflow badge only when more than 10 events
-      // - Display first 10 events as mini-blocks
-      const maxVisibleBlocks = 10;
+      // - Show overflow badge only when more than 8 events
+      // - Display first 8 events as mini-blocks
+      const maxVisibleBlocks = 8;
       const eventVisuals = hasMultipleEvents
         ? eventsInBlock.slice(0, maxVisibleBlocks).map((event, idx) => ({
             id: `${event.id}-${idx}`,

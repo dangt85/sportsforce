@@ -16,6 +16,8 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  width: 100%;
+  max-width: 100%;
   background-color: #f8f9fa;
   color: var(--gantt-text-color);
   font-family:
@@ -23,6 +25,7 @@
     Arial, sans-serif;
   overflow: hidden;
   padding: 1rem;
+  box-sizing: border-box;
 }
 
 /* ===== HEADER ===== */
@@ -78,9 +81,11 @@ lightning-button-group {
 
 .gantt-scroll-container {
   flex: 1;
-  overflow-x: auto;
+  overflow-x: hidden;
   overflow-y: auto;
   position: relative;
+  min-width: 0;
+  min-height: 0;
 }
 
 /* Current time indicator (day view only) */
@@ -116,7 +121,7 @@ lightning-button-group {
 /* ===== ARENA COLUMN (STICKY LEFT) ===== */
 
 .gantt-arena-column {
-  width: 200px;
+  width: 150px;
   border-right: 2px solid var(--gantt-border-color);
   background-color: #f9fafb;
   display: flex;
@@ -219,6 +224,7 @@ lightning-button-group {
   display: flex;
   flex-direction: column;
   min-width: 0;
+  overflow-x: auto;
 }
 
 .gantt-timeline-header {
@@ -230,11 +236,12 @@ lightning-button-group {
   z-index: 5;
   height: 50px;
   flex-shrink: 0;
+  min-width: fit-content;
 }
 
 .gantt-timeline-label {
-  flex: 1;
-  min-width: 40px;
+  flex: 1 0 60px;
+  min-width: 60px;
   padding: 0 4px;
   border-right: 1px solid var(--gantt-border-color);
   text-align: center;
@@ -271,11 +278,12 @@ lightning-button-group {
   background-color: var(--gantt-bg-color);
   height: 60px;
   flex-shrink: 0;
+  min-width: fit-content;
 }
 
 .gantt-block {
-  flex: 1;
-  min-width: 40px;
+  flex: 1 0 60px;
+  min-width: 60px;
   padding: 4px;
   border-right: 1px solid var(--gantt-border-color);
   display: flex;
@@ -341,6 +349,23 @@ lightning-button-group {
   color: #ffffff;
   border-left: 3px solid transparent;
   font-weight: 700;
+}
+
+/* Day view: darker hover colors for events */
+.gantt-block--game:not(.gantt-block--week-view):hover {
+  background-color: #005bb5;
+}
+
+.gantt-block--practice:not(.gantt-block--week-view):hover {
+  background-color: #2d9970;
+}
+
+.gantt-block--tryout:not(.gantt-block--week-view):hover {
+  background-color: #d48a1a;
+}
+
+.gantt-block--event:not(.gantt-block--week-view):hover {
+  background-color: #4b5563;
 }
 
 /* Week view: white backgrounds for event cells (mini-blocks show colors) */
