@@ -24,12 +24,13 @@ describe("calendarHeader", () => {
       expect(element).toBeTruthy();
     });
 
-    test("should display current month and year", async () => {
+    test("should display current month and year in month view", async () => {
       const today = new Date();
       const expectedMonth = today.toLocaleString("default", { month: "long" });
       const expectedYear = today.getFullYear().toString();
 
       element.currentDate = today;
+      element.currentView = "month";
       await flushPromises();
 
       const header = element.shadowRoot.querySelector(".calendar-header-title");
@@ -40,6 +41,91 @@ describe("calendarHeader", () => {
     test("should have default view set to week", async () => {
       await flushPromises();
       expect(element.currentView).toBe("week");
+    });
+  });
+
+  describe("Week Label Display", () => {
+    test("should display week range in week view", async () => {
+      // Nov 6, 2025 is a Thursday (Mon Nov 3 - Sun Nov 9)
+      element.currentDate = new Date("2025-11-06");
+      element.currentView = "week";
+      await flushPromises();
+
+      const header = element.shadowRoot.querySelector(".calendar-header-title");
+      expect(header.textContent).toContain("Nov 3");
+      expect(header.textContent).toContain("Nov 9");
+      expect(header.textContent).toContain("2025");
+    });
+
+    test("should display week range spanning two months", async () => {
+      // Oct 30, 2025 is a Thursday (Mon Oct 27 - Sun Nov 2)
+      element.currentDate = new Date("2025-10-30");
+      element.currentView = "week";
+      await flushPromises();
+
+      const header = element.shadowRoot.querySelector(".calendar-header-title");
+      expect(header.textContent).toContain("Oct 27");
+      expect(header.textContent).toContain("Nov 2");
+      expect(header.textContent).toContain("2025");
+    });
+
+    test("should display month/year in non-week views", async () => {
+      element.currentDate = new Date("2025-11-06");
+      element.currentView = "month";
+      await flushPromises();
+
+      const header = element.shadowRoot.querySelector(".calendar-header-title");
+      expect(header.textContent).toContain("November 2025");
+      expect(header.textContent).not.toContain("Nov 3");
+    });
+
+    test("should update week label when navigating weeks", async () => {
+      element.currentDate = new Date("2025-11-06"); // Nov 3-9
+      element.currentView = "week";
+      await flushPromises();
+
+      const handler = jest.fn();
+      element.addEventListener("datechange", handler);
+
+      const nextButton = element.shadowRoot.querySelector(
+        '[data-action="next"]'
+      );
+      nextButton.click();
+
+      await flushPromises();
+
+      // After clicking next, date should change to next week
+      const newDate = handler.mock.calls[0][0].detail;
+      element.currentDate = newDate;
+      await flushPromises();
+
+      const header = element.shadowRoot.querySelector(".calendar-header-title");
+      // Should be next week (Nov 10-16)
+      expect(header.textContent).toContain("Nov 10");
+      expect(header.textContent).toContain("Nov 16");
+    });
+
+    test("should display week range in Gantt view with week zoom level", async () => {
+      element.currentDate = new Date("2025-11-06");
+      element.currentView = "gantt";
+      element.zoomLevel = "week";
+      await flushPromises();
+
+      const header = element.shadowRoot.querySelector(".calendar-header-title");
+      expect(header.textContent).toContain("Nov 3");
+      expect(header.textContent).toContain("Nov 9");
+      expect(header.textContent).toContain("2025");
+    });
+
+    test("should display month/year in Gantt view with month zoom level", async () => {
+      element.currentDate = new Date("2025-11-06");
+      element.currentView = "gantt";
+      element.zoomLevel = "month";
+      await flushPromises();
+
+      const header = element.shadowRoot.querySelector(".calendar-header-title");
+      expect(header.textContent).toContain("November 2025");
+      expect(header.textContent).not.toContain("Nov 3");
     });
   });
 

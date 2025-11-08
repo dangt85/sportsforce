@@ -9,6 +9,7 @@ import { LightningElement, api } from "lwc";
  * Inputs:
  * @api currentDate - Current selected date
  * @api currentView - Current view (month|week|day|gantt)
+ * @api zoomLevel - Zoom level for Gantt view (week|month)
  *
  * Outputs:
  * viewchange - Fires when view changed
@@ -19,13 +20,59 @@ import { LightningElement, api } from "lwc";
 export default class CalendarHeader extends LightningElement {
   @api currentDate = new Date();
   @api currentView = "week";
+  @api zoomLevel = "week"; // For Gantt view: 'week' or 'month'
 
   // ===== COMPUTED PROPERTIES =====
 
   get displayMonthYear() {
     const dateToDisplay = this.currentDate || new Date();
+
+    // Show week range for:
+    // 1. Week view
+    // 2. Gantt view with week zoom level
+    if (
+      this.currentView === "week" ||
+      (this.currentView === "gantt" && this.zoomLevel === "week")
+    ) {
+      return this._getWeekRangeDisplay(dateToDisplay);
+    }
+
+    // Otherwise show month/year
     const options = { month: "long", year: "numeric" };
     return dateToDisplay.toLocaleDateString("en-US", options);
+  }
+
+  /**
+   * Get formatted week range display (e.g., "Nov 4 - Nov 10, 2025")
+   * @private
+   */
+  _getWeekRangeDisplay(date) {
+    const weekStart = this._getWeekStartDate(date);
+    const weekEnd = new Date(weekStart);
+    weekEnd.setDate(weekEnd.getDate() + 6); // Sunday
+
+    const startMonth = weekStart.toLocaleDateString("en-US", {
+      month: "short"
+    });
+    const startDay = weekStart.getDate();
+    const endMonth = weekEnd.toLocaleDateString("en-US", { month: "short" });
+    const endDay = weekEnd.getDate();
+    const year = weekEnd.getFullYear();
+
+    // Always show both month names for consistency
+    return `${startMonth} ${startDay} - ${endMonth} ${endDay}, ${year}`;
+  }
+
+  /**
+   * Get the Monday of the week containing the given date
+   * @private
+   */
+  _getWeekStartDate(date) {
+    const d = new Date(date);
+    const day = d.getDay();
+    const diff = d.getDate() - day + (day === 0 ? -6 : 1); // Adjust to Monday
+    d.setDate(diff);
+    return new Date(d);
   }
 
   get dateInputValue() {

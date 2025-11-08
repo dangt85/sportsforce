@@ -96,6 +96,13 @@
 
     <!-- Gantt Chart -->
     <div class="gantt-scroll-container">
+      <!-- Current Time Indicator (Day View Only) -->
+      <div
+        lwc:if={showCurrentTimeIndicator}
+        class="gantt-current-time-indicator"
+        data-left={currentTimeLeft}
+      ></div>
+
       <div class="gantt-grid">
         <!-- Arena Column (Sticky Left) -->
         <div class="gantt-arena-column">

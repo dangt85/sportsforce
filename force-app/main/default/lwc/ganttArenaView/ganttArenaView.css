@@ -83,6 +83,28 @@ lightning-button-group {
   position: relative;
 }
 
+/* Current time indicator (day view only) */
+.gantt-current-time-indicator {
+  position: absolute;
+  top: 50px;
+  bottom: 0;
+  width: 2px;
+  background-color: #dc2626;
+  z-index: 15;
+  pointer-events: none;
+}
+
+.gantt-current-time-indicator::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: -4px;
+  width: 10px;
+  height: 10px;
+  background-color: #dc2626;
+  border-radius: 50%;
+}
+
 .gantt-grid {
   display: flex;
   min-height: 100%;
@@ -232,7 +254,6 @@ lightning-button-group {
   background-color: #dbeafe;
   color: #1e40af;
   font-weight: 600;
-  border-bottom: 3px solid #0076d6;
 }
 
 .gantt-date-label {
@@ -293,28 +314,60 @@ lightning-button-group {
   pointer-events: none;
 }
 
+/* Day view: colored backgrounds for event types */
 .gantt-block--game {
-  background-color: #e3f2fd;
-  color: var(--gantt-game-color);
-  border-left: 3px solid var(--gantt-game-color);
+  background-color: var(--gantt-game-color);
+  color: #ffffff;
+  border-left: 3px solid transparent;
+  font-weight: 700;
 }
 
 .gantt-block--practice {
-  background-color: #e0f2f1;
-  color: var(--gantt-practice-color);
-  border-left: 3px solid var(--gantt-practice-color);
+  background-color: var(--gantt-practice-color);
+  color: #ffffff;
+  border-left: 3px solid transparent;
+  font-weight: 700;
 }
 
 .gantt-block--tryout {
-  background-color: #fff3e0;
-  color: var(--gantt-tryout-color);
-  border-left: 3px solid var(--gantt-tryout-color);
+  background-color: var(--gantt-tryout-color);
+  color: #ffffff;
+  border-left: 3px solid transparent;
+  font-weight: 700;
 }
 
 .gantt-block--event {
-  background-color: #f0f0f0;
-  color: #374151;
-  border-left: 3px solid #9ca3af;
+  background-color: #6b7280;
+  color: #ffffff;
+  border-left: 3px solid transparent;
+  font-weight: 700;
+}
+
+/* Week view: white backgrounds for event cells (mini-blocks show colors) */
+.gantt-block--week-view.gantt-block--game,
+.gantt-block--week-view.gantt-block--practice,
+.gantt-block--week-view.gantt-block--tryout,
+.gantt-block--week-view.gantt-block--event {
+  background-color: #ffffff;
+  color: var(--gantt-text-color);
+  font-weight: 400;
+}
+
+/* Current day column - light blue background for day view */
+.gantt-block--current-day.gantt-block--empty {
+  background-color: #dbeafe !important;
+  border-right: 1px solid #93c5fd !important;
+}
+
+/* Week view: current day column - light blue background for all cells */
+.gantt-block--week-view.gantt-block--current-day {
+  background-color: #dbeafe !important;
+  border-right: 1px solid #93c5fd !important;
+}
+
+/* Week view: past day columns - light grey background for all cells */
+.gantt-block--week-view.gantt-block--past-day {
+  background-color: #f3f4f6 !important;
 }
 
 .gantt-block-text {
@@ -331,23 +384,27 @@ lightning-button-group {
 .gantt-block-stack {
   display: flex;
   gap: 2px;
-  align-items: center;
-  justify-content: center;
+  align-items: stretch;
+  justify-content: flex-start;
+  width: 100%;
   height: 100%;
-  padding: 4px;
+  padding: 0;
+  overflow: hidden;
 }
 
 .gantt-mini-block {
-  flex: 1;
-  height: 12px;
+  flex: 0 0 auto;
+  width: 12px;
+  height: 100%;
   border-radius: 2px;
-  min-width: 8px;
-  max-width: 16px;
-  transition: transform 0.15s ease;
+  transition:
+    transform 0.15s ease,
+    opacity 0.15s ease;
 }
 
 .gantt-mini-block:hover {
-  transform: scale(1.1);
+  transform: scaleX(1.2);
+  opacity: 0.8;
 }
 
 .gantt-mini-block--game {
@@ -364,10 +421,16 @@ lightning-button-group {
 
 .gantt-overflow-badge {
   font-size: 9px;
-  font-weight: 600;
-  color: #6b7280;
+  font-weight: 700;
+  color: #ffffff;
+  background-color: #6b7280;
+  padding: 2px 4px;
+  border-radius: 2px;
   margin-left: 2px;
   flex-shrink: 0;
+  align-self: center;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 /* ===== LEGEND ===== */
@@ -412,22 +475,18 @@ lightning-button-group {
   width: 12px;
   height: 12px;
   border-radius: 2px;
-  border-left: 3px solid transparent;
 }
 
 .legend-indicator--game {
-  background-color: #e3f2fd;
-  border-left-color: var(--gantt-game-color);
+  background-color: var(--gantt-game-color);
 }
 
 .legend-indicator--practice {
-  background-color: #e0f2f1;
-  border-left-color: var(--gantt-practice-color);
+  background-color: var(--gantt-practice-color);
 }
 
 .legend-indicator--tryout {
-  background-color: #fff3e0;
-  border-left-color: var(--gantt-tryout-color);
+  background-color: var(--gantt-tryout-color);
 }
 
 .legend-bar {

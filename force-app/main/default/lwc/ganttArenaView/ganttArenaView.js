@@ -105,6 +105,7 @@ export default class GanttArenaView extends LightningElement {
   timelineLabels = [];
   visibleArenas = [];
   currentDayIndex = -1; // -1 means today is not in the visible range
+  currentTimeInterval = null; // Interval for updating current time indicator
 
   // ===== COMPUTED PROPERTIES =====
 
@@ -119,9 +120,41 @@ export default class GanttArenaView extends LightningElement {
       };
       return this.currentDate.toLocaleDateString("en-US", options);
     }
-    // Week view: show season
-    const season = this.currentDate.getFullYear();
-    return `Season ${season}-${season + 1}`;
+    // Week view: show week range
+    return this._getWeekRangeDisplay(this.currentDate);
+  }
+
+  /**
+   * Get formatted week range display (e.g., "Nov 4 - Nov 10, 2025")
+   * @private
+   */
+  _getWeekRangeDisplay(date) {
+    const weekStart = this._getWeekStartDate(date);
+    const weekEnd = new Date(weekStart);
+    weekEnd.setDate(weekEnd.getDate() + 6); // Sunday
+
+    const startMonth = weekStart.toLocaleDateString("en-US", {
+      month: "short"
+    });
+    const startDay = weekStart.getDate();
+    const endMonth = weekEnd.toLocaleDateString("en-US", { month: "short" });
+    const endDay = weekEnd.getDate();
+    const year = weekEnd.getFullYear();
+
+    // Always show both month names for consistency
+    return `${startMonth} ${startDay} - ${endMonth} ${endDay}, ${year}`;
+  }
+
+  /**
+   * Get the Monday of the week containing the given date
+   * @private
+   */
+  _getWeekStartDate(date) {
+    const d = new Date(date);
+    const day = d.getDay();
+    const diff = d.getDate() - day + (day === 0 ? -6 : 1); // Adjust to Monday
+    d.setDate(diff);
+    return new Date(d);
   }
 
   get isDayZoom() {
@@ -144,10 +177,73 @@ export default class GanttArenaView extends LightningElement {
     return blockIndex === this.currentDayIndex;
   }
 
+  /**
+   * Show current time indicator only in day view when viewing today
+   */
+  get showCurrentTimeIndicator() {
+    if (!this.isDayZoom) {
+      return false;
+    }
+    // Check if current date is today
+    return this.isCurrentDayDate(this.currentDate);
+  }
+
+  /**
+   * Calculate left position for current time indicator
+   */
+  get currentTimeLeft() {
+    return `${this.calculateCurrentTimePosition()}px`;
+  }
+
+  /**
+   * Calculate current time position as left offset in pixels
+   */
+  calculateCurrentTimePosition() {
+    const now = new Date();
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
+
+    // Day view starts at 6 AM (offset 0)
+    const startHour = 6;
+
+    // Calculate position based on actual rendered column widths
+    const timelineHeader = this.template.querySelector(
+      ".gantt-timeline-header"
+    );
+    const arenaColumn = this.template.querySelector(".gantt-arena-column");
+
+    if (!timelineHeader || !arenaColumn) {
+      // Fallback if elements not found
+      return 200;
+    }
+
+    const arenaWidth = arenaColumn.offsetWidth;
+    const timelineWidth = timelineHeader.offsetWidth;
+
+    // Total hours displayed (6 AM to 11 PM = 18 hours)
+    const totalHours = 18;
+    const pixelsPerHour = timelineWidth / totalHours;
+
+    // Calculate hours and fractional hours from start
+    const hoursFromStart = currentHour - startHour;
+    const fractionalHour = currentMinute / 60;
+    const totalHoursFromStart = hoursFromStart + fractionalHour;
+
+    // Calculate left position
+    const leftOffset = arenaWidth + totalHoursFromStart * pixelsPerHour;
+
+    return leftOffset;
+  }
+
   // ===== LIFECYCLE HOOKS =====
 
   connectedCallback() {
     this.updateGanttData();
+    this.startCurrentTimeUpdates();
+  }
+
+  disconnectedCallback() {
+    this.stopCurrentTimeUpdates();
   }
 
   renderedCallback() {
@@ -159,6 +255,46 @@ export default class GanttArenaView extends LightningElement {
         bar.style.width = `${width}%`;
       }
     });
+
+    // Update current time indicator position
+    this.updateCurrentTimeIndicatorPosition();
+  }
+
+  /**
+   * Start interval to update current time indicator position
+   */
+  startCurrentTimeUpdates() {
+    // Update every 15 minutes (900000 milliseconds)
+    // eslint-disable-next-line @lwc/lwc/no-async-operation
+    this.currentTimeInterval = setInterval(() => {
+      this.updateCurrentTimeIndicatorPosition();
+    }, 900000);
+  }
+
+  /**
+   * Stop current time updates
+   */
+  stopCurrentTimeUpdates() {
+    if (this.currentTimeInterval) {
+      clearInterval(this.currentTimeInterval);
+    }
+  }
+
+  /**
+   * Update current time indicator position dynamically
+   */
+  updateCurrentTimeIndicatorPosition() {
+    if (!this.showCurrentTimeIndicator) {
+      return;
+    }
+
+    const indicator = this.template.querySelector(
+      ".gantt-current-time-indicator"
+    );
+    if (indicator) {
+      const leftPosition = this.calculateCurrentTimePosition();
+      indicator.style.left = `${leftPosition}px`;
+    }
   }
 
   // ===== PRIVATE METHODS =====
@@ -245,64 +381,121 @@ export default class GanttArenaView extends LightningElement {
 
     let eventId = 1;
 
-    // Static patterns for each arena (high utilization)
-    const arenaPatterns = [
-      // Downtown Arena - 90% utilization (high)
-      [6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
-      // North Ice Complex - 85% utilization (high)
-      [6, 7, 8, 9, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22],
-      // South Rink - 70% utilization (medium-high)
-      [7, 8, 9, 10, 12, 14, 15, 17, 18, 19, 20, 21],
-      // East Hockey Center - 65% utilization (medium)
-      [7, 8, 10, 12, 14, 16, 17, 18, 19, 20, 21],
-      // West Sports Complex - 50% utilization (medium)
-      [8, 9, 10, 14, 16, 18, 19, 20, 21]
-    ];
+    // For week view, generate multiple events per day to demonstrate overflow
+    if (this.isWeekZoom) {
+      // Generate 7 days of data (centered on current date)
+      for (let dayOffset = -3; dayOffset <= 3; dayOffset++) {
+        const currentDay = new Date(baseDate);
+        currentDay.setDate(currentDay.getDate() + dayOffset);
 
-    for (let arenaIndex = 0; arenaIndex < arenas.length; arenaIndex++) {
-      const arena = arenas[arenaIndex];
-      const bookedHours = arenaPatterns[arenaIndex];
+        for (let arenaIndex = 0; arenaIndex < arenas.length; arenaIndex++) {
+          const arena = arenas[arenaIndex];
+          // Create 12-18 events per day per arena to show overflow (+N label)
+          const eventsPerDay = 12 + (arenaIndex % 7);
 
-      for (const hour of bookedHours) {
-        // Only 1 event per hour per arena
-        const startHour = hour;
-        const startMinute = 0;
-        const duration = 60; // 1 hour duration
+          for (let eventIdx = 0; eventIdx < eventsPerDay; eventIdx++) {
+            // Stagger start times more densely to fit more events
+            const startHour = 6 + Math.floor(eventIdx / 2);
+            const startMinute = (eventIdx % 2) * 30;
+            if (startHour > 22) continue;
 
-        const eventStart = new Date(baseDate);
-        eventStart.setHours(startHour, startMinute, 0, 0);
+            const eventStart = new Date(currentDay);
+            eventStart.setHours(startHour, startMinute, 0, 0);
 
-        const eventEnd = new Date(eventStart);
-        eventEnd.setMinutes(eventEnd.getMinutes() + duration);
+            const eventEnd = new Date(eventStart);
+            eventEnd.setMinutes(eventEnd.getMinutes() + 60);
 
-        // Determine event type based on time of day (static pattern)
-        let eventType;
-        if (hour >= 18) {
-          eventType = "Game";
-        } else if (hour < 10) {
-          eventType = "Practice";
-        } else {
-          eventType = hour % 3 === 0 ? "Tryout" : "Practice";
+            // Rotate event types
+            const eventType =
+              eventIdx % 3 === 0
+                ? "Game"
+                : eventIdx % 3 === 1
+                  ? "Practice"
+                  : "Tryout";
+
+            const teamIndex =
+              (eventIdx + arenaIndex + dayOffset) % teams.length;
+            const team1 = teams[teamIndex];
+            const team2 =
+              eventType === "Game"
+                ? teams[(teamIndex + 1) % teams.length]
+                : null;
+
+            mockEvents.push({
+              id: `mock-${eventId++}`,
+              title:
+                eventType === "Game"
+                  ? `${team1} vs ${team2}`
+                  : `${team1} ${eventType}`,
+              startTime: eventStart.toISOString(),
+              endTime: eventEnd.toISOString(),
+              type: eventType,
+              location: arena,
+              status: "Scheduled"
+            });
+          }
         }
+      }
+    } else {
+      // Day view: Static patterns for each arena (high utilization)
+      const arenaPatterns = [
+        // Downtown Arena - 90% utilization (high)
+        [6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
+        // North Ice Complex - 85% utilization (high)
+        [6, 7, 8, 9, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22],
+        // South Rink - 70% utilization (medium-high)
+        [7, 8, 9, 10, 12, 14, 15, 17, 18, 19, 20, 21],
+        // East Hockey Center - 65% utilization (medium)
+        [7, 8, 10, 12, 14, 16, 17, 18, 19, 20, 21],
+        // West Sports Complex - 50% utilization (medium)
+        [8, 9, 10, 14, 16, 18, 19, 20, 21]
+      ];
 
-        // Use deterministic team selection based on hour
-        const teamIndex = (hour + arenaIndex) % teams.length;
-        const team1 = teams[teamIndex];
-        const team2 =
-          eventType === "Game" ? teams[(teamIndex + 1) % teams.length] : null;
+      for (let arenaIndex = 0; arenaIndex < arenas.length; arenaIndex++) {
+        const arena = arenas[arenaIndex];
+        const bookedHours = arenaPatterns[arenaIndex];
 
-        mockEvents.push({
-          id: `mock-${eventId++}`,
-          title:
-            eventType === "Game"
-              ? `${team1} vs ${team2}`
-              : `${team1} ${eventType}`,
-          startTime: eventStart.toISOString(),
-          endTime: eventEnd.toISOString(),
-          type: eventType,
-          location: arena,
-          status: "Scheduled"
-        });
+        for (const hour of bookedHours) {
+          // Only 1 event per hour per arena in day view
+          const startHour = hour;
+          const startMinute = 0;
+          const duration = 60; // 1 hour duration
+
+          const eventStart = new Date(baseDate);
+          eventStart.setHours(startHour, startMinute, 0, 0);
+
+          const eventEnd = new Date(eventStart);
+          eventEnd.setMinutes(eventEnd.getMinutes() + duration);
+
+          // Determine event type based on time of day (static pattern)
+          let eventType;
+          if (hour >= 18) {
+            eventType = "Game";
+          } else if (hour < 10) {
+            eventType = "Practice";
+          } else {
+            eventType = hour % 3 === 0 ? "Tryout" : "Practice";
+          }
+
+          // Use deterministic team selection based on hour
+          const teamIndex = (hour + arenaIndex) % teams.length;
+          const team1 = teams[teamIndex];
+          const team2 =
+            eventType === "Game" ? teams[(teamIndex + 1) % teams.length] : null;
+
+          mockEvents.push({
+            id: `mock-${eventId++}`,
+            title:
+              eventType === "Game"
+                ? `${team1} vs ${team2}`
+                : `${team1} ${eventType}`,
+            startTime: eventStart.toISOString(),
+            endTime: eventEnd.toISOString(),
+            type: eventType,
+            location: arena,
+            status: "Scheduled"
+          });
+        }
       }
     }
 
@@ -413,6 +606,14 @@ export default class GanttArenaView extends LightningElement {
     return testDate.getTime() === today.getTime();
   }
 
+  isPastDate(date) {
+    const testDate = new Date(date);
+    testDate.setHours(0, 0, 0, 0);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return testDate.getTime() < today.getTime();
+  }
+
   generateBlocksForArena(arena, events) {
     return this.timelineBlocks.map((timeBlock) => {
       let eventsInBlock;
@@ -460,8 +661,17 @@ export default class GanttArenaView extends LightningElement {
       const eventCount = eventsInBlock.length;
       let blockClass = "gantt-block";
 
+      // Check if this is the current day column or past day
+      const isCurrentDay = this.isCurrentDayDate(timeBlock.date);
+      const isPastDay = this.isPastDate(timeBlock.date);
+
       // Determine if we should show multiple event mini-blocks (week view only)
       const hasMultipleEvents = eventCount > 1 && this.isWeekZoom;
+
+      // Add week view class to differentiate styling
+      if (this.isWeekZoom) {
+        blockClass += " gantt-block--week-view";
+      }
 
       if (!isBooked) {
         blockClass += " gantt-block--empty";
@@ -479,8 +689,22 @@ export default class GanttArenaView extends LightningElement {
         }
       }
 
+      // Add current day styling to all blocks in today's column
+      if (isCurrentDay) {
+        blockClass += " gantt-block--current-day";
+      }
+      // Add past day styling to all blocks before today
+      else if (isPastDay) {
+        blockClass += " gantt-block--past-day";
+      }
+
       // Create event visuals for mini-blocks (week view with multiple events)
-      const maxVisibleBlocks = 4;
+      // Calculate max visible blocks based on available space:
+      // - Cell min-width: 40px
+      // - Each mini-block: 12px width + 2px gap = 14px
+      // - Show overflow badge only when more than 10 events
+      // - Display first 10 events as mini-blocks
+      const maxVisibleBlocks = 10;
       const eventVisuals = hasMultipleEvents
         ? eventsInBlock.slice(0, maxVisibleBlocks).map((event, idx) => ({
             id: `${event.id}-${idx}`,
