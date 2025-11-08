@@ -30,14 +30,14 @@
       <div class="gantt-zoom">
         <lightning-button-group>
           <lightning-button
+            label="Day"
+            variant={dayZoomVariant}
+            onclick={handleDayZoom}
+          ></lightning-button>
+          <lightning-button
             label="Week"
             variant={weekZoomVariant}
             onclick={handleWeekZoom}
-          ></lightning-button>
-          <lightning-button
-            label="Month"
-            variant={monthZoomVariant}
-            onclick={handleMonthZoom}
           ></lightning-button>
         </lightning-button-group>
       </div>
@@ -161,9 +161,30 @@
                   tabindex="0"
                   aria-label="Time slot: {block.label}"
                 >
-                  <span lwc:if={block.isBooked} class="gantt-block-text"
-                    >{block.eventTypes}</span
-                  >
+                  <!-- Week View: Multiple Events (mini-blocks) -->
+                  <template lwc:if={block.hasMultipleEvents}>
+                    <div class="gantt-block-stack">
+                      <template for:each={block.eventVisuals} for:item="visual">
+                        <div
+                          key={visual.id}
+                          class={visual.miniBlockClass}
+                        ></div>
+                      </template>
+                      <span
+                        lwc:if={block.overflowCount}
+                        class="gantt-overflow-badge"
+                      >
+                        +{block.overflowCount}
+                      </span>
+                    </div>
+                  </template>
+
+                  <!-- Day View or Week Single Event: Letter Display -->
+                  <template lwc:else>
+                    <span lwc:if={block.isBooked} class="gantt-block-text"
+                      >{block.eventTypes}</span
+                    >
+                  </template>
                 </div>
               </template>
             </div>

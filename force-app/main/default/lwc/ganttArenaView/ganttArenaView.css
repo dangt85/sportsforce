@@ -320,6 +320,52 @@ lightning-button-group {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* ===== MINI-BLOCKS (Week View Multi-Event Visualization) ===== */
+
+.gantt-block-stack {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 4px;
+}
+
+.gantt-mini-block {
+  flex: 1;
+  height: 12px;
+  border-radius: 2px;
+  min-width: 8px;
+  max-width: 16px;
+  transition: transform 0.15s ease;
+}
+
+.gantt-mini-block:hover {
+  transform: scale(1.1);
+}
+
+.gantt-mini-block--game {
+  background-color: #0076d6;
+}
+
+.gantt-mini-block--practice {
+  background-color: #3db88d;
+}
+
+.gantt-mini-block--tryout {
+  background-color: #f5a623;
+}
+
+.gantt-overflow-badge {
+  font-size: 9px;
+  font-weight: 600;
+  color: #6b7280;
+  margin-left: 2px;
+  flex-shrink: 0;
 }
 
 /* ===== LEGEND ===== */

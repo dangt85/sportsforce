@@ -80,11 +80,11 @@ describe("weekCalendarView", () => {
       expect(element.timeGranularity).toBe(30);
     });
 
-    test("should hide weekends by default", async () => {
+    test("should show weekends by default", async () => {
       await flushPromises();
-      // Default hides weekends (showWeekends defaults to false)
+      // Default shows weekends (showWeekends defaults to true)
       const defaultShowWeekends = element.showWeekends;
-      expect(defaultShowWeekends).toBe(false);
+      expect(defaultShowWeekends).toBe(true);
     });
 
     test("should accept showWeekends @api property", async () => {

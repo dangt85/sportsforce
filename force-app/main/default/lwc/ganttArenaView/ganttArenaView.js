@@ -77,7 +77,7 @@ export default class GanttArenaView extends LightningElement {
     }
   }
 
-  _zoomLevel = "week";
+  _zoomLevel = "day";
 
   @api
   get zoomLevel() {
@@ -94,8 +94,8 @@ export default class GanttArenaView extends LightningElement {
   // ===== CONSTANTS =====
 
   static ZOOM_LEVELS = {
-    week: { label: "Week", days: 7, blockType: "day" },
-    month: { label: "Month", days: 30, blockType: "day" }
+    day: { label: "Day", hours: 18, blockType: "hour" },
+    week: { label: "Week", days: 7, blockType: "day" }
   };
 
   // ===== INTERNAL STATE =====
@@ -113,20 +113,20 @@ export default class GanttArenaView extends LightningElement {
     return `Season ${season}-${season + 1}`;
   }
 
+  get isDayZoom() {
+    return this.zoomLevel === "day";
+  }
+
   get isWeekZoom() {
     return this.zoomLevel === "week";
   }
 
-  get isMonthZoom() {
-    return this.zoomLevel === "month";
+  get dayZoomVariant() {
+    return this.isDayZoom ? "brand" : "neutral";
   }
 
   get weekZoomVariant() {
     return this.isWeekZoom ? "brand" : "neutral";
-  }
-
-  get monthZoomVariant() {
-    return this.isMonthZoom ? "brand" : "neutral";
   }
 
   isCurrentDayBlock(blockIndex) {
@@ -168,22 +168,22 @@ export default class GanttArenaView extends LightningElement {
 
   // ===== ZOOM HANDLERS =====
 
-  handleWeekZoom() {
-    this.setZoomLevel("week");
+  handleDayZoom() {
+    this.setZoomLevel("day");
   }
 
-  handleMonthZoom() {
-    this.setZoomLevel("month");
+  handleWeekZoom() {
+    this.setZoomLevel("week");
   }
 
   // ===== NAVIGATION HANDLERS =====
 
   handlePrevious() {
     const newDate = new Date(this.currentDate);
-    if (this.isWeekZoom) {
+    if (this.isDayZoom) {
+      newDate.setDate(newDate.getDate() - 1);
+    } else if (this.isWeekZoom) {
       newDate.setDate(newDate.getDate() - 7);
-    } else {
-      newDate.setMonth(newDate.getMonth() - 1);
     }
     this.setCurrentDate(newDate);
   }
@@ -194,17 +194,115 @@ export default class GanttArenaView extends LightningElement {
 
   handleNext() {
     const newDate = new Date(this.currentDate);
-    if (this.isWeekZoom) {
+    if (this.isDayZoom) {
+      newDate.setDate(newDate.getDate() + 1);
+    } else if (this.isWeekZoom) {
       newDate.setDate(newDate.getDate() + 7);
-    } else {
-      newDate.setMonth(newDate.getMonth() + 1);
     }
     this.setCurrentDate(newDate);
   }
 
   // ===== DATA METHODS =====
 
+  /**
+   * Generate static mock data for high utilization demonstration
+   * Uses deterministic patterns instead of random values
+   */
+  generateStaticMockData() {
+    const mockEvents = [];
+    const arenas = [
+      "Downtown Arena",
+      "North Ice Complex",
+      "South Rink",
+      "East Hockey Center",
+      "West Sports Complex"
+    ];
+
+    const teams = [
+      "Atoms U10 Red",
+      "Atoms U10 Blue",
+      "Peewees A",
+      "Peewees B",
+      "Midgets AA",
+      "Midgets A",
+      "Bantams U14",
+      "Juniors U18"
+    ];
+
+    const baseDate = new Date(this.currentDate);
+    baseDate.setHours(0, 0, 0, 0);
+
+    let eventId = 1;
+
+    // Static patterns for each arena (high utilization)
+    const arenaPatterns = [
+      // Downtown Arena - 90% utilization (high)
+      [6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
+      // North Ice Complex - 85% utilization (high)
+      [6, 7, 8, 9, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22],
+      // South Rink - 70% utilization (medium-high)
+      [7, 8, 9, 10, 12, 14, 15, 17, 18, 19, 20, 21],
+      // East Hockey Center - 65% utilization (medium)
+      [7, 8, 10, 12, 14, 16, 17, 18, 19, 20, 21],
+      // West Sports Complex - 50% utilization (medium)
+      [8, 9, 10, 14, 16, 18, 19, 20, 21]
+    ];
+
+    for (let arenaIndex = 0; arenaIndex < arenas.length; arenaIndex++) {
+      const arena = arenas[arenaIndex];
+      const bookedHours = arenaPatterns[arenaIndex];
+
+      for (const hour of bookedHours) {
+        // Only 1 event per hour per arena
+        const startHour = hour;
+        const startMinute = 0;
+        const duration = 60; // 1 hour duration
+
+        const eventStart = new Date(baseDate);
+        eventStart.setHours(startHour, startMinute, 0, 0);
+
+        const eventEnd = new Date(eventStart);
+        eventEnd.setMinutes(eventEnd.getMinutes() + duration);
+
+        // Determine event type based on time of day (static pattern)
+        let eventType;
+        if (hour >= 18) {
+          eventType = "Game";
+        } else if (hour < 10) {
+          eventType = "Practice";
+        } else {
+          eventType = hour % 3 === 0 ? "Tryout" : "Practice";
+        }
+
+        // Use deterministic team selection based on hour
+        const teamIndex = (hour + arenaIndex) % teams.length;
+        const team1 = teams[teamIndex];
+        const team2 =
+          eventType === "Game" ? teams[(teamIndex + 1) % teams.length] : null;
+
+        mockEvents.push({
+          id: `mock-${eventId++}`,
+          title:
+            eventType === "Game"
+              ? `${team1} vs ${team2}`
+              : `${team1} ${eventType}`,
+          startTime: eventStart.toISOString(),
+          endTime: eventEnd.toISOString(),
+          type: eventType,
+          location: arena,
+          status: "Scheduled"
+        });
+      }
+    }
+
+    return mockEvents;
+  }
+
   updateGanttData() {
+    // Use static mock data for demonstration
+    const mockEvents = this.generateStaticMockData();
+    this._events = mockEvents;
+
     // Get unique arenas from events
     const arenasSet = new Set();
     this._events.forEach((event) => {
@@ -243,37 +341,51 @@ export default class GanttArenaView extends LightningElement {
   generateTimeline(zoomConfig) {
     const blocks = [];
     const labels = [];
-    const startDate = new Date(this.currentDate);
-    startDate.setDate(startDate.getDate() - Math.floor(zoomConfig.days / 2));
 
-    const formatter = new Intl.DateTimeFormat("en-US", {
-      month: "short",
-      day: "numeric"
-    });
+    if (zoomConfig.blockType === "hour") {
+      // Day view: show hourly blocks from 6 AM to 11 PM
+      const currentDate = new Date(this.currentDate);
+      currentDate.setHours(6, 0, 0, 0); // Start at 6 AM
 
-    for (let i = 0; i < zoomConfig.days; i++) {
-      const blockDate = new Date(startDate);
-      blockDate.setDate(blockDate.getDate() + i);
+      for (let i = 0; i < zoomConfig.hours; i++) {
+        const blockTime = new Date(currentDate);
+        blockTime.setHours(6 + i);
 
-      const isCurrentDay = this.isCurrentDayDate(blockDate);
-      const headerClass = isCurrentDay
-        ? "gantt-timeline-label gantt-timeline-label--current-day"
-        : "gantt-timeline-label";
+        const hour = blockTime.getHours();
+        const period = hour >= 12 ? "PM" : "AM";
+        const displayHour = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
+        const label = `${displayHour} ${period}`;
 
-      blocks.push({
-        date: blockDate,
-        label: formatter.format(blockDate),
-        headerClass
+        blocks.push({
+          date: blockTime,
+          label: label,
+          hour: hour,
+          headerClass: "gantt-timeline-label"
+        });
+      }
+    } else {
+      // Week view: show daily blocks
+      const startDate = new Date(this.currentDate);
+      startDate.setDate(startDate.getDate() - Math.floor(zoomConfig.days / 2));
+
+      const formatter = new Intl.DateTimeFormat("en-US", {
+        month: "short",
+        day: "numeric"
       });
 
-      // Add period labels for month/quarter views
-      if (zoomConfig.blockType === "week" && i % 4 === 0) {
-        labels.push({
+      for (let i = 0; i < zoomConfig.days; i++) {
+        const blockDate = new Date(startDate);
+        blockDate.setDate(blockDate.getDate() + i);
+
+        const isCurrentDay = this.isCurrentDayDate(blockDate);
+        const headerClass = isCurrentDay
+          ? "gantt-timeline-label gantt-timeline-label--current-day"
+          : "gantt-timeline-label";
+
+        blocks.push({
           date: blockDate,
-          period: `${blockDate.toLocaleDateString("en-US", {
-            month: "short",
-            year: "2-digit"
-          })}`
+          label: formatter.format(blockDate),
+          headerClass
         });
       }
     }
@@ -292,16 +404,37 @@ export default class GanttArenaView extends LightningElement {
 
   generateBlocksForArena(arena, events) {
     return this.timelineBlocks.map((timeBlock) => {
-      const eventsOnDate = events.filter((event) => {
-        const eventDate = new Date(event.startTime);
-        return (
-          eventDate.getFullYear() === timeBlock.date.getFullYear() &&
-          eventDate.getMonth() === timeBlock.date.getMonth() &&
-          eventDate.getDate() === timeBlock.date.getDate()
-        );
-      });
+      let eventsInBlock;
 
-      const eventTypes = eventsOnDate.map((e) => {
+      if (this.isDayZoom) {
+        // Day view: filter events by hour
+        eventsInBlock = events.filter((event) => {
+          const eventStart = new Date(event.startTime);
+          const eventEnd = new Date(event.endTime);
+          const blockHour = timeBlock.hour;
+
+          // Check if event overlaps with this hour block
+          return (
+            eventStart.getHours() <= blockHour &&
+            eventEnd.getHours() >= blockHour &&
+            eventStart.getDate() === timeBlock.date.getDate() &&
+            eventStart.getMonth() === timeBlock.date.getMonth() &&
+            eventStart.getFullYear() === timeBlock.date.getFullYear()
+          );
+        });
+      } else {
+        // Week view: filter events by date
+        eventsInBlock = events.filter((event) => {
+          const eventDate = new Date(event.startTime);
+          return (
+            eventDate.getFullYear() === timeBlock.date.getFullYear() &&
+            eventDate.getMonth() === timeBlock.date.getMonth() &&
+            eventDate.getDate() === timeBlock.date.getDate()
+          );
+        });
+      }
+
+      const eventTypes = eventsInBlock.map((e) => {
         switch (e.type) {
           case "Game":
             return "G";
@@ -314,12 +447,17 @@ export default class GanttArenaView extends LightningElement {
         }
       });
 
-      const isBooked = eventsOnDate.length > 0;
+      const isBooked = eventsInBlock.length > 0;
+      const eventCount = eventsInBlock.length;
       let blockClass = "gantt-block";
+
+      // Determine if we should show multiple event mini-blocks (week view only)
+      const hasMultipleEvents = eventCount > 1 && this.isWeekZoom;
 
       if (!isBooked) {
         blockClass += " gantt-block--empty";
       } else {
+        // Determine block color based on primary event type
         const types = eventTypes.join("");
         if (types.includes("G")) {
           blockClass += " gantt-block--game";
@@ -332,13 +470,33 @@ export default class GanttArenaView extends LightningElement {
         }
       }
 
+      // Create event visuals for mini-blocks (week view with multiple events)
+      const maxVisibleBlocks = 4;
+      const eventVisuals = hasMultipleEvents
+        ? eventsInBlock.slice(0, maxVisibleBlocks).map((event, idx) => ({
+            id: `${event.id}-${idx}`,
+            type: event.type,
+            miniBlockClass: `gantt-mini-block gantt-mini-block--${event.type.toLowerCase()}`
+          }))
+        : [];
+
+      const overflowCount =
+        eventCount > maxVisibleBlocks ? eventCount - maxVisibleBlocks : 0;
+
+      // Create display text for single event display (day view or week single event)
+      const displayText = eventTypes.join("");
+
       return {
         date: timeBlock.date,
         isBooked,
-        eventTypes: eventTypes.slice(0, 2).join(""), // Show max 2 event type letters
-        events: eventsOnDate,
+        eventTypes: displayText,
+        eventCount,
+        events: eventsInBlock,
         label: timeBlock.label,
-        cssClass: blockClass
+        cssClass: blockClass,
+        hasMultipleEvents,
+        eventVisuals,
+        overflowCount
       };
     });
   }

@@ -12,7 +12,7 @@ export default class ScheduleCalendar extends LightningElement {
   @track calendarTitle = "";
   @track currentDate = new Date();
   @track events = [];
-  @track currentView = "month"; // 'month', 'week', 'day', or 'gantt'
+  @track currentView = "week"; // 'month', 'week', 'day', or 'gantt'
   @track selectedDate = null;
 
   // Development flag - set to true to use mock data

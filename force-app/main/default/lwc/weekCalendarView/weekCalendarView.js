@@ -78,7 +78,7 @@ export default class WeekCalendarView extends LightningElement {
   @api selectedDate = null;
   @api timeGranularity = 15; // 15, 30, or 60 minutes
 
-  _showWeekends = false;
+  _showWeekends = true;
 
   @api
   get showWeekends() {
