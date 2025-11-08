@@ -109,6 +109,17 @@ export default class GanttArenaView extends LightningElement {
   // ===== COMPUTED PROPERTIES =====
 
   get ganttTitle() {
+    if (this.isDayZoom) {
+      // Day view: show the specific date
+      const options = {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+      };
+      return this.currentDate.toLocaleDateString("en-US", options);
+    }
+    // Week view: show season
     const season = this.currentDate.getFullYear();
     return `Season ${season}-${season + 1}`;
   }
