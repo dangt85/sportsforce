@@ -251,7 +251,7 @@ lightning-button-group {
 }
 
 .gantt-timeline-label--current-day {
-  background-color: #dbeafe;
+  background-color: #bfdbfe;
   color: #1e40af;
   font-weight: 600;
 }
@@ -351,12 +351,6 @@ lightning-button-group {
   background-color: #ffffff;
   color: var(--gantt-text-color);
   font-weight: 400;
-}
-
-/* Current day column - light blue background for day view */
-.gantt-block--current-day.gantt-block--empty {
-  background-color: #dbeafe !important;
-  border-right: 1px solid #93c5fd !important;
 }
 
 /* Week view: current day column - light blue background for all cells */
