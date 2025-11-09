@@ -1,0 +1,273 @@
+<template>
+  <!-- Overlay (semi-transparent background) -->
+  <div
+    class={overlayClass}
+    onclick={handleOverlayClick}
+    role="presentation"
+  ></div>
+
+  <!-- Slide-out Panel -->
+  <div
+    class={panelClass}
+    onclick={handlePanelClick}
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="panel-title"
+    aria-describedby="panel-description"
+  >
+    <!-- Panel Header -->
+    <div class="panel-header">
+      <lightning-button-icon
+        icon-name="utility:close"
+        variant="bare"
+        alternative-text="Close panel"
+        title="Close"
+        onclick={handleClose}
+        class="close-button"
+      ></lightning-button-icon>
+    </div>
+
+    <!-- Loading State -->
+    <template lwc:if={isLoading}>
+      <div class="panel-content">
+        <lightning-spinner
+          alternative-text="Loading event details"
+          size="small"
+        ></lightning-spinner>
+      </div>
+    </template>
+
+    <!-- Create New Event Form -->
+    <template lwc:elseif={isCreateMode}>
+      <div class="panel-content">
+        <h2 class="panel-title">Create New Event</h2>
+
+        <div class="form-fields">
+          <lightning-input
+            label="Event Title"
+            placeholder="Enter event title"
+            required
+            class="form-field"
+          ></lightning-input>
+
+          <lightning-combobox
+            label="Event Type"
+            placeholder="Select event type"
+            options={eventTypeOptions}
+            required
+            class="form-field"
+          ></lightning-combobox>
+
+          <lightning-input
+            type="date"
+            label="Date"
+            value={prefilledDate}
+            required
+            class="form-field"
+          ></lightning-input>
+
+          <lightning-input
+            type="time"
+            label="Start Time"
+            value={prefilledStartTime}
+            required
+            class="form-field"
+          ></lightning-input>
+
+          <lightning-input
+            type="time"
+            label="End Time"
+            required
+            class="form-field"
+          ></lightning-input>
+
+          <lightning-input
+            label="Location"
+            placeholder="Enter location"
+            class="form-field"
+          ></lightning-input>
+
+          <lightning-textarea
+            label="Description"
+            placeholder="Enter event description"
+            class="form-field"
+          ></lightning-textarea>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+          <lightning-button
+            label="Cancel"
+            onclick={handleClose}
+            class="action-button"
+          ></lightning-button>
+
+          <lightning-button
+            label="Create Event"
+            variant="brand"
+            onclick={handleSaveEvent}
+            class="action-button"
+          ></lightning-button>
+        </div>
+      </div>
+    </template>
+
+    <!-- Event Details (View Mode) -->
+    <template lwc:elseif={hasEvent}>
+      <div class="panel-content">
+        <!-- Event Type Badge -->
+        <div class={eventTypeBadgeClass}>
+          <span class="badge-abbr">{eventTypeAbbr}</span>
+          <span class="badge-label">{eventTypeLabel}</span>
+        </div>
+
+        <!-- Event Title -->
+        <h2 id="panel-title" class="event-title">{event.title}</h2>
+
+        <!-- Event Metadata -->
+        <div class="event-metadata">
+          <div class="metadata-item">
+            <lightning-icon
+              icon-name="utility:event"
+              size="x-small"
+              class="metadata-icon"
+            ></lightning-icon>
+            <span class="metadata-text">{formattedDate}</span>
+          </div>
+
+          <div class="metadata-item">
+            <lightning-icon
+              icon-name="utility:clock"
+              size="x-small"
+              class="metadata-icon"
+            ></lightning-icon>
+            <span class="metadata-text"
+              >{formattedTimeRange}
+              <template lwc:if={durationDisplay}>
+                ({durationDisplay})
+              </template>
+            </span>
+          </div>
+
+          <template lwc:if={event.location}>
+            <div class="metadata-item">
+              <lightning-icon
+                icon-name="utility:location"
+                size="x-small"
+                class="metadata-icon"
+              ></lightning-icon>
+              <span class="metadata-text">{event.location}</span>
+            </div>
+          </template>
+        </div>
+
+        <!-- Status Badge -->
+        <template lwc:if={event.status}>
+          <div class="status-section">
+            <lightning-badge label={event.status} class="status-badge">
+            </lightning-badge>
+          </div>
+        </template>
+
+        <!-- Game-Specific Info (if applicable) -->
+        <template lwc:if={event.homeScore}>
+          <div class="game-info-section">
+            <div class="game-score">
+              <div class="score-item">
+                <span class="score-label">Home Score</span>
+                <span class="score-value">{event.homeScore}</span>
+              </div>
+              <div class="score-divider">|</div>
+              <div class="score-item">
+                <span class="score-label">Away Score</span>
+                <span class="score-value">{event.awayScore}</span>
+              </div>
+            </div>
+          </div>
+        </template>
+
+        <!-- Additional Details (Expandable) -->
+        <template lwc:if={event.division}>
+          <div class="details-section">
+            <h3 class="section-title">Details</h3>
+            <div class="details-list">
+              <template lwc:if={event.division}>
+                <div class="detail-item">
+                  <span class="detail-label">Division:</span>
+                  <span class="detail-value">{event.division}</span>
+                </div>
+              </template>
+
+              <template lwc:if={event.league}>
+                <div class="detail-item">
+                  <span class="detail-label">League:</span>
+                  <span class="detail-value">{event.league}</span>
+                </div>
+              </template>
+
+              <template lwc:if={event.createdBy}>
+                <div class="detail-item">
+                  <span class="detail-label">Created:</span>
+                  <span class="detail-value">{event.createdBy}</span>
+                </div>
+              </template>
+            </div>
+          </div>
+        </template>
+
+        <!-- Roster Section (for Practice/Tryout events) -->
+        <template lwc:if={event.rosterCount}>
+          <div class="roster-section">
+            <h3 class="section-title">
+              Roster ({event.registeredCount}/{event.rosterCount} registered)
+            </h3>
+            <div class="roster-list">
+              <template for:each={event.roster} for:item="player">
+                <div key={player.id} class="roster-item">{player.name}</div>
+              </template>
+            </div>
+          </div>
+        </template>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+          <lightning-button
+            label="Edit"
+            icon-name="utility:edit"
+            onclick={handleEdit}
+            class="action-button"
+          ></lightning-button>
+
+          <lightning-button
+            label="Delete"
+            icon-name="utility:delete"
+            variant="destructive"
+            onclick={handleDelete}
+            class="action-button"
+          ></lightning-button>
+
+          <lightning-button
+            label="Export"
+            icon-name="utility:download"
+            onclick={handleExport}
+            class="action-button"
+          ></lightning-button>
+        </div>
+      </div>
+    </template>
+
+    <!-- Empty State (no event and not loading) -->
+    <template lwc:else>
+      <div class="panel-content">
+        <div class="empty-state">
+          <lightning-icon
+            icon-name="utility:info"
+            size="large"
+            class="empty-icon"
+          ></lightning-icon>
+          <p class="empty-text">No event selected</p>
+        </div>
+      </div>
+    </template>
+  </div>
+</template>

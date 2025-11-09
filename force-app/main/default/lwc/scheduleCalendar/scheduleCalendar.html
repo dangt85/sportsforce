@@ -107,6 +107,7 @@
         events={events}
         selected-filters={selectedFilters}
         oneventclick={handleEventSelected}
+        ontimeslotclick={handleTimeSlotClick}
       ></c-week-calendar-view>
     </div>
 
@@ -121,53 +122,20 @@
       ></c-day-calendar-view>
     </div>
 
-    <template lwc:if={showEventModal}>
-      <lightning-modal-header label="Event Details"></lightning-modal-header>
-      <lightning-modal-body>
-        <div class="event-details">
-          <div lwc:if={selectedEvent}>
-            <div class="detail-row">
-              <strong>Event Type:</strong>
-              <span>{selectedEvent.eventType}</span>
-            </div>
-            <div class="detail-row">
-              <strong>Title:</strong>
-              <span>{selectedEvent.title}</span>
-            </div>
-            <div class="detail-row">
-              <strong>Start:</strong>
-              <span>{formattedStartTime}</span>
-            </div>
-            <div class="detail-row">
-              <strong>Location:</strong>
-              <span>{selectedEvent.location}</span>
-            </div>
-            <div class="detail-row">
-              <strong>Status:</strong>
-              <span>{selectedEvent.status}</span>
-            </div>
-          </div>
-        </div>
-      </lightning-modal-body>
-      <lightning-modal-footer>
-        <lightning-button
-          label="Cancel"
-          onclick={handleCloseModal}
-        ></lightning-button>
-        <lightning-button
-          label="Edit"
-          variant="brand"
-          onclick={handleEditEvent}
-        >
-        </lightning-button>
-        <lightning-button
-          label="Delete"
-          variant="destructive"
-          onclick={handleDeleteEvent}
-        >
-        </lightning-button>
-      </lightning-modal-footer>
-    </template>
+    <!-- Event Detail Panel -->
+    <c-event-detail-panel
+      event={selectedEvent}
+      is-open={showEventPanel}
+      is-loading={isPanelLoading}
+      mode={panelMode}
+      prefilled-date={prefilledDate}
+      prefilled-start-time={prefilledStartTime}
+      onclose={handleClosePanel}
+      onedit={handleEditEvent}
+      ondelete={handleDeleteEvent}
+      onexport={handleExportEvent}
+      onsave={handleSaveEvent}
+    ></c-event-detail-panel>
 
     <template lwc:if={showErrorModal}>
       <lightning-modal-header label="Error"></lightning-modal-header>

@@ -1,5 +1,6 @@
 import { LightningElement, api } from "lwc";
 import getEventsByDateRange from "@salesforce/apex/ScheduleCalendarController.getEventsByDateRange";
+import CalendarService from "c/calendarService";
 
 /**
  * weekCalendarView
@@ -15,6 +16,7 @@ import getEventsByDateRange from "@salesforce/apex/ScheduleCalendarController.ge
  * - Quick-create event form on time slot click
  * - Current time indicator line
  * - Event filtering and selection
+ * - Integrated with calendarService for caching and conflict detection
  *
  * Input Props:
  * @api currentDateStr - ISO date string (YYYY-MM-DD) to display in calendar (defaults to today)
@@ -24,6 +26,8 @@ import getEventsByDateRange from "@salesforce/apex/ScheduleCalendarController.ge
  * @api timeGranularity - Time slot interval in minutes (15, 30, or 60)
  * @api showWeekends - Include Saturday/Sunday in view (default: true)
  * @api selectedFilters - Filter state {teams, eventTypes, arenas, divisions}
+ * @api leagueId - League ID for calendar service
+ * @api seasonId - Season ID for calendar service
  *
  * Output Events:
  * @fires eventclick - When an event block is clicked
@@ -33,6 +37,8 @@ import getEventsByDateRange from "@salesforce/apex/ScheduleCalendarController.ge
  */
 
 export default class WeekCalendarView extends LightningElement {
+  // ===== CALENDAR SERVICE =====
+  calendarService = null;
   // ===== API PROPERTIES =====
 
   // Internal date property
@@ -116,6 +122,9 @@ export default class WeekCalendarView extends LightningElement {
     }
   }
 
+  @api leagueId = null;
+  @api seasonId = null;
+
   // ===== INTERNAL STATE =====
 
   draggedEvent = null;
@@ -142,12 +151,34 @@ export default class WeekCalendarView extends LightningElement {
     "Saturday"
   ];
   static WORK_DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri"];
-  static MIN_TIME = 0; // Midnight
-  static MAX_TIME = 24 * 60; // End of day (minutes)
+  static MIN_TIME = 6 * 60; // 6 AM (360 minutes)
+  static MAX_TIME = 23 * 60; // 11 PM (1380 minutes)
 
   // ===== LIFECYCLE HOOKS =====
 
   connectedCallback() {
+    // Initialize calendar service with league/season context
+    if (this.leagueId && this.seasonId) {
+      this.calendarService = new CalendarService(this.leagueId, this.seasonId);
+
+      // Inject Apex controller for service to use
+      if (!window.CalendarController) {
+        window.CalendarController = {
+          getEventsByDateRange: getEventsByDateRange
+        };
+      }
+
+      // Subscribe to service events for cross-component updates
+      this.calendarService.subscribe(
+        "eventRescheduled",
+        this.handleEventRescheduled.bind(this)
+      );
+      this.calendarService.subscribe(
+        "eventCreated",
+        this.handleEventCreated.bind(this)
+      );
+    }
+
     // Start current time indicator updates
     this.startCurrentTimeUpdates();
 
@@ -156,6 +187,15 @@ export default class WeekCalendarView extends LightningElement {
   }
 
   disconnectedCallback() {
+    // Unsubscribe from service events
+    if (this.calendarService) {
+      this.calendarService.unsubscribe(
+        "eventRescheduled",
+        this.handleEventRescheduled
+      );
+      this.calendarService.unsubscribe("eventCreated", this.handleEventCreated);
+    }
+
     // Clean up interval
     if (this.currentTimeUpdateInterval) {
       clearInterval(this.currentTimeUpdateInterval);
@@ -197,13 +237,15 @@ export default class WeekCalendarView extends LightningElement {
 
   /**
    * Generate array of time slot labels (12-hour format with AM/PM)
+   * Shows only from MIN_TIME (6 AM) to MAX_TIME (11 PM)
    */
   get timeSlots() {
     const slots = [];
-    const totalSlots = WeekCalendarView.MAX_TIME / this.timeGranularity;
+    const totalMinutes = WeekCalendarView.MAX_TIME - WeekCalendarView.MIN_TIME;
+    const totalSlots = totalMinutes / this.timeGranularity;
 
     for (let i = 0; i < totalSlots; i++) {
-      const minutes = i * this.timeGranularity;
+      const minutes = WeekCalendarView.MIN_TIME + i * this.timeGranularity;
       const hours = Math.floor(minutes / 60);
       const mins = minutes % 60;
       const period = hours >= 12 ? "PM" : "AM";
@@ -256,16 +298,18 @@ export default class WeekCalendarView extends LightningElement {
         dayIndex,
         ...position,
         hasConflict: false, // Will be updated by conflict detection
-        cssClass: "" // Will be set after conflict detection
+        cssClass: "", // Will be set after conflict detection
+        styleString: "" // Will be set after conflict detection
       };
     });
 
     // Detect conflicts
     this.detectConflicts(positioned);
 
-    // Set CSS classes after conflict detection
+    // Set CSS classes and inline styles after conflict detection
     positioned.forEach((event) => {
       event.cssClass = this.getEventCssClass(event);
+      event.styleString = `top: ${event.top}; height: ${event.height};`;
     });
 
     return positioned;
@@ -365,7 +409,8 @@ export default class WeekCalendarView extends LightningElement {
   // ===== DATA FETCHING =====
 
   /**
-   * Load events from Apex controller for the current week
+   * Load events using calendarService for the current week
+   * Falls back to direct Apex call if service is not available
    * Gracefully handles test environment where Apex controller is not available
    */
   async loadEvents() {
@@ -384,45 +429,59 @@ export default class WeekCalendarView extends LightningElement {
       const weekEnd = new Date(weekStart);
       weekEnd.setDate(weekEnd.getDate() + 6); // Sunday
 
-      // Format dates for Apex
-      const startDateStr = this._formatDateForApex(weekStart);
-      const endDateStr = this._formatDateForApex(weekEnd);
+      let allEvents = [];
 
-      // Call Apex controller with filters
-      const response = await getEventsByDateRange({
-        startDate: startDateStr,
-        endDate: endDateStr,
-        teamIds: this.selectedFilters.teams,
-        eventTypes: this.selectedFilters.eventTypes,
-        arenaIds: this.selectedFilters.arenas,
-        divisionIds: this.selectedFilters.divisions
-      });
-
-      if (response.success) {
-        // Transform Apex response to match component expectations
-        const transformedEvents = (response.allEvents || []).map((event) => ({
-          id: event.id,
-          title: event.title,
-          startTime: event.startTime,
-          endTime: event.endTime,
-          type: event.eventType,
-          status: event.status,
-          location: event.location
-        }));
-
-        // Update events array without reassigning the @api property
-        if (Array.isArray(this.events)) {
-          this.events.splice(0, this.events.length, ...transformedEvents);
-        } else {
-          // If events is not yet initialized, create it through the internal state
-          // This shouldn't happen in normal usage but provides a fallback
-          // eslint-disable-next-line @lwc/lwc/no-api-reassignments
-          this.events = transformedEvents;
-        }
-        this.eventsLoaded = true;
+      // Use calendarService if available, otherwise fall back to direct Apex call
+      if (this.calendarService) {
+        // Use service for caching and conflict detection
+        allEvents = await this.calendarService.fetchEvents(
+          weekStart,
+          weekEnd,
+          this.selectedFilters
+        );
       } else {
-        this.error = response.errorMessage || "Failed to load events";
+        // Fallback to direct Apex call
+        const startDateStr = this._formatDateForApex(weekStart);
+        const endDateStr = this._formatDateForApex(weekEnd);
+
+        const response = await getEventsByDateRange({
+          startDate: startDateStr,
+          endDate: endDateStr,
+          teamIds: this.selectedFilters.teams,
+          eventTypes: this.selectedFilters.eventTypes,
+          arenaIds: this.selectedFilters.arenas,
+          divisionIds: this.selectedFilters.divisions
+        });
+
+        if (response.success) {
+          allEvents = response.allEvents || [];
+        } else {
+          this.error = response.errorMessage || "Failed to load events";
+          return;
+        }
       }
+
+      // Transform events to match component expectations
+      const transformedEvents = allEvents.map((event) => ({
+        id: event.id,
+        title: event.title,
+        startTime: event.startTime,
+        endTime: event.endTime,
+        type: event.eventType || event.type,
+        status: event.status,
+        location: event.location
+      }));
+
+      // Update events array without reassigning the @api property
+      if (Array.isArray(this.events)) {
+        this.events.splice(0, this.events.length, ...transformedEvents);
+      } else {
+        // If events is not yet initialized, create it through the internal state
+        // This shouldn't happen in normal usage but provides a fallback
+        // eslint-disable-next-line @lwc/lwc/no-api-reassignments
+        this.events = transformedEvents;
+      }
+      this.eventsLoaded = true;
     } catch (error) {
       console.error("Error loading events:", error);
       this.error = "Unable to load calendar events. Please try again.";
@@ -451,15 +510,17 @@ export default class WeekCalendarView extends LightningElement {
     const dayIndex = parseInt(slotElement.dataset.dayIndex, 10);
     const slotIndex = parseInt(slotElement.dataset.slotIndex, 10);
 
-    this.quickCreateSlot = { dayIndex, slotIndex };
+    const clickedDate = this.weekDays[dayIndex];
+    const clickedDateTime = this.calculateEventDateTime(dayIndex, slotIndex);
 
-    // Fire time slot click event
+    // Fire time slot click event for parent to handle (open create panel)
     this.dispatchEvent(
       new CustomEvent("timeslotclick", {
         detail: {
           dayIndex,
           slotIndex,
-          date: this.weekDays[dayIndex],
+          date: clickedDate,
+          dateTime: clickedDateTime,
           time: this.timeSlots[slotIndex]
         }
       })
@@ -640,6 +701,26 @@ export default class WeekCalendarView extends LightningElement {
     this.quickCreateSlot = null;
   }
 
+  /**
+   * Handle event rescheduled notification from calendarService
+   * Reloads events to reflect the change
+   */
+  handleEventRescheduled(eventData) {
+    console.log("Event rescheduled:", eventData);
+    // Reload events to reflect the change
+    this.loadEvents();
+  }
+
+  /**
+   * Handle event created notification from calendarService
+   * Reloads events to include the new event
+   */
+  handleEventCreated(eventData) {
+    console.log("Event created:", eventData);
+    // Reload events to include the new event
+    this.loadEvents();
+  }
+
   // ===== PRIVATE METHODS =====
 
   /**
@@ -669,7 +750,7 @@ export default class WeekCalendarView extends LightningElement {
       return { dayIndex: undefined, position: {} };
     }
 
-    // Calculate position within day
+    // Calculate position within day relative to visible time range (MIN_TIME to MAX_TIME)
     const eventEnd = new Date(event.endTime);
     const dayStart = new Date(this.weekDays[dayIndex]);
     dayStart.setHours(0, 0, 0, 0);
@@ -677,9 +758,16 @@ export default class WeekCalendarView extends LightningElement {
     const minutesFromDayStart = (eventStart - dayStart) / (1000 * 60);
     const durationMinutes = (eventEnd - eventStart) / (1000 * 60);
 
-    const slotIndex = Math.floor(minutesFromDayStart / this.timeGranularity);
-    const topPercent = (minutesFromDayStart / (24 * 60)) * 100;
-    const heightPercent = (durationMinutes / (24 * 60)) * 100;
+    // Calculate position relative to MIN_TIME (6 AM)
+    const minutesFromVisibleStart =
+      minutesFromDayStart - WeekCalendarView.MIN_TIME;
+    const visibleRange = WeekCalendarView.MAX_TIME - WeekCalendarView.MIN_TIME;
+
+    const slotIndex = Math.floor(
+      minutesFromVisibleStart / this.timeGranularity
+    );
+    const topPercent = (minutesFromVisibleStart / visibleRange) * 100;
+    const heightPercent = (durationMinutes / visibleRange) * 100;
 
     return {
       dayIndex,
@@ -715,10 +803,12 @@ export default class WeekCalendarView extends LightningElement {
 
   /**
    * Calculate the exact datetime for a given day and time slot index
+   * Accounts for MIN_TIME offset (6 AM start)
    */
   calculateEventDateTime(dayIndex, slotIndex) {
     const date = this.weekDays[dayIndex];
-    const minutes = slotIndex * this.timeGranularity;
+    const minutes =
+      WeekCalendarView.MIN_TIME + slotIndex * this.timeGranularity;
     const hours = Math.floor(minutes / 60);
     const mins = minutes % 60;
 
@@ -769,6 +859,7 @@ export default class WeekCalendarView extends LightningElement {
 
   /**
    * Update current time indicator position
+   * Only shows if current time is within visible range (6 AM - 11 PM)
    */
   updateCurrentTimeIndicatorPosition() {
     const indicator = this.shadowRoot?.querySelector(".current-time-indicator");
@@ -778,8 +869,22 @@ export default class WeekCalendarView extends LightningElement {
 
     const now = new Date();
     const minutes = now.getHours() * 60 + now.getMinutes();
-    const totalMinutes = 24 * 60;
-    const percentage = (minutes / totalMinutes) * 100;
+
+    // Only show indicator if within visible time range
+    if (
+      minutes < WeekCalendarView.MIN_TIME ||
+      minutes > WeekCalendarView.MAX_TIME
+    ) {
+      indicator.style.display = "none";
+      return;
+    }
+
+    indicator.style.display = "block";
+
+    // Calculate position relative to visible range
+    const visibleRange = WeekCalendarView.MAX_TIME - WeekCalendarView.MIN_TIME;
+    const minutesFromVisibleStart = minutes - WeekCalendarView.MIN_TIME;
+    const percentage = (minutesFromVisibleStart / visibleRange) * 100;
 
     indicator.style.top = `${percentage}%`;
 
@@ -887,6 +992,7 @@ export default class WeekCalendarView extends LightningElement {
 
   /**
    * Get start time for quick-create form (current slot time)
+   * Accounts for MIN_TIME offset (6 AM start)
    */
   getQuickCreateStartTime() {
     if (!this.quickCreateSlot) {
@@ -894,7 +1000,8 @@ export default class WeekCalendarView extends LightningElement {
     }
 
     const { slotIndex } = this.quickCreateSlot;
-    const minutes = slotIndex * this.timeGranularity;
+    const minutes =
+      WeekCalendarView.MIN_TIME + slotIndex * this.timeGranularity;
     const hours = Math.floor(minutes / 60);
     const mins = minutes % 60;
 
@@ -903,6 +1010,7 @@ export default class WeekCalendarView extends LightningElement {
 
   /**
    * Get end time for quick-create form (one time slot later)
+   * Accounts for MIN_TIME offset (6 AM start)
    */
   getQuickCreateEndTime() {
     if (!this.quickCreateSlot) {
@@ -910,7 +1018,8 @@ export default class WeekCalendarView extends LightningElement {
     }
 
     const slotIndex = this.quickCreateSlot.slotIndex;
-    const minutes = (slotIndex + 1) * this.timeGranularity;
+    const minutes =
+      WeekCalendarView.MIN_TIME + (slotIndex + 1) * this.timeGranularity;
     const hours = Math.floor(minutes / 60);
     const mins = minutes % 60;
 

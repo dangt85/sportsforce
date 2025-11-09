@@ -145,7 +145,7 @@ describe("weekCalendarView", () => {
       await flushPromises();
 
       const timeSlots = element.shadowRoot.querySelectorAll(".time-slot-cell");
-      expect(timeSlots.length).toBe(120); // 24 hours * 5 days (Mon-Fri)
+      expect(timeSlots.length).toBe(85); // 17 hours (6 AM - 11 PM) * 5 days
     });
 
     test("should render time slot cells for 30-minute granularity (5-day work week)", async () => {
@@ -155,7 +155,7 @@ describe("weekCalendarView", () => {
       await flushPromises();
 
       const timeSlots = element.shadowRoot.querySelectorAll(".time-slot-cell");
-      expect(timeSlots.length).toBe(240); // 48 slots * 5 days (Mon-Fri)
+      expect(timeSlots.length).toBe(170); // 34 slots (17 hrs * 2) * 5 days
     });
 
     test("should render time slot cells for 15-minute granularity (5-day work week)", async () => {
@@ -165,7 +165,7 @@ describe("weekCalendarView", () => {
       await flushPromises();
 
       const timeSlots = element.shadowRoot.querySelectorAll(".time-slot-cell");
-      expect(timeSlots.length).toBe(480); // 96 slots * 5 days (Mon-Fri)
+      expect(timeSlots.length).toBe(340); // 68 slots (17 hrs * 4) * 5 days
     });
 
     test("should render 7 days of time slots when showWeekends is true", async () => {
@@ -175,7 +175,7 @@ describe("weekCalendarView", () => {
       await flushPromises();
 
       const timeSlots = element.shadowRoot.querySelectorAll(".time-slot-cell");
-      expect(timeSlots.length).toBe(168); // 24 hours * 7 days (Mon-Sun)
+      expect(timeSlots.length).toBe(119); // 17 hours (6 AM - 11 PM) * 7 days
     });
   });
 
@@ -295,7 +295,7 @@ describe("weekCalendarView", () => {
       expect(form).toBeFalsy();
     });
 
-    test("should show quick-create form on time slot click", async () => {
+    test("should fire timeslotclick event on time slot click", async () => {
       element.currentDate = new Date(2025, 10, 10);
       element.timeGranularity = 60;
       await flushPromises();
@@ -303,56 +303,21 @@ describe("weekCalendarView", () => {
       const timeSlots = element.shadowRoot.querySelectorAll(".time-slot-cell");
       expect(timeSlots.length).toBeGreaterThan(0);
 
+      // Set up event listener
+      const handler = jest.fn();
+      element.addEventListener("timeslotclick", handler);
+
       // Click first time slot
       timeSlots[0].click();
       await flushPromises();
 
-      const form = element.shadowRoot.querySelector(".quick-create-form");
-      expect(form).toBeTruthy();
-    });
-
-    test("should close form on cancel button click", async () => {
-      element.currentDate = new Date(2025, 10, 10);
-      element.timeGranularity = 60;
-      await flushPromises();
-
-      // Click time slot to show form
-      const timeSlot = element.shadowRoot.querySelector(".time-slot-cell");
-      timeSlot.click();
-      await flushPromises();
-
-      // Click cancel
-      const cancelBtn = element.shadowRoot.querySelector(
-        ".quick-create-cancel"
-      );
-      expect(cancelBtn).toBeTruthy();
-      cancelBtn.click();
-      await flushPromises();
-
-      const form = element.shadowRoot.querySelector(".quick-create-form");
-      expect(form).toBeFalsy();
-    });
-
-    test("should close form on close button click", async () => {
-      element.currentDate = new Date(2025, 10, 10);
-      element.timeGranularity = 60;
-      await flushPromises();
-
-      // Click time slot to show form
-      const timeSlot = element.shadowRoot.querySelector(".time-slot-cell");
-      timeSlot.click();
-      await flushPromises();
-
-      // Click close button
-      const closeBtn = element.shadowRoot.querySelector(
-        "lightning-button-icon"
-      );
-      expect(closeBtn).toBeTruthy();
-      closeBtn.click();
-      await flushPromises();
-
-      const form = element.shadowRoot.querySelector(".quick-create-form");
-      expect(form).toBeFalsy();
+      // Verify event was fired
+      expect(handler).toHaveBeenCalled();
+      const eventDetail = handler.mock.calls[0][0].detail;
+      expect(eventDetail.dayIndex).toBeDefined();
+      expect(eventDetail.slotIndex).toBeDefined();
+      expect(eventDetail.date).toBeDefined();
+      expect(eventDetail.dateTime).toBeDefined();
     });
   });
 
@@ -500,12 +465,15 @@ describe("weekCalendarView", () => {
       const timeSlot = element.shadowRoot.querySelector(".time-slot-cell");
       expect(timeSlot).toBeTruthy();
 
+      // Set up event listener
+      const handler = jest.fn();
+      element.addEventListener("timeslotclick", handler);
+
       timeSlot.click();
       await flushPromises();
 
-      const quickCreateForm =
-        element.shadowRoot.querySelector(".quick-create-form");
-      expect(quickCreateForm).toBeTruthy();
+      // Verify event was fired
+      expect(handler).toHaveBeenCalled();
     });
 
     test("should have time slot cells configured for drop targets", async () => {

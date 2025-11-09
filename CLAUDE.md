@@ -1,171 +1,36 @@
 # CLAUDE.md - AI Development Context
 
-This document provides comprehensive context for AI assistants (like Claude Code) working on the SportsForce project.
+**SportsForce** is a Salesforce-based solution for managing minor hockey leagues through three integrated applications: Backend Admin App (internal staff), Public Experience Site (anonymous), and Team Management Portal (authenticated users).
 
 ## Project Overview
 
-**SportsForce** is a Salesforce-based solution for managing minor hockey leagues in Canada and the United States. It serves league administrators, coaches, players, and families through three integrated applications.
+**Platform**: Salesforce + Experience Cloud + LWC + Apex + Flow
+**Scale**: Regional leagues with 1,000s of users
+**Key Objectives**: Centralize league operations, public information portal, team management, external integrations
 
-### Target Users
+## Current Focus: Calendar Refactor Initiative
 
-- **Internal Staff**: League convenors, webmasters, schedulers, division coordinators
-- **Public Users**: Parents, fans, prospective players (anonymous access)
-- **Authenticated Users**: Team managers, coaches, players, representatives
+**Status**: Design Complete ✅ | Gantt View Implemented ✅ | Week View In Progress 🚀
 
-### Key Objectives
+Replacing FullCalendar library with custom LWC components (4 views: Month, Week, Day, Gantt) using SLDS styling.
 
-1. Centralize league operations and data management
-2. Provide public-facing information portal for schedules, rosters, and news
-3. Enable team staff to manage rosters and track statistics
-4. Integrate with external scheduling and statistics platforms
-5. Support regional scale (1,000s of users across multiple leagues)
+### Design Documentation (150+ pages)
 
-## Architecture
+- [CALENDAR_REFACTOR_DESIGN_PLAN.md](./docs/CALENDAR_REFACTOR_DESIGN_PLAN.md) - Master design, requirements, architecture
+- [CALENDAR_VISUAL_MOCKUPS.md](./docs/CALENDAR_VISUAL_MOCKUPS.md) - UI mockups for all views
+- [COMPONENT_ARCHITECTURE.md](./docs/COMPONENT_ARCHITECTURE.md) - Technical specs, CalendarService, Apex controllers
+- [DESIGN_SUMMARY.md](./docs/DESIGN_SUMMARY.md) - Executive summary
+- [GANTT_IMPLEMENTATION_SUMMARY.md](./docs/GANTT_IMPLEMENTATION_SUMMARY.md) - Gantt view status
 
-### Platform Stack
+### Implementation Status
 
-- **Salesforce Platform** - Core application foundation
-- **Experience Cloud** - Public site (#2) and authenticated portal (#3)
-- **Lightning Web Components (LWC)** - Custom UI components
-- **Apex** - Server-side business logic
-- **Flow & Process Automation** - Declarative automation
-- **REST APIs** - External integrations
-
-### Three Application Architecture
-
-#### 1. Backend Admin App (Internal)
-
-**Platform**: Custom Lightning App in core Salesforce
-**Users**: League convenors, webmasters, schedulers
-
-**Key Components**:
-
-- Custom Lightning App with tab-based navigation
-- Custom LWC components:
-  - Schedule Builder (drag-and-drop calendar)
-  - Tryout Evaluator (mobile scoring interface)
-  - Statistics Calculator (real-time aggregation)
-  - Content Editor (WYSIWYG for news/pages)
-- Reports & Dashboards
-- Flow-based automation
-
-#### 2. Public Experience Site (Anonymous)
-
-**Platform**: Experience Cloud (Unauthenticated)
-**Users**: General public, prospective families
-
-**Key Pages**:
-
-- Home (league info, featured news)
-- Schedules (filterable calendar)
-- Standings (live division rankings)
-- Teams (rosters, read-only)
-- Statistics Leaders
-- News & Announcements
-- Arenas (venue info)
-- Registration (public form)
-
-**Technical Considerations**:
-
-- Aggressive caching (@AuraEnabled cacheable=true)
-- CDN optimization
-- SEO-friendly URLs
-- Mobile-responsive LWCs
-
-#### 3. Team Management Portal (Authenticated)
-
-**Platform**: Experience Cloud (Authenticated)
-**Users**: Team managers, coaches, players/representatives
-
-**Key Features**:
-
-- Personalized dashboard ("My Teams")
-- Roster management (managers/coaches)
-- Game roster submission
-- Statistics tracking (individual & team)
-- Tournament tracker
-- Team communications
-
-**Security Model**:
-
-- Team-based record sharing via Apex
-- Custom profiles per user type
-- Field-level security for sensitive data
-
-## Calendar Refactor Initiative
-
-**Status**: Design Complete ✅ | Gantt View Implemented ✅ | Week/Month Views In Progress 🚀
-
-This project is undergoing a significant refactoring of the calendar/scheduling functionality. The existing FullCalendar library is being replaced with custom Lightning Web Components using Lightning Design System (SLDS) styling and custom HTML.
-
-### What's New
-
-- **Removed**: FullCalendar external dependency
-- **Added**: Custom LWC components with 4 views (Month, Week, Day, Gantt)
-- **Added**: Headless CalendarService (business logic layer)
-- **Added**: Drag-drop event rescheduling with conflict detection
-- **Architecture**: Event-driven with service-layer filtering
-- **✅ Implemented**: Gantt Arena View with full UI alignment, mock data, and responsive design
-
-### Key Design Decisions
-
-| Decision             | Approach                                  | Rationale                               |
-| -------------------- | ----------------------------------------- | --------------------------------------- |
-| **Views**            | Month, Week (primary), Day, Gantt         | All 4 views specified and designed      |
-| **Time Granularity** | 15-min default, configurable to 30/60 min | Precision + flexibility                 |
-| **Conflicts**        | Server-side validation with UI warnings   | Prevent data corruption, allow override |
-| **Caching**          | 3 weeks in memory + 5min TTL              | Balance UX speed with data freshness    |
-| **Responsive**       | Desktop-focused (1024px+), mobile hidden  | Simplifies implementation               |
-| **Interactions**     | Drag-drop + Click-to-create               | Familiar calendar UX patterns           |
-
-### Design Documentation
-
-**150+ pages of comprehensive specifications**:
-
-1. [docs/CALENDAR_REFACTOR_DESIGN_PLAN.md](./docs/CALENDAR_REFACTOR_DESIGN_PLAN.md)
-   - Project vision, requirements, design system, data flow
-   - View specifications (Month, Week, Day, Gantt)
-   - Integration architecture, settings, success criteria
-
-2. [docs/CALENDAR_VISUAL_MOCKUPS.md](./docs/CALENDAR_VISUAL_MOCKUPS.md)
-   - ASCII mockups for all 4 views
-   - Component state variations (normal, hover, dragging, conflict)
-   - Color palette and responsive behavior
-
-3. [docs/COMPONENT_ARCHITECTURE.md](./docs/COMPONENT_ARCHITECTURE.md)
-   - Component tree and specifications
-   - CalendarService (headless logic) detailed design
-   - Apex controller specifications with method signatures
-   - Data models & interfaces (TypeScript)
-   - Performance optimizations
-
-4. [docs/DESIGN_SUMMARY.md](./docs/DESIGN_SUMMARY.md)
-   - Executive overview and key design decisions
-   - Performance targets and accessibility approach
-   - Rollout plan and implementation roadmap
-
-### Implementation Roadmap
-
-| Week | Focus               | Components                                             | Status            |
-| ---- | ------------------- | ------------------------------------------------------ | ----------------- |
-| 1    | Foundation          | CalendarService, Apex controllers, basic structure     | ✅ Complete       |
-| 2    | Week View (Primary) | Time grid, drag-drop, quick-create, event detail panel | 🚀 In Progress    |
-| 3    | Other Views         | Month, Day, Gantt views                                | ✅ Gantt Complete |
-| 4    | Optimization        | Virtual scrolling, caching, accessibility              | ⏳ Pending        |
-| 5    | Testing & Deploy    | Tests, UAT, production deployment                      | ⏳ Pending        |
-
-### Completed Components
-
-**Gantt Arena View** (ganttArenaView)
-
-- ✅ Arena utilization display with 5-minute resolution bars
-- ✅ Week and Month zoom levels (Quarter removed per requirements)
-- ✅ Mock data generation with 5 arenas and varied event distribution
-- ✅ Full CSS alignment with proper header/row heights and borders
-- ✅ Event type color coding (Games, Practices, Tryouts)
-- ✅ Interactive legend with utilization levels
-- ✅ 224 Jest tests passing (100% test suite)
-- ✅ Responsive sticky left column with horizontal scrolling
+| Week | Focus               | Status            |
+| ---- | ------------------- | ----------------- |
+| 1    | Foundation          | ✅ Complete       |
+| 2    | Week View (Primary) | 🚀 In Progress    |
+| 3    | Other Views         | ✅ Gantt Complete |
+| 4    | Optimization        | ⏳ Pending        |
+| 5    | Testing & Deploy    | ⏳ Pending        |
 
 ---
 

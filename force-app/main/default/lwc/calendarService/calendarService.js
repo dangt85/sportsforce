@@ -307,9 +307,9 @@ export default class CalendarService {
     const current = new Date(startDate);
 
     while (current <= endDate) {
-      // 40% chance of an event on this day
-      if (Math.random() < 0.4) {
-        const eventCount = Math.floor(Math.random() * 3) + 1; // 1-3 events per day
+      // 80% chance of an event on this day (increased for better visibility)
+      if (Math.random() < 0.8) {
+        const eventCount = Math.floor(Math.random() * 4) + 2; // 2-5 events per day
 
         for (let i = 0; i < eventCount; i++) {
           const arena = arenas[Math.floor(Math.random() * arenas.length)];

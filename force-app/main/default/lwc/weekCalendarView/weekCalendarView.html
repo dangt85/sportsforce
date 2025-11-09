@@ -90,10 +90,9 @@
                   <div
                     key={event.id}
                     class={event.cssClass}
+                    style={event.styleString}
                     data-event-id={event.id}
                     data-day={dayObj.date}
-                    data-top={event.top}
-                    data-height={event.height}
                     draggable="true"
                     onclick={handleEventClick}
                     ondragstart={handleEventDragStart}
